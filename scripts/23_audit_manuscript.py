@@ -1,0 +1,204 @@
+"""Check the numbers quoted in paper/manuscript.md against the tables in results/.
+
+Each check names the sentence it verifies, recomputes the value from a results file, and compares with a
+tolerance. Anything that does not match is printed and the script exits non-zero, so the manuscript cannot
+drift away from the analyses. Values quoted from other papers are listed at the end and are not checked here.
+"""
+import json
+import re
+import sys
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+R = ROOT / "results"
+MD = (ROOT / "paper" / "manuscript.md").read_text()
+fails, checks = [], 0
+
+
+def check(name: str, quoted, computed, tol=0.0006):
+    """quoted: value(s) as written in the manuscript; computed: value(s) from results/."""
+    global checks
+    checks += 1
+    q = [quoted] if not isinstance(quoted, (list, tuple)) else list(quoted)
+    c = [computed] if not isinstance(computed, (list, tuple)) else list(computed)
+    ok = len(q) == len(c) and all(abs(float(a) - float(b)) <= tol for a, b in zip(q, c))
+    if not ok:
+        fails.append(f"{name}: manuscript {q} vs results {[round(float(x), 4) for x in c]}")
+
+
+def in_text(s: str, name: str):
+    global checks
+    checks += 1
+    if s not in MD:
+        fails.append(f"{name}: text not found: {s[:70]!r}")
+
+
+res = pd.read_csv(R / "results.csv")
+res = res[(res["cc_mode"] == "keep") & ((res["split"] != "within") | (res["fold"].astype(str) == "oof"))]
+res["shuffled"] = res["shuffled"].astype(str).str.lower() == "true"
+real = res[~res["shuffled"]].drop_duplicates(["model", "split", "train", "test", "seed", "notes"], keep="last")
+W = real[real["split"] == "within"].groupby(["model", "train"])["auroc"].mean()
+ARMS = ["Carboplatin", "Olaparib", "NK", "Control"]
+
+# --- Results, first section
+check("within-arm PCA-logistic AUROCs", [0.747, 0.744, 0.723, 0.708], [W[("pca_logreg", a)] for a in ARMS], 0.0006)
+audit = pd.read_csv(R / "label_audit.csv")
+check("labelled cells", 32642, (audit["n_pos"] + audit["n_neg"]).sum(), 0)
+check("pre-resistant cells", 3102, audit["n_pos"].sum(), 0)
+check("prevalence range drug arms", [7.8, 11.2],
+      [100 * audit[audit["sample"].str.startswith(("Carbo", "Olap", "NK"))]["prevalence"].min(),
+       100 * audit[audit["sample"].str.startswith(("Carbo", "Olap", "NK"))]["prevalence"].max()], 0.06)
+check("prevalence range control", [14.7, 14.9],
+      [100 * audit[audit["sample"].str.startswith("Control")]["prevalence"].min(),
+       100 * audit[audit["sample"].str.startswith("Control")]["prevalence"].max()], 0.06)
+
+rob = pd.read_csv(R / "robustness_keep.csv")
+sing = rob[rob["check"] == "singletons_only"].set_index("arm")["auroc"]
+check("singleton-only AUROCs", [0.754, 0.753, 0.737, 0.720], [sing[a] for a in ARMS], 0.0006)
+bp = rob[rob["check"].str.startswith("benchmark")]
+check("benchmark protocol, plain CV", [0.739, 0.756],
+      [bp[bp["check"] == "benchmark_protocol_ungrouped"]["auroc"].min(),
+       bp[bp["check"] == "benchmark_protocol_ungrouped"]["auroc"].max()], 0.0006)
+check("benchmark protocol, grouped CV", [0.734, 0.747],
+      [bp[bp["check"] == "benchmark_protocol_grouped"]["auroc"].min(),
+       bp[bp["check"] == "benchmark_protocol_grouped"]["auroc"].max()], 0.0006)
+perm = rob[rob["check"] == "all_cells"]  # the exact permutation test is run on all labelled cells
+check("permutation null mean range", [0.500, 0.501],
+      [round(perm["perm_null_mean"].min(), 3), round(perm["perm_null_mean"].max(), 3)], 0.0006)
+check("permutation null sd range", [0.015, 0.019],
+      [round(perm["perm_null_sd"].min(), 3), round(perm["perm_null_sd"].max(), 3)], 0.0006)
+check("permutation p", 0.0099, perm["perm_p"].max(), 0.0002)
+
+cov = [W[("cov_logreg", a)] for a in ARMS]
+check("covariate-only range", [0.59, 0.65], [min(cov), max(cov)], 0.005)
+
+# --- fitness
+F = pd.read_csv(R / "fitness_confound.csv")
+Fk = F[(F["cc_mode"] == "keep") & (F["features"] == "pca")].drop_duplicates("drug_arm", keep="last").set_index("drug_arm")
+check("fitness model on drug arms", [0.725, 0.713, 0.697],
+      [Fk.loc[a, "auroc_fitness_model_on_drug"] for a in ARMS[:3]], 0.0006)
+check("drug models on control labels", [0.69, 0.70],
+      [Fk["auroc_drug_model_on_control"].min(), Fk["auroc_drug_model_on_control"].max()], 0.005)
+check("Spearman drug vs fitness", [0.80, 0.82],
+      [Fk["corr_drug_vs_fitness_score"].min(), Fk["corr_drug_vs_fitness_score"].max()], 0.005)
+check("residual AUROC range", [0.60, 0.63],
+      [Fk["auroc_drug_residual_on_drug"].min(), Fk["auroc_drug_residual_on_drug"].max()], 0.005)
+check("within-quintile AUROC range", [0.64, 0.66],
+      [Fk["auroc_drug_within_fitness_quintiles"].min(), Fk["auroc_drug_within_fitness_quintiles"].max()], 0.005)
+check("n labelled control cells", 4183, Fk["n_control"].iloc[0], 0)
+check("n labelled drug cells", [8942, 10123], [Fk["n_drug"].min(), Fk["n_drug"].max()], 0)
+
+D = pd.read_csv(R / "delta_auroc_ci.csv")
+for mode, vals in [("keep", [0.014, 0.025, 0.017]), ("regress", [0.014, 0.025, 0.014]), ("regress_all", [0.012, 0.021, 0.003])]:
+    d = D[D["cc_mode"] == mode].set_index("drug_arm")
+    check(f"delta {mode}", vals, [d.loc[a, "delta_mean"] for a in ARMS[:3]], 0.0006)
+dk = D[D["cc_mode"] == "keep"].set_index("drug_arm")
+check("delta CI carboplatin", [0.001, 0.026], [dk.loc["Carboplatin", "delta_lo"], dk.loc["Carboplatin", "delta_hi"]], 0.0006)
+check("delta CI olaparib", [0.012, 0.039], [dk.loc["Olaparib", "delta_lo"], dk.loc["Olaparib", "delta_hi"]], 0.0006)
+check("delta CI NK", [0.003, 0.031], [dk.loc["NK", "delta_lo"], dk.loc["NK", "delta_hi"]], 0.0006)
+da = D[D["cc_mode"] == "regress_all"].set_index("drug_arm")
+check("delta CI NK regress_all", [-0.010, 0.016], [da.loc["NK", "delta_lo"], da.loc["NK", "delta_hi"]], 0.0006)
+check("delta seed sd range (keep)", [0.003, 0.004],
+      [round(dk["delta_seed_sd"].min(), 3), round(dk["delta_seed_sd"].max(), 3)], 0.0006)
+
+# --- typicality
+T = pd.read_csv(R / "typicality.csv")
+Tk = T[T["cc_mode"] == "keep"].set_index("arm")
+check("typicality AUROC (pooled)", [0.70, 0.69, 0.63, 0.67],
+      [round(Tk.loc[a, "auroc_density_pooled"], 2) for a in ARMS], 0.0006)
+Ta = T[T["cc_mode"] == "regress_all"]
+check("typicality AUROC after removing covariates", [0.63, 0.69],
+      [round(Ta["auroc_density_pooled"].min(), 2), round(Ta["auroc_density_pooled"].max(), 2)], 0.0006)
+check("typicality vs supervised Spearman", [0.54, 0.70],
+      [round(Tk["spearman_density_vs_pca_logreg"].min(), 2),
+       round(Tk["spearman_density_vs_pca_logreg"].max(), 2)], 0.0006)
+
+# --- ceiling
+icc = pd.read_csv(R / "ceiling_pc_icc_keep.csv")
+check("mean ICC PCs 1-10", 0.75, icc.head(10)["icc_sisters"].mean(), 0.005)
+C = pd.read_csv(R / "ceiling_keep.csv")
+check("n sister pairs", 3477, int(pd.read_csv(R / "label_audit.csv")["n_pre_sister_pairs"].sum()), 0)
+Dc = pd.read_csv(R / "ceiling_decomposition_keep.csv")
+Dc = Dc[(Dc["model"] == "pca_logreg") & (Dc["pi"] == 0.1)].set_index("arm")
+check("sister cost drug arms", [0.09, 0.12],
+      [Dc.loc[ARMS[:3], "sister_cost"].min(), Dc.loc[ARMS[:3], "sister_cost"].max()], 0.005)
+check("sister cost control", 0.05, Dc.loc["Control", "sister_cost"], 0.005)
+
+# --- GNN sweep
+S = pd.read_csv(R / "gnn_sweep.csv").pivot_table(index="config", columns="arm", values="auroc")
+for arm, lo, hi in [("Carboplatin", 0.727, 0.739), ("Olaparib", 0.722, 0.733), ("NK", 0.695, 0.714), ("Control", 0.667, 0.700)]:
+    check(f"GNN sweep {arm}", [lo, hi], [S[arm].min(), S[arm].max()], 0.0006)
+
+# --- external and patient
+X = pd.read_csv(R / "external_validation.csv")
+X = X[X["label"] == "y_persister"]
+
+
+def ext(ds, an, sub, mod):
+    r = X[(X["dataset"] == ds) & (X["analysis"] == an) & (X["subset"] == sub) & (X["model"] == mod)]
+    return r["auroc"].iloc[0]
+
+
+check("watermelon clone size", 0.76, ext("watermelon", "within_external", "all", "clone_size"), 0.005)
+check("watermelon expression", 0.61, ext("watermelon", "within_external", "all", "pca"), 0.005)
+check("watermelon singleton expression", 0.58, ext("watermelon", "within_external", "singleton", "pca"), 0.005)
+check("tnbc clone size", 0.88, ext("tnbc_afatinib", "within_external", "all", "clone_size"), 0.005)
+check("tnbc expression", 0.64, ext("tnbc_afatinib", "within_external", "all", "pca"), 0.005)
+check("tnbc singleton control transfer", 0.64,
+      ext("tnbc_afatinib", "transfer_from_resistrace", "singleton", "trained_on_Control"), 0.005)
+
+TC = pd.read_csv(R / "tcga_ov_cox.csv").drop_duplicates(["signature", "endpoint"], keep="last")
+ola = TC[(TC["signature"] == "specific_Olaparib") & (TC["endpoint"] == "OS")].iloc[0]
+check("TCGA olaparib HR", [1.20, 1.03, 1.39], [ola["HR_per_sd"], ola["lo"], ola["hi"]], 0.005)
+check("TCGA olaparib p", 0.017, ola["p"], 0.0006)
+# Benjamini-Hochberg over the 10 tests, as in the manuscript
+_p = TC["p"].to_numpy()
+_o = _p.argsort()
+_q = _p[_o] * len(_p) / np.arange(1, len(_p) + 1)
+_q = np.minimum.accumulate(_q[::-1])[::-1]
+_fdr = np.empty(len(_p))
+_fdr[_o] = np.minimum(_q, 1)
+_row = int(np.flatnonzero((TC["signature"] == "specific_Olaparib").to_numpy() & (TC["endpoint"] == "OS").to_numpy())[0])
+check("TCGA olaparib FDR", 0.17, _fdr[_row], 0.005)
+
+P = pd.read_csv(R / "patient_nact.csv").set_index("signature")
+check("patient n up carboplatin contrasts", [5, 5],
+      [P.loc["all_Carboplatin", "n_positive"], P.loc["specific_Carboplatin", "n_positive"]], 0)
+check("patient median shift carboplatin", [-0.03, -0.10],
+      [P.loc["all_Carboplatin", "median_shift"], P.loc["specific_Carboplatin", "median_shift"]], 0.005)
+check("patient wilcoxon carboplatin", [0.24, 0.83],
+      [P.loc["all_Carboplatin", "wilcoxon_p"], P.loc["specific_Carboplatin", "wilcoxon_p"]], 0.005)
+check("patient fitness shift", -0.18, P.loc["fitness_Control", "median_shift"], 0.005)
+check("patient fitness up count", 4, P.loc["fitness_Control", "n_positive"], 0)
+check("patient fitness wilcoxon", 0.042, P.loc["fitness_Control", "wilcoxon_p"], 0.0006)
+check("patient fitness random-set p", 0.005, P.loc["fitness_Control", "p_vs_random_sets_two_sided"], 0.0006)
+check("patient fitness same-site up count", 0, P.loc["fitness_Control", "n_positive_same_site"], 0)
+check("patient max |rho| vs PFI", 0.34, P["spearman_shift_vs_pfi"].abs().max(), 0.005)
+
+# --- interpretation / DE
+de = {a: pd.read_csv(R / "interpret" / f"de_{a}.csv") for a in ARMS}
+n_de = {a: int((d["padj"] < 0.05).sum()) if "padj" in d else None for a, d in de.items()}
+spec = {a: pd.read_csv(R / "interpret" / f"drug_vs_fitness_{a}.csv") for a in ARMS[:3]}
+n_spec = {a: int((d["class"] == "drug_specific").sum()) for a, d in spec.items()}
+check("drug-specific gene counts", [57, 221, 140], [n_spec[a] for a in ARMS[:3]], 0)
+sig = json.load(open(R / "interpret" / "signatures.json"))
+check("carboplatin signature sizes", [25, 31],
+      [len(sig["specific_Carboplatin"]["up"]), len(sig["specific_Carboplatin"]["down"])], 0)
+check("NK signature sizes", [16, 50], [len(sig["specific_NK"]["up"]), len(sig["specific_NK"]["down"])], 0)
+
+# --- phrases that must stay in step with the tables
+in_text("32,642 pre-treatment cells", "labelled cell count in text")
+in_text("3,477 pairs of sisters", "sister pair count in text")
+in_text("8,806 malignant cells", "patient malignant cell count")
+in_text("Supplementary Tables S1–S21", "supplementary table range")
+
+print(f"{checks} checks, {len(fails)} failed")
+for f in fails:
+    print("  FAIL", f)
+if fails:
+    sys.exit(1)
+quoted = re.findall(r"(0\.8[0-9]{2}|0\.50–0\.60|0\.50–0\.55)", MD)
+print("values quoted from other papers (not checked here):", sorted(set(quoted)))

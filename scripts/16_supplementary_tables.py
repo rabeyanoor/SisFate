@@ -143,9 +143,9 @@ tables = {
         "Pre-specified marker panel (Fig. S2): drug contrast, control contrast and their difference.",
     ),
     "S17_representations": (
-        pd.read_csv(RES / "sensitivity_representations.csv"),
-        "Main and fitness analyses repeated on Harmony-corrected PCs, Pearson-residual PCs, the scVI latent space and "
-        "Geneformer cell embeddings (V2-104M_CLcancer, penultimate layer, mean-pooled).",
+        reps := pd.read_csv(RES / "sensitivity_representations.csv"),
+        "Main and fitness analyses repeated on alternative representations of the same cells: "
+        + ", ".join(sorted(reps["representation"].unique())) + ".",
     ),
     "S18_GNN_sweep": (
         pd.read_csv(RES / "gnn_sweep.csv"),
@@ -156,17 +156,17 @@ tables = {
         "Size-matched drug-specific gain over the fitness model (ΔAUROC), mean over 10 training subsamples, with "
         "95% CI from 1,000 paired family-level bootstrap resamples and a one-sided bootstrap p-value (Δ <= 0).",
     ),
+    "S20_benchmark_comparison": (
+        bench,
+        "Olaparib pre-treatment task: methods benchmarked by Shen et al. (2026) and the logistic model of this study. "
+        "Published values are quoted from Shen et al.; those methods were not rerun here.",
+    ),
     "S21_patient_nact": (
         pd.read_csv(RES / "patient_nact.csv").merge(
             pd.read_csv(RES / "patient_nact_per_patient.csv"), on="signature", suffixes=("", "_patient")),
         "ReSisTrace signature scores in malignant cells of 11 HGSOC patients before and after neoadjuvant "
         "chemotherapy (Zhang et al. 2022, GSE165897): per-patient change, Wilcoxon test over patients, comparison "
         "with 200 expression-matched random gene sets, same-anatomical-site subset, and platinum-free interval.",
-    ),
-    "S20_benchmark_comparison": (
-        bench,
-        "Olaparib pre-treatment task: methods benchmarked by Shen et al. (2026) and the logistic model of this study. "
-        "Published values are quoted from Shen et al.; those methods were not rerun here.",
     ),
 }
 

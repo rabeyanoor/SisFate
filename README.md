@@ -38,6 +38,7 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `20_delta_auroc_ci.py` | size-matched drug-specific gain (ΔAUROC) over the fitness model, 10 subsamples, paired family bootstrap CI -> `results/delta_auroc_ci.csv` |
 | `21_geneformer.py` | Geneformer V2-104M_CLcancer embeddings: `tokens` (CPU) -> `embed` (GPU; `kaggle/geneformer/`) -> `analyze` |
 | `22_patient_nact.py` | ReSisTrace signatures in 11 HGSOC patients before/after neoadjuvant chemotherapy (GSE165897) -> `results/patient_nact.csv` |
+| `23_audit_manuscript.py` | re-checks every number quoted in `paper/manuscript.md` against `results/` (63 checks) |
 | `run_rest.sh` | lean version of the heavy runs actually used for the paper |
 | `paper/build/build_docx.js` | `paper/manuscript.md` -> `paper/manuscript.docx` with embedded figures |
 
