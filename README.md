@@ -14,7 +14,7 @@ records the hash of the configuration that produced it. Tested with Python 3.12.
 Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | script | step |
 |---|---|
-| `00_download.sh`, `00b_download_external.sh` | GEO downloads (ReSisTrace; Watermelon GSE150949; TNBC GSE228382 + figshare) |
+| `00_download.sh`, `00b_download_external.sh`, `00c_download_schaff.sh` | GEO downloads (ReSisTrace; Watermelon GSE150949; TNBC GSE228382 + figshare; Schaff GSE279162) |
 | `export_seurat.R` | TNBC Seurat object -> plain files (R from `tools/renv`, installed with micromamba) |
 | `01_build_anndata.py` | dense GEO TSVs -> sparse per-sample `.h5ad` (streamed) |
 | `02_preprocess.py` | gene-union alignment, normalise, cell-cycle scores, HVGs, per-sample scaling, PCA (`keep` and `regress` cell-cycle modes) |

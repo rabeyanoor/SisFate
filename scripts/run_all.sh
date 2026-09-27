@@ -39,6 +39,12 @@ $PY scripts/15_typicality.py
 $PY scripts/20_delta_auroc_ci.py                                                                     # ~15 min
 $PY scripts/25_simulation.py --n-rep 25                                                               # ~4 h
 $PY scripts/26_design_tool.py
+$PY scripts/27_control_free_fitness.py     # substitutes for an untreated arm (Fig. 8)
+$PY scripts/28_delta_refit_bootstrap.py --cc-modes keep regress regress_all --n-boot 60
+                                        # the intervals quoted in the text; ~3 h
+$PY scripts/27_control_free_fitness.py     # substitutes for an untreated arm (Fig. 8)
+$PY scripts/28_delta_refit_bootstrap.py --cc-modes keep regress regress_all --n-boot 60
+                                        # the intervals quoted in the text; ~3 h
 
 # ---- alternative representations                                              ~1 h (+ GPU for Geneformer)
 uv run --with harmonypy --with scvi-tools python scripts/17_sensitivity.py
