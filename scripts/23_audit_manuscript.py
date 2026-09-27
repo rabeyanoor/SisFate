@@ -310,7 +310,16 @@ if (R / "delta_auroc_refit_ci.csv").exists():
               [round(k["p_boot_delta_le_0"].min(), 2), round(k["p_boot_delta_le_0"].max(), 2)], 0.006)
         checks += 1
         if not (k["delta_lo"] < 0).all():
-            fails.append("a refit interval excludes zero, but the text says none does")
+            fails.append("a keep-mode refit interval excludes zero, but the text says none does")
+    check("refit intervals excluding zero, all variants", 1, int((RF["delta_lo"] > 0).sum()), 0)
+    check("refit arm-variant combinations", 9, len(RF), 0)
+    check("refit positive estimates", 8, int((RF["delta"] > 0.001).sum()), 0)
+    ol = RF[RF["drug_arm"] == "Olaparib"].set_index("cc_mode")
+    check("olaparib p across variants", [0.066, 0.033, 0.098],
+          [round(ol.loc[m, "p_boot_delta_le_0"], 3) for m in ["keep", "regress", "regress_all"]], 0.0011)
+    rg = RF[(RF["cc_mode"] == "regress") & (RF["drug_arm"] == "Olaparib")].iloc[0]
+    check("olaparib regress interval", [0.025, 0.002, 0.047],
+          [round(rg["delta"], 3), round(rg["delta_lo"], 3), round(rg["delta_hi"], 3)], 0.0011)
 
 # --- design calculation
 if (R / "design_resistrace.csv").exists():
