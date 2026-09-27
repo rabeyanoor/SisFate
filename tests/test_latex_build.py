@@ -22,5 +22,11 @@ def test_latex_builds_and_validates():
     assert t.count("{") == t.count("}")
     assert not [c for c in t if ord(c) > 127], "non-ascii left in the LaTeX"
     assert t.rstrip().endswith(r"\end{document}")
-    for stem in ["Fig1_design_data", "Fig7_schaff_multitreatment", "Fig8_control_free"]:
+    # every legend in the manuscript must have produced an \includegraphics, or a figure is silently
+    # missing from the built paper, which is how Fig. 9 went absent from the LaTeX for several commits
+    md = (ROOT / "new_paper" / "manuscript.md").read_text()
+    legends = re.findall(r"^\*\*(Supplementary )?Fig\. (\d+)", md, re.M)
+    included = len(re.findall(r"\\includegraphics", t))
+    assert included == len(legends), f"{len(legends)} legends but {included} figures included"
+    for stem in ["Fig1_design_data", "Fig7_schaff_multitreatment", "Fig9_simulation", "FigS3_gnn_ablation"]:
         assert any((ROOT / "new_paper" / "latex" / "figures").glob(stem + ".*")), stem

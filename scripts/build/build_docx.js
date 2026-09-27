@@ -11,12 +11,12 @@ const ROOT = path.resolve(__dirname, "..", "..");
 const md = fs.readFileSync(path.join(ROOT, "new_paper", "manuscript.md"), "utf8");
 const FIG = path.join(ROOT, "results", "figures", "paper");
 const FIGMAP = {
-  "Figure 1": "Fig1_design_data.png", "Figure 2": "Fig2_predictability.png", "Figure 3": "Fig3_fitness_confound.png",
-  "Figure 4": "Fig4_biology.png", "Figure 5": "Fig5_ceiling.png", "Figure 6": "Fig6_external_clinical.png",
-  "Figure 7": "Fig7_schaff_multitreatment.png",
-  "Figure 8": "Fig8_control_free.png",
-  "Figure 9": "Fig9_simulation.png",
-  "Figure S1": "FigS1_typicality.png", "Figure S2": "FigS2_marker_panel.png", "Figure S3": "FigS3_gnn_ablation.png",
+  "1": "Fig1_design_data.png", "2": "Fig2_predictability.png", "3": "Fig3_fitness_confound.png",
+  "4": "Fig4_biology.png", "5": "Fig5_ceiling.png", "6": "Fig6_external_clinical.png",
+  "7": "Fig7_schaff_multitreatment.png",
+  "8": "Fig8_control_free.png",
+  "9": "Fig9_simulation.png",
+  "S1": "FigS1_typicality.png", "S2": "FigS2_marker_panel.png", "S3": "FigS3_gnn_ablation.png",
 };
 
 function pngSize(file) {
@@ -63,7 +63,8 @@ for (const block of blocks) {
     continue;
   }
   if (inLegends) {
-    const key = (line.match(/^\*\*(Figure S?\d+)\./) || [])[1];
+    const fm = line.match(/^\*\*(Supplementary )?Fig\. (\d+)/);
+    const key = fm ? (fm[1] ? "S" + fm[2] : fm[2]) : undefined;
     if (key && FIGMAP[key] && fs.existsSync(path.join(FIG, FIGMAP[key]))) {
       const img = pngSize(path.join(FIG, FIGMAP[key]));
       const width = 620; // px at 96 dpi, ~6.5 in

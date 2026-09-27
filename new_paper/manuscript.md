@@ -370,41 +370,43 @@ data sets, with lineages as groups.
 
 ## Figure legends
 
-**Figure 1. Study design and data.** (a) ReSisTrace design and the questions addressed in this study. (b) Fraction of labelled pre-treatment cells that are pre-resistant in each sample. (c) UMIs per cell for pre-sensitive (grey) and pre-resistant (coloured) cells in each arm; bars mark medians.
+**Fig. 1 | Study design and data.** **a**, ReSisTrace design and the questions addressed in this study. **b**, Fraction of labelled pre-treatment cells that are pre-resistant in each sample. **c**, UMIs per cell for pre-sensitive (grey) and pre-resistant (coloured) cells in each arm; bars mark medians.
 
-**Figure 2. The pre-treatment state predicts a sister's fate.** (a) Out-of-fold AUROC (lineage-grouped five-fold cross-validation) for each model and arm; error bars are 95% family-bootstrap intervals; grey ticks show the same models retrained on family-level shuffled labels (one to five permutations per model). (b) Replicate hold-out AUROC (dots) for the PCA-logistic model; bars show within-arm AUROC. (c) Olaparib under the benchmark protocol of Shen et al. (2026), with ordinary and lineage-grouped cross-validation (three balanced draws each); the shaded band and dotted line mark the values reported for existing methods in that study.
+**Fig. 2 | The pre-treatment state predicts a sister's fate.** **a**, Out-of-fold AUROC (lineage-grouped five-fold cross-validation) for each model and arm; error bars are 95% family-bootstrap intervals; grey ticks show the same models retrained on family-level shuffled labels (one to five permutations per model). **b**, Replicate hold-out AUROC (dots) for the PCA-logistic model; bars show within-arm AUROC. **c**, Olaparib under the benchmark protocol of Shen et al. (2026), with ordinary and lineage-grouped cross-validation (three balanced draws each); the shaded band and dotted line mark the values reported for existing methods in that study.
 
-**Figure 3. Most of the signal is shared with the untreated control.** (a) AUROC of PCA-logistic models trained on one arm and tested on another; the diagonal shows within-arm cross-validation. (b) For each drug arm: AUROC of the drug-arm model, of the control-arm (fitness) model applied to drug-arm cells, and of the drug score after within-sample regression on the fitness score. (c) Drug-specific AUROC gain over the fitness model with training size matched (ΔAUROC, mean over 10 training subsamples), under three preprocessing variants; error bars are 95% paired family-bootstrap intervals (Table S19).
+**Fig. 3 | Most of the signal is shared with the untreated control.** **a**, AUROC of PCA-logistic models trained on one arm and tested on another; the diagonal shows within-arm cross-validation. **b**, For each drug arm: AUROC of the drug-arm model, of the control-arm (fitness) model applied to drug-arm cells, and of the drug score after within-sample regression on the fitness score. **c**, Drug-specific AUROC gain over the fitness model with training size matched (ΔAUROC, mean over 10 training subsamples), under three preprocessing variants; error bars are 95% paired family-bootstrap intervals (Table S19).
 
-**Figure 4. Biology of the shared and drug-specific components.** (a) Normalised enrichment scores of Hallmark gene sets for the control contrast (fitness) and for each drug contrast after subtracting the control contrast; asterisks mark FDR < 0.05. (b) Odds ratios for inferred copy-number clusters among pre-resistant versus pre-sensitive cells in each arm.
+**Fig. 4 | Biology of the shared and drug-specific components.** **a**, Normalised enrichment scores of Hallmark gene sets for the control contrast (fitness) and for each drug contrast after subtracting the control contrast; asterisks mark FDR < 0.05. **b**, Odds ratios for inferred copy-number clusters among pre-resistant versus pre-sensitive cells in each arm.
 
-**Figure 5. Sister discordance caps predictability.** (a) Intraclass correlation of principal-component scores between pre-treatment sisters and between random same-sample pairs. (b) Expected AUROC as a function of the correlation between score and sister liability under the bivariate-normal model with label noise π = 0.1 (line), with each arm's observed PCA-logistic AUROC (dots) and the AUROC implied if the treated sister's own state were scored (diamonds). (c) AUROC lost to sister discordance as a function of assumed label noise π.
+**Fig. 5 | Sister discordance caps predictability.** **a**, Intraclass correlation of principal-component scores between pre-treatment sisters and between random same-sample pairs. **b**, Expected AUROC as a function of the correlation between score and sister liability under the bivariate-normal model with label noise π = 0.1 (line), with each arm's observed PCA-logistic AUROC (dots) and the AUROC implied if the treated sister's own state were scored (diamonds). **c**, AUROC lost to sister discordance as a function of assumed label noise π.
 
-**Figure 6. External and clinical checks.** (a, b) AUROC for predicting lineage persistence from untreated cells in Watermelon (a) and triple-negative breast cancer (b), using clone size, technical covariates, expression, the label-free density score, expression within singleton lineages, and zero-shot transfer of ReSisTrace models; error bars are 95% lineage-bootstrap intervals. (c) Hazard ratios per standard deviation of signature score for overall survival and progression-free interval in TCGA-OV; the fitness, whole-contrast and drug-specific signatures are defined in Methods (Differential expression and pathways). (d) Change in signature score from treatment-naive to post-treatment malignant cells in 11 patients with high-grade serous ovarian cancer receiving neoadjuvant carboplatin–paclitaxel (Zhang et al., 2022); one dot per patient, filled where both samples came from the same anatomical site; the vertical line is the median and the grey band spans ±2 s.d. of the medians of 200 expression-matched random gene sets.
+**Fig. 6 | External and clinical checks.** **a**,**b**, AUROC for predicting lineage persistence from untreated cells in Watermelon **a**, and triple-negative breast cancer (b), using clone size, technical covariates, expression, the label-free density score, expression within singleton lineages, and zero-shot transfer of ReSisTrace models; error bars are 95% lineage-bootstrap intervals. **c**, Hazard ratios per standard deviation of signature score for overall survival and progression-free interval in TCGA-OV; the fitness, whole-contrast and drug-specific signatures are defined in Methods (Differential expression and pathways). **d**, Change in signature score from treatment-naive to post-treatment malignant cells in 11 patients with high-grade serous ovarian cancer receiving neoadjuvant carboplatin–paclitaxel (Zhang et al., 2022); one dot per patient, filled where both samples came from the same anatomical site; the vertical line is the median and the grey band spans ±2 s.d. of the medians of 200 expression-matched random gene sets.
 
-**Figure 8. Substitutes for an untreated arm.** For each drug arm of ReSisTrace, the drug-specific gain
+**Fig. 7 | A second lineage system with six treatments (Schaff et al., 2026).** **a**, AUROC for predicting
+whether an untreated cell's lineage is detected again after each treatment, using clone size before treatment,
+expression (50 principal components), both, and the label-free density score; lineage-grouped
+cross-validation, error bars are 95% lineage-bootstrap intervals. **b**, AUROC when the out-of-fold score
+trained on one treatment's labels is used to rank another treatment's labels. **c**, Expression AUROC before and
+after residualising on log clone size, with the likelihood-ratio test for adding expression to clone size.
+
+**Fig. 8 | Substitutes for an untreated arm.** For each drug arm of ReSisTrace, the drug-specific gain
 measured against the real control-arm model (black) and against two substitutes that use no control-arm
 labels: a model trained on the other drug arms (blue) and the label-free density score (green). Error bars
 are 95% family-bootstrap intervals. The control-arm value lies between the two substitutes in every arm.
 
-**Figure 7. A second lineage system with six treatments (Schaff et al., 2026).** (a) AUROC for predicting
-whether an untreated cell's lineage is detected again after each treatment, using clone size before treatment,
-expression (50 principal components), both, and the label-free density score; lineage-grouped
-cross-validation, error bars are 95% lineage-bootstrap intervals. (b) AUROC when the out-of-fold score
-trained on one treatment's labels is used to rank another treatment's labels. (c) Expression AUROC before and
-after residualising on log clone size, with the likelihood-ratio test for adding expression to clone size.
-
-**Figure 9. The estimators checked against a known answer.** (a) Estimated against true drug-specific gain
+**Fig. 9 | The estimators checked against a known answer.** **a**, Estimated against true drug-specific gain
 across synthetic settings; the line is equality and bars are the spread over 25 independent experiments.
-(b) Coverage of the nominal 95% interval in each setting; the dashed line is 0.95. (c) Estimated minus actual
+**b**, Coverage of the nominal 95% interval in each setting; the dashed line is 0.95. **c**, Estimated minus actual
 AUROC if the treated sister were scored, as fate moves from depending on the treated cell's own state
 (left, the estimator's assumption) to depending only on the state the sisters share (right).
 
-**Figure S1. Label-free typicality.** AUROC of the local-density score (negative mean distance to the 15 nearest neighbours within the sample), compared with the supervised PCA-logistic model and the control-arm (fitness) model, for each arm.
+**Supplementary Fig. 1 | Label-free typicality.** AUROC of the local-density score (negative mean distance to the 15 nearest neighbours within the sample), compared with the supervised PCA-logistic model and the control-arm (fitness) model, for each arm.
 
-**Figure S2. Pre-specified marker panel.** z-scores for pre-resistant versus pre-sensitive cells. The control column shows the control (fitness) contrast; the drug columns show the difference from the control contrast, $z_{\text{diff}} = (z_{\text{drug}} - z_{\text{control}})/\sqrt{2}$. Asterisks mark FDR < 0.05 for z_diff. Genes not among the 5,005 retained genes (CDKN2A, RB1, GLB1, KDM5A) are omitted.
+**Supplementary Fig. 2 | Pre-specified marker panel.** z-scores for pre-resistant versus pre-sensitive cells. The control column shows the control (fitness) contrast; the drug columns show the difference from the control contrast, $z_{\text{diff}} = (z_{\text{drug}} - z_{\text{control}})/\sqrt{2}$. Asterisks mark FDR < 0.05 for z_diff. Genes not among the 5,005 retained genes (CDKN2A, RB1, GLB1, KDM5A) are omitted.
 
-**Figure S3. Graph model ablation.** Within-arm AUROC for logistic regression, an MLP, an MLP with sister-pair pretraining, the graph network, and the graph network with pretraining (mean ± s.d. over seeds).
+**Supplementary Fig. 3 | Graph model ablation.** Within-arm AUROC for logistic regression, an MLP, an MLP with sister-pair pretraining, the graph network, and the graph network with pretraining (mean ± s.d. over seeds).
+
+
 
 ## References
 

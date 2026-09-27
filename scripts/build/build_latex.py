@@ -17,10 +17,10 @@ FIGDIR = ROOT / "results" / "figures" / "paper"
 (OUT / "figures").mkdir(parents=True, exist_ok=True)
 
 FIGMAP = {
-    "Figure 1": "Fig1_design_data", "Figure 2": "Fig2_predictability", "Figure 3": "Fig3_fitness_confound",
-    "Figure 4": "Fig4_biology", "Figure 5": "Fig5_ceiling", "Figure 6": "Fig6_external_clinical",
-    "Figure 7": "Fig7_schaff_multitreatment", "Figure 8": "Fig8_control_free",
-    "Figure S1": "FigS1_typicality", "Figure S2": "FigS2_marker_panel", "Figure S3": "FigS3_gnn_ablation",
+    "1": "Fig1_design_data", "2": "Fig2_predictability", "3": "Fig3_fitness_confound",
+    "4": "Fig4_biology", "5": "Fig5_ceiling", "6": "Fig6_external_clinical",
+    "7": "Fig7_schaff_multitreatment", "8": "Fig8_control_free", "9": "Fig9_simulation",
+    "S1": "FigS1_typicality", "S2": "FigS2_marker_panel", "S3": "FigS3_gnn_ablation",
 }
 
 SPECIALS = {"−": "$-$", "–": "--", "—": "---", "×": "$\\times$", "≤": "$\\leq$", "≥": "$\\geq$",
@@ -104,7 +104,7 @@ def figure_for(label: str) -> str:
         src = FIGDIR / f"{stem}{ext}"
         if src.exists():
             shutil.copy(src, OUT / "figures" / src.name)
-            star = "*" if label in ("Figure 1", "Figure 6") else ""
+            star = "*" if label in ("1", "6") else ""
             return (f"\\begin{{figure{star}}}[htbp]\n  \\centering\n"
                     f"  \\includegraphics[width=\\linewidth]{{figures/{src.name}}}\n"
                     f"\\end{{figure{star}}}\n\n")
@@ -129,9 +129,9 @@ for block in [b.strip() for b in MD.split("\n\n") if b.strip()]:
         body.append("\\begin{equation}\n" + block[2:-2].strip() + "\n\\end{equation}\n")
         continue
     if in_legends:
-        m = re.match(r"^\*\*(Figure S?\d+)\.", line)
+        m = re.match(r"^\*\*(Supplementary )?Fig\. (\d+)", line)
         if m:
-            body.append(figure_for(m.group(1)))
+            body.append(figure_for(("S" if m.group(1) else "") + m.group(2)))
     if in_refs:
         body.append("\\noindent " + inline(line) + "\\par\\vspace{2pt}\n")
     else:
