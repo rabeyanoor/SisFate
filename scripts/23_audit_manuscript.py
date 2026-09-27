@@ -104,6 +104,28 @@ check("delta CI NK regress_all", [-0.010, 0.016], [da.loc["NK", "delta_lo"], da.
 check("delta seed sd range (keep)", [0.003, 0.004],
       [round(dk["delta_seed_sd"].min(), 3), round(dk["delta_seed_sd"].max(), 3)], 0.0006)
 
+# --- alternative representations, including the foundation model
+RP = pd.read_csv(R / "sensitivity_representations.csv")
+GF = RP[RP["representation"].str.startswith("geneformer")]
+check("Geneformer embedding dimension", 768, GF["n_dims"].iloc[0], 0)
+check("Geneformer drug-arm range", [0.671, 0.683],
+      [round(GF["auroc_drug_model_on_drug"].min(), 3), round(GF["auroc_drug_model_on_drug"].max(), 3)], 0.0006)
+check("Geneformer fitness range", [0.634, 0.663],
+      [round(GF["auroc_fitness_model_on_drug"].min(), 3), round(GF["auroc_fitness_model_on_drug"].max(), 3)], 0.0006)
+check("Geneformer size-matched gain range", [0.017, 0.030],
+      [round(GF["specificity_index_size_matched"].min(), 3),
+       round(GF["specificity_index_size_matched"].max(), 3)], 0.0006)
+ALT = RP[RP["representation"] != "baseline"]
+check("all alternative representations, drug range", [0.671, 0.746],
+      [round(ALT["auroc_drug_model_on_drug"].min(), 3), round(ALT["auroc_drug_model_on_drug"].max(), 3)], 0.0006)
+check("all alternative representations, fitness range", [0.634, 0.722],
+      [round(ALT["auroc_fitness_model_on_drug"].min(), 3),
+       round(ALT["auroc_fitness_model_on_drug"].max(), 3)], 0.0006)
+check("all alternative representations, gain range", [0.013, 0.032],
+      [round(ALT["specificity_index_size_matched"].min(), 3),
+       round(ALT["specificity_index_size_matched"].max(), 3)], 0.0006)
+in_text("Geneformer 0.67–0.68", "foundation model in abstract")
+
 # --- typicality
 T = pd.read_csv(R / "typicality.csv")
 Tk = T[T["cc_mode"] == "keep"].set_index("arm")
