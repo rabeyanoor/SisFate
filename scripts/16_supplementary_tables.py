@@ -196,6 +196,12 @@ _optional = {
         "Experiment planning: families per arm needed for a given drug-specific gain and label prevalence, "
         "how the two arms trade off, and what the published ReSisTrace design can resolve.",
     ),
+    "S26_control_free_fitness": (
+        ["control_free_fitness.csv"],
+        "Substitutes for an untreated arm in ReSisTrace: the drug-specific gain measured against the real "
+        "control-arm model and against two baselines that use no control-arm labels (other drug arms, and the "
+        "label-free density score), with their agreement with the control score.",
+    ),
 }
 for name, (files, desc) in _optional.items():
     frames = []

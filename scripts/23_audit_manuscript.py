@@ -219,11 +219,58 @@ check("carboplatin signature sizes", [25, 31],
       [len(sig["specific_Carboplatin"]["up"]), len(sig["specific_Carboplatin"]["down"])], 0)
 check("NK signature sizes", [16, 50], [len(sig["specific_NK"]["up"]), len(sig["specific_NK"]["down"])], 0)
 
+# --- second lineage system (Schaff et al. 2026)
+if (R / "schaff_predict.csv").exists():
+    SP = pd.read_csv(R / "schaff_predict.csv")
+    SP = SP[SP["merge_r"].eq(0.55) & SP["min_umi"].eq(2)] if "merge_r" in SP else SP
+    cs = SP[SP["model"] == "clone_size"]["auroc"]
+    ex = SP[SP["model"] == "expression"]["auroc"]
+    check("schaff clone size range", [0.68, 0.90], [round(cs.min(), 2), round(cs.max(), 2)], 0.006)
+    check("schaff expression range", [0.54, 0.66], [round(ex.min(), 2), round(ex.max(), 2)], 0.006)
+    check("schaff untreated cells", 7165, int(SP["n_test"].iloc[0]), 0)
+    check("schaff prevalence range", [0.306, 0.783],
+          [round(SP["prevalence"].min(), 3), round(SP["prevalence"].max(), 3)], 0.0006)
+    SA = pd.read_csv(R / "schaff_clone_size_adjusted.csv").set_index("treatment")
+    check("schaff residual range", [0.44, 0.59],
+          [round(SA["auroc_expression_residual_on_clone_size"].min(), 2),
+           round(SA["auroc_expression_residual_on_clone_size"].max(), 2)], 0.006)
+    check("schaff LRT non-significant arms", [0.46, 0.15],
+          [round(SA.loc["Cisplatin", "lrt_p"], 2), round(SA.loc["Doxorubicin", "lrt_p"], 2)], 0.006)
+    SC = pd.read_csv(R / "schaff_ceiling.csv")
+    check("schaff clone concordance range", [0.17, 0.21],
+          [round(SC["score_clone_concordance"].min(), 2), round(SC["score_clone_concordance"].max(), 2)], 0.006)
+    check("schaff mean ICC", 0.18, round(SC["mean_icc_pc1_10"].iloc[0], 2), 0.006)
+    check("schaff saturated count", 3, int(SC["saturated"].sum()), 0)
+    ST = pd.read_csv(R / "schaff_transfer.csv")
+    off = ST[ST["train"] != ST["test"]]["auroc"]
+    check("schaff transfer range", [0.48, 0.63], [round(off.min(), 2), round(off.max(), 2)], 0.006)
+
+# --- substitutes for an untreated arm
+if (R / "control_free_fitness.csv").exists():
+    CF = pd.read_csv(R / "control_free_fitness.csv")
+    W = CF.pivot(index="drug_arm", columns="proxy", values="gain_over_proxy")
+    check("control-arm gain", [0.022, 0.031, 0.027],
+          [round(W.loc[a, "control_arm_TRUE"], 3) for a in ["Carboplatin", "Olaparib", "NK"]], 0.0006)
+    check("density-proxy gain range", [0.043, 0.090],
+          [round(W["density"].min(), 3), round(W["density"].max(), 3)], 0.0006)
+    check("other-arm proxy gain range", [0.0045, 0.0065],
+          [round(W["shared_other_drug_arms"].min(), 4), round(W["shared_other_drug_arms"].max(), 4)], 0.0006)
+    R2 = CF.pivot(index="drug_arm", columns="proxy", values="spearman_with_control_fitness")
+    check("density agreement range", [0.54, 0.63],
+          [round(R2["density"].min(), 2), round(R2["density"].max(), 2)], 0.006)
+    check("other-arm agreement range", [0.84, 0.87],
+          [round(R2["shared_other_drug_arms"].min(), 2), round(R2["leave_one_arm_out"].max(), 2)], 0.006)
+    bracketed = bool(((W["shared_other_drug_arms"] < W["control_arm_TRUE"]) &
+                      (W["control_arm_TRUE"] < W["density"])).all())
+    checks += 1
+    if not bracketed:
+        fails.append("control-arm value is not bracketed by the two substitutes in every arm")
+
 # --- phrases that must stay in step with the tables
 in_text("32,642 pre-treatment cells", "labelled cell count in text")
 in_text("3,477 pairs of sisters", "sister pair count in text")
 in_text("8,806 malignant cells", "patient malignant cell count")
-in_text("Supplementary Tables S1–S21", "supplementary table range")
+in_text("Supplementary Tables S1–S26", "supplementary table range")
 
 print(f"{checks} checks, {len(fails)} failed")
 for f in fails:

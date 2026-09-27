@@ -14,6 +14,7 @@ const FIGMAP = {
   "Figure 1": "Fig1_design_data.png", "Figure 2": "Fig2_predictability.png", "Figure 3": "Fig3_fitness_confound.png",
   "Figure 4": "Fig4_biology.png", "Figure 5": "Fig5_ceiling.png", "Figure 6": "Fig6_external_clinical.png",
   "Figure 7": "Fig7_schaff_multitreatment.png",
+  "Figure 8": "Fig8_control_free.png",
   "Figure S1": "FigS1_typicality.png", "Figure S2": "FigS2_marker_panel.png", "Figure S3": "FigS3_gnn_ablation.png",
 };
 

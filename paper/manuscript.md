@@ -78,19 +78,40 @@ A more useful bound comes from each model's own score. For the PCA model, the co
 
 We built a cell–cell k-nearest-neighbour graph within each sample and trained a GraphSAGE-style network (Hamilton et al., 2017). Its encoder was optionally pretrained with a contrastive loss (Chen et al., 2020) that pulls pre-treatment sisters together, excluding test cells. The idea was that sister pairs mark the heritable part of the state, which is what the ceiling analysis says a predictor must use. Across three seeds, sister-pair pretraining improved a matched MLP slightly in every arm (by 0.004–0.014; MLP 0.700–0.738, pretrained MLP 0.708–0.742). Message passing over the graph did not help: the graph network with pretraining reached 0.696–0.734 (seed s.d. ≤ 0.005), slightly below the pretrained MLP and below logistic regression (0.708–0.747) in every arm (Fig. S3). In replicate hold-out, the graph network scored 0.68–0.74, against 0.70–0.76 for logistic regression. Smoothing features over the same graph before logistic regression changed AUROC by at most 0.005. A one-at-a-time sweep of the graph network without pretraining over the number of layers, hidden width, dropout, learning rate, weight decay and neighbourhood size (Table S18) gave 0.727–0.739 for carboplatin, 0.722–0.733 for olaparib, 0.695–0.714 for NK and 0.667–0.700 for control, never above logistic regression. The neural models therefore recovered the same signal as the linear model, and no more.
 
-### A second lineage system, six treatments: growth explains most of the signal again (Fig. 7)
+### Without an untreated arm, the drug-specific gain can be bracketed but not measured (Fig. 8)
+
+The comparison at the centre of this paper needs an untreated arm, and almost no study has one. We therefore
+asked whether something built from the treated arms alone can stand in for it. ReSisTrace is the only data set
+where such a substitute can be checked, because the real control arm is there to check it against. We tried
+two, neither of which uses control-arm labels: the label-free density score, and a model trained on the other
+drug arms and applied to this one (either pooled, or averaged over the arms, which gave the same answer).
+
+Neither reproduced the control arm, and they failed in opposite directions (Fig. 8, Table S26). Measured
+against the real control model, the drug-specific gain was 0.022 (carboplatin), 0.031 (olaparib) and 0.027
+(NK). Measured against the density score it was two to three times larger, 0.043–0.090, because density is a
+weaker measure of fitness and leaves more of the fitness axis to be counted as drug-specific. Measured against
+the other drug arms it nearly vanished, to between 0.0045 and 0.0065, because those arms carry the drug-specific component too,
+so using them as a baseline subtracts part of the signal being measured. Agreement with the control score was
+moderate for density (Spearman 0.54–0.63) and higher for the other-arm models (0.84–0.87), but neither is a
+substitute.
+
+The two err in opposite directions, and in all three arms the control-arm value fell between them. Where an untreated arm is missing, the pair may therefore still be worth reporting: the other-arm baseline as a low estimate, the label-free density score as a high one. We would not want this mistaken for a control arm. Three arms of one data set are not enough to establish that the ordering always holds, and in the second data set it does not: applying the same two baselines to the six treatments there gives 0.007–0.025 and 0.086–0.089 for the two MAPK inhibitors, but for the other four the two cross or both turn negative (−0.024 to 0.033 and −0.038 to 0.047), which is the same conclusion the clone-size adjustment reaches for those arms. The honest summary is that a substitute can flag when a pre-resistance signal is mostly fitness, and cannot be trusted to say by how much.
+
+### A second lineage system, six treatments: clone size explains most of the signal again (Fig. 7)
 
 ReSisTrace is the only design we know of that carries an untreated arm through the whole protocol, so the
 fitness model cannot be rebuilt elsewhere. A weaker version of the same question can be asked wherever
 pre-treatment clone size is measured, because the size a lineage reaches in culture before any drug is itself
 a measure of how well it grows. Schaff et al. (2026) barcoded WM989 melanoma cells, profiled an untreated
 sample, split the rest across six treatments (dabrafenib, trametinib, CoCl2, acidic medium, cisplatin and
-doxorubicin) and sequenced the survivors with paired barcodes. Every untreated cell therefore carries six
+doxorubicin) and sequenced the surviving cells with paired barcodes. Every untreated cell therefore carries six
 labels at once. We assigned lineages from the barcode features stored in the same matrices as the genes
 (Methods) and obtained 7,165 untreated cells from 1,695 lineages, of which 30.6% (trametinib) to 78.3%
-(acidic medium) lay in a lineage that was seen again after treatment.
+(acidic medium) lay in a lineage that was detected again after treatment. As in the other clone-level data
+sets, what is observed is detection, not death: a lineage can go undetected because its cells died or simply
+because it was not sampled.
 
-Clone size predicted survival better than expression for every one of the six treatments: AUROC 0.68–0.90 for
+Clone size predicted detection better than expression for every one of the six treatments: AUROC 0.68–0.90 for
 clone size against 0.54–0.66 for a logistic model on 50 principal components, with lineage-grouped
 cross-validation throughout (Fig. 7a). Adding expression to clone size changed AUROC by at most 0.04, and for
 four treatments not at all. After the expression score was residualised on log clone size, it fell to
@@ -103,9 +124,23 @@ the two chemotherapies, almost nothing survived the adjustment.
 
 This does not contradict the original study, which showed that pre-treatment size is not the sole determinant
 of resistance and that some small clones became highly resistant. It does put the two predictors side by side,
-which had not been done: as a predictor of whether a lineage survives, growth before treatment is worth far
-more than transcriptional state, and the part of the state that is not explained by growth is small except
+which had not been done: as a predictor of whether a lineage is detected again, its size before treatment is worth far
+more than its transcriptional state, and the part of the state that is not explained by growth is small except
 under MAPK inhibition.
+
+While this work was in preparation, Aviv (2026) released a preregistered reanalysis of the same data that
+reaches the same conclusion about clone size from a different direction, and then goes further. That analysis
+notes that "clone abundance dominates", so a comparison that does not hold abundance fixed finds "a signal
+that is really a headcount", which is what Fig. 7a shows. It then asks a question we do not: not whether a
+clone is detected at all, but which of the six conditions a clone is detected under. Holding clone abundance
+and condition identity fixed, a model in which state effects differ by condition ordered the six conditions
+within a clone better than a model in which the state effect is shared, by 0.052 in equal-clone-weighted
+within-clone AUROC (95% CI 0.037–0.066, permutation p < 0.001), while a shared state effect added nothing to
+condition identity alone. The two results fit together and neither is implied by the other. Averaged over
+conditions, state is worth little next to size; conditional on size and condition, a small condition-specific
+part remains. It is worth noting how close that 0.052 is to the 0.014–0.025 we measure against a real
+untreated arm in ReSisTrace: in both systems the part of the pre-treatment state that is specific to the
+treatment is small and hard to see next to the axis that is not.
 
 Cross-treatment transfer was structured rather than general (Fig. 7b). Scores trained on one treatment's
 labels ranked another treatment's labels at 0.48–0.63, with two blocks: the two MAPK inhibitors transferred to
@@ -188,7 +223,7 @@ data sets, with lineages as groups.
 
 **External data.** For Watermelon (GEO GSE150949), barcoded day-0 cells were labelled by the presence of their lineage barcode in any day-14 sample. For the triple-negative breast cancer study (GEO GSE228382), per-cell lineage annotations are not in GEO. We therefore exported the authors' Seurat object (figshare, doi:10.6084/m9.figshare.24787458) to plain files with a short R script. Untreated day-0 cells with a lineage barcode were labelled with the authors' `DTPE_lineages` annotation. For each data set we evaluated lineage-grouped cross-validation of clone-size, covariate and expression models, and zero-shot transfer of ReSisTrace logistic models using shared highly variable genes, z-scored within each data set. For TCGA-OV, RSEM expression and curated survival endpoints (Liu et al., 2018) were obtained from UCSC Xena. Five signatures were tested: the fitness signature, the three drug-specific signatures and the whole-contrast carboplatin signature. Primary tumours were scored by the mean z-score of up-genes minus down-genes, and Cox models (lifelines; Davidson-Pilon, 2019) were fitted per standard deviation of score.
 
-**Code and data availability.** All data are public: GSE223003, GSE150949, GSE228382 with figshare 24787458, and TCGA-OV through UCSC Xena. The code is available at [REPOSITORY URL] and archived at Zenodo ([ZENODO DOI]) under the MIT licence. The fitness-adjusted evaluation described here (control-arm baseline, size-matched ΔAUROC with a family-level bootstrap interval, family permutation null and sister ceiling) is packaged as a small module, `persist.fitadj`, that takes plain arrays and any scikit-learn classifier, so it can be applied to other lineage-tracing designs that include an untreated arm. The repository contains the analysis package, one numbered script per analysis step, the configuration file (`configs/default.yaml`, which fixes the random seed and all hyperparameters), a locked Python environment (`uv.lock`, exported as `requirements.lock.txt`; Python 3.12, NumPy 2.5, scikit-learn 1.9, Scanpy 1.12, PyTorch 2.14 CPU) and a single script (`scripts/run_all.sh`) that regenerates every result, figure and supplementary table from the public data on a laptop CPU; only the Geneformer forward pass used a GPU (a Kaggle T4; the notebook is included). Every metric is appended to a results table together with a hash of the configuration that produced it. All result tables underlying the figures and text, including full differential expression and gene-set enrichment results, are provided as Supplementary Tables S1–S23 (Supplementary_Tables.xlsx).
+**Code and data availability.** All data are public: GSE223003, GSE150949, GSE228382 with figshare 24787458, and TCGA-OV through UCSC Xena. The code is available at [REPOSITORY URL] and archived at Zenodo ([ZENODO DOI]) under the MIT licence. The fitness-adjusted evaluation described here (control-arm baseline, size-matched ΔAUROC with a family-level bootstrap interval, family permutation null and sister ceiling) is packaged as a small module, `persist.fitadj`, that takes plain arrays and any scikit-learn classifier, so it can be applied to other lineage-tracing designs that include an untreated arm. The repository contains the analysis package, one numbered script per analysis step, the configuration file (`configs/default.yaml`, which fixes the random seed and all hyperparameters), a locked Python environment (`uv.lock`, exported as `requirements.lock.txt`; Python 3.12, NumPy 2.5, scikit-learn 1.9, Scanpy 1.12, PyTorch 2.14 CPU) and a single script (`scripts/run_all.sh`) that regenerates every result, figure and supplementary table from the public data on a laptop CPU; only the Geneformer forward pass used a GPU (a Kaggle T4; the notebook is included). Every metric is appended to a results table together with a hash of the configuration that produced it. All result tables underlying the figures and text, including full differential expression and gene-set enrichment results, are provided as Supplementary Tables S1–S26 (Supplementary_Tables.xlsx).
 
 **Author contributions.** [To be completed by the authors.]
 
@@ -212,8 +247,13 @@ data sets, with lineages as groups.
 
 **Figure 6. External and clinical checks.** (a, b) AUROC for predicting lineage persistence from untreated cells in Watermelon (a) and triple-negative breast cancer (b), using clone size, technical covariates, expression, the label-free density score, expression within singleton lineages, and zero-shot transfer of ReSisTrace models; error bars are 95% lineage-bootstrap intervals. (c) Hazard ratios per standard deviation of signature score for overall survival and progression-free interval in TCGA-OV; the fitness, whole-contrast and drug-specific signatures are defined in Methods (Differential expression and pathways). (d) Change in signature score from treatment-naive to post-treatment malignant cells in 11 patients with high-grade serous ovarian cancer receiving neoadjuvant carboplatin–paclitaxel (Zhang et al., 2022); one dot per patient, filled where both samples came from the same anatomical site; the vertical line is the median and the grey band spans ±2 s.d. of the medians of 200 expression-matched random gene sets.
 
+**Figure 8. Substitutes for an untreated arm.** For each drug arm of ReSisTrace, the drug-specific gain
+measured against the real control-arm model (black) and against two substitutes that use no control-arm
+labels: a model trained on the other drug arms (blue) and the label-free density score (green). Error bars
+are 95% family-bootstrap intervals. The control-arm value lies between the two substitutes in every arm.
+
 **Figure 7. A second lineage system with six treatments (Schaff et al., 2026).** (a) AUROC for predicting
-whether an untreated cell's lineage is seen again after each treatment, using clone size before treatment,
+whether an untreated cell's lineage is detected again after each treatment, using clone size before treatment,
 expression (50 principal components), both, and the label-free density score; lineage-grouped
 cross-validation, error bars are 95% lineage-bootstrap intervals. (b) AUROC when the out-of-fold score
 trained on one treatment's labels is used to rank another treatment's labels. (c) Expression AUROC before and
@@ -228,6 +268,8 @@ after residualising on log clone size, with the likelihood-ratio test for adding
 ## References
 
 All references were checked against Europe PMC, NCBI PMC, arXiv, JMLR or Crossref on 25–26 September 2026. For the 29 studies marked ✓, the full text was retrieved and the statements cited above were checked against it; the others were checked against their abstracts.
+
+Aviv H. Pretreatment transcriptional state carries condition-specific information about future clonal detection in a lineage-traced melanoma line. *Zenodo* (2026). doi:10.5281/zenodo.22850050 ✓
 
 Chen H, Venkatesh MS, Gómez Ortega J, et al. Scaling and quantization of large-scale foundation model enables resource-efficient predictions in network biology. *Nat Comput Sci* 6, 450–463 (2026). doi:10.1038/s43588-026-00972-4
 

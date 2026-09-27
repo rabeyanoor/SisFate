@@ -483,7 +483,7 @@ if (R / "schaff_predict.csv").exists():
     ax.axvline(0.5, color=MUTED, ls="--", lw=0.8)
     ax.set_yticks(yy, order, fontsize=6.5)
     ax.invert_yaxis()
-    ax.set_xlabel("AUROC (lineage survives treatment)")
+    ax.set_xlabel("AUROC (lineage detected again)")
     ax.set_title("Six treatments, same untreated cells", loc="left")
     ax.legend(frameon=False, fontsize=5.6, loc="upper center", bbox_to_anchor=(0.45, -0.19), ncol=2,
               handletextpad=0.2, columnspacing=0.8)
@@ -522,6 +522,30 @@ if (R / "schaff_predict.csv").exists():
     ax.set_title("Expression beyond growth\n(* LRT p < 0.05)", loc="left")
     fig.tight_layout()
     save(fig, "Fig7_schaff_multitreatment")
+
+# =============================================================== Fig 8: substitutes for an untreated arm
+if (R / "control_free_fitness.csv").exists():
+    CF = pd.read_csv(R / "control_free_fitness.csv")
+    PROXY = [("shared_other_drug_arms", "Other drug arms", BLUE),
+             ("control_arm_TRUE", "Untreated control arm", INK),
+             ("density", "Label-free density", GREEN)]
+    fig, ax = plt.subplots(figsize=(4.6, 2.7))
+    arms3 = [a for a in ARMS[:3] if a in set(CF["drug_arm"])]
+    yy = np.arange(len(arms3))
+    for k, (name, lab_, c) in enumerate(PROXY):
+        d = CF[CF["proxy"] == name].set_index("drug_arm").reindex(arms3)
+        off = (k - 1) * 0.22
+        ax.errorbar(d["gain_over_proxy"], yy + off,
+                    xerr=[d["gain_over_proxy"] - d["gain_lo"], d["gain_hi"] - d["gain_over_proxy"]],
+                    fmt="o", ms=4, lw=0.9, color=c, label=lab_)
+    ax.axvline(0, color=INK2, lw=0.6)
+    ax.set_yticks(yy, arms3)
+    ax.invert_yaxis()
+    ax.set_xlabel("Drug-specific gain over the baseline (AUROC)")
+    ax.set_title("What is left once a fitness baseline is removed", loc="left")
+    ax.legend(frameon=False, fontsize=6, loc="lower right")
+    fig.tight_layout()
+    save(fig, "Fig8_control_free")
 
 # =============================================================== Supplementary: GNN ablation
 G = REAL[(REAL["split"].isin(["within", "rep_holdout"])) & REAL["model"].isin(["pca_logreg", "mlp", "mlp_pretrain",
