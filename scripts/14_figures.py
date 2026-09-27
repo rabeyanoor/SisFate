@@ -175,7 +175,6 @@ x = np.arange(len(audit))
 axb.bar(x, audit["prevalence"] * 100, color=[ARM_COLOR[a] for a in audit["arm"]], width=0.7)
 axb.set_xticks(x, [f"{a[:4]}\nrep {r}" for a, r in zip(audit["arm"], audit["rep"])], fontsize=6)
 axb.set_ylabel("Pre-resistant cells (%)")
-axb.set_title("Label prevalence per sample", loc="left")
 
 import anndata as ad  # noqa: E402
 
@@ -194,7 +193,6 @@ for i, arm in enumerate(ARMS):
         parts["cmedians"].set_color(INK)
 axc.set_xticks([i * 2.4 + 0.5 for i in range(4)], ARMS)
 axc.set_ylabel("log10 UMIs per cell")
-axc.set_title("Sequencing depth: pre-sensitive (grey) vs pre-resistant", loc="left")
 save(fig, "Fig1_design_data")
 
 # =============================================================== Fig 2: predictability
@@ -218,7 +216,6 @@ ax.axvline(0.5, color=MUTED, ls="--", lw=0.8)
 ax.set_yticks(yy, [MODEL_LABEL[m] for m in models])
 ax.invert_yaxis()
 ax.set_xlabel("AUROC (out-of-fold, lineage-grouped)")
-ax.set_title("Within-arm prediction\n(grey ticks: shuffled labels)", loc="left")
 ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.45, -0.17), ncol=4, handletextpad=0.2, columnspacing=0.8)
 
 ax = axes[1]
@@ -232,7 +229,6 @@ for k, arm in enumerate(ARMS):
 ax.set_xticks(range(4), ["Carbo", "Olap", "NK", "Ctrl"])
 ax.set_ylim(0.5, 0.8)
 ax.set_ylabel("AUROC")
-ax.set_title("Replicate hold-out\n(bar: within-arm)", loc="left")
 
 ax = axes[2]
 tag(ax, "c")
@@ -250,7 +246,6 @@ ax.set_xticks(range(2), list(vals))
 ax.set_xlim(-0.5, 1.5)
 ax.set_ylim(0.45, 0.8)
 ax.set_ylabel("AUROC, olaparib, balanced")
-ax.set_title("Olaparib, benchmark\nprotocol", loc="left")
 fig.tight_layout()
 save(fig, "Fig2_predictability")
 
@@ -270,7 +265,6 @@ ax.set_yticks(range(4), ARMS)
 ax.set_xlabel("Test arm")
 ax.set_ylabel("Training arm")
 ax.grid(False)
-ax.set_title("Cross-arm transfer\n(diagonal: within-arm)", loc="left")
 
 F = pd.read_csv(R / "fitness_confound.csv")
 F = F[(F["cc_mode"] == "keep") & (F["features"] == "pca")].drop_duplicates("drug_arm", keep="last").set_index("drug_arm")
@@ -286,7 +280,6 @@ ax.set_xticks(x, ARMS[:3])
 ax.set_ylim(0.5, 0.86)
 ax.set_ylabel("AUROC on drug-arm labels")
 ax.legend(frameon=False, loc="upper center", fontsize=5.6, ncol=1)
-ax.set_title("How much is generic fitness?", loc="left")
 
 ax = axes[2]
 tag(ax, "c")
@@ -303,7 +296,6 @@ ax.set_xticks(range(3), ["Carbo", "Olap", "NK"])
 ax.set_ylim(-0.012, 0.05)
 ax.set_ylabel("Drug-specific AUROC gain\n(size-matched, 95% CI)")
 ax.legend(frameon=False, fontsize=5.6, loc="upper left")
-ax.set_title("Specificity index", loc="left")
 fig.tight_layout()
 save(fig, "Fig3_fitness_confound")
 
@@ -318,7 +310,6 @@ ax.axhline(0, color=INK2, lw=0.5)
 ax.set_xlabel("Principal component")
 ax.set_ylabel("Intraclass correlation")
 ax.legend(frameon=False)
-ax.set_title("Sisters share\ntranscriptional state", loc="left")
 
 ax = axes[1]
 tag(ax, "b")
@@ -333,7 +324,6 @@ for arm in ARMS:
 ax.set_xlabel("Correlation of score with sister's liability")
 ax.set_ylabel("AUROC")
 ax.legend(frameon=False, fontsize=5.8)
-ax.set_title("Observed (dot) vs\ntreated sister seen (diamond)", loc="left")
 
 ax = axes[2]
 tag(ax, "c")
@@ -345,7 +335,6 @@ for k, arm in enumerate(ARMS):
 ax.set_xlabel("Assumed label noise, π")
 ax.set_ylabel("AUROC lost to sister discordance")
 ax.set_ylim(0, 0.2)
-ax.set_title("Cost of predicting\na sister's fate", loc="left")
 fig.tight_layout()
 save(fig, "Fig5_ceiling")
 
@@ -374,7 +363,6 @@ ax.set_yticks(range(len(terms)), [t.replace("HALLMARK_", "") for t in terms], fo
 ax.set_xticks(range(len(contrasts)), [c for _, c in contrasts], fontsize=6)
 ax.grid(False)
 fig.colorbar(im, ax=ax, shrink=0.6, label="NES (* FDR < 0.05)")
-ax.set_title("Hallmark pathways, pre-resistant vs pre-sensitive", loc="left")
 
 ax = axes[1]
 tag(ax, "b")
@@ -388,7 +376,6 @@ ax.set_xlabel("log2 odds ratio (pre-resistant vs pre-sensitive)")
 ax.set_ylabel("Inferred CNV cluster")
 ax.invert_yaxis()
 ax.legend(frameon=False, fontsize=5.8)
-ax.set_title("Copy-number clusters", loc="left")
 fig.tight_layout()
 save(fig, "Fig4_biology")
 
@@ -419,7 +406,6 @@ for ax, (ds, title), letter in zip(axes[:2], [("watermelon", "Watermelon: PC9 + 
     ax.invert_yaxis()
     ax.set_xlim(0.35, 1.0)
     ax.set_xlabel("AUROC (lineage persists)")
-    ax.set_title(title, loc="left")
 ax = axes[2]
 tag(ax, "c")
 T = pd.read_csv(R / "tcga_ov_cox.csv").drop_duplicates(["signature", "endpoint"], keep="last") \
@@ -435,7 +421,6 @@ SIG_LABEL = {"fitness_Control": "Fitness (control)", "all_Carboplatin": "Carbopl
 ax.set_yticks(yv, [f"{SIG_LABEL.get(s, s)} ({e})" for s, e in zip(T["signature"], T["endpoint"])], fontsize=5.8)
 ax.invert_yaxis()
 ax.set_xlabel("Hazard ratio per s.d. (95% CI)")
-ax.set_title("TCGA-OV (OS blue, PFI orange)", loc="left")
 
 ax = axes[3]
 tag(ax, "d")
@@ -456,7 +441,6 @@ ax.axvline(0, color=INK2, lw=0.6)
 ax.set_yticks(range(len(order)), [SIG_LABEL[o] for o in order], fontsize=5.8)
 ax.invert_yaxis()
 ax.set_xlabel("Post-NACT − treatment-naive score (within-patient z)")
-ax.set_title("11 HGSOC patients before/after NACT", loc="left")
 fig.tight_layout()
 save(fig, "Fig6_external_clinical")
 
@@ -484,7 +468,6 @@ if (R / "schaff_predict.csv").exists():
     ax.set_yticks(yy, order, fontsize=6.5)
     ax.invert_yaxis()
     ax.set_xlabel("AUROC (lineage detected again)")
-    ax.set_title("Six treatments, same untreated cells", loc="left")
     ax.legend(frameon=False, fontsize=5.6, loc="upper center", bbox_to_anchor=(0.45, -0.19), ncol=2,
               handletextpad=0.2, columnspacing=0.8)
 
@@ -502,7 +485,6 @@ if (R / "schaff_predict.csv").exists():
     ax.set_xlabel("Labels being ranked")
     ax.set_ylabel("Score trained on")
     ax.grid(False)
-    ax.set_title("Cross-treatment transfer", loc="left")
 
     ax = axes[2]
     tag(ax, "c")
@@ -519,7 +501,6 @@ if (R / "schaff_predict.csv").exists():
     ax.set_ylim(0.42, 0.76)
     ax.set_ylabel("AUROC")
     ax.legend(frameon=False, fontsize=5.6, loc="upper right")
-    ax.set_title("Expression beyond growth\n(* LRT p < 0.05)", loc="left")
     fig.tight_layout()
     save(fig, "Fig7_schaff_multitreatment")
 
@@ -542,7 +523,6 @@ if (R / "control_free_fitness.csv").exists():
     ax.set_yticks(yy, arms3)
     ax.invert_yaxis()
     ax.set_xlabel("Drug-specific gain over the baseline (AUROC)")
-    ax.set_title("What is left once a fitness baseline is removed", loc="left")
     ax.legend(frameon=False, fontsize=6, loc="lower right")
     fig.tight_layout()
     save(fig, "Fig8_control_free")
@@ -566,7 +546,6 @@ if (R / "simulation_calibration.csv").exists():
     ax.set_xlabel("True drug-specific gain")
     ax.set_ylabel("Estimated gain")
     ax.legend(frameon=False, fontsize=5.8, loc="upper left")
-    ax.set_title("Recovery of a known effect", loc="left")
 
     ax = axes[1]
     tag(ax, "b")
@@ -584,7 +563,6 @@ if (R / "simulation_calibration.csv").exists():
     ax.set_xticks(range(len(groups)), [lbl[g] for g in groups], rotation=35, ha="right", fontsize=5.6)
     ax.set_ylim(0, 1.0)
     ax.set_ylabel("Coverage of the 95% interval")
-    ax.set_title("Evaluation-only intervals\nare too narrow", loc="left")
 
     ax = axes[2]
     tag(ax, "c")
@@ -595,8 +573,7 @@ if (R / "simulation_calibration.csv").exists():
         ax.set_xlabel("Fate driven by the cell's own state")
         ax.set_ylabel("Ceiling error (estimate $-$ actual)")
         ax.invert_xaxis()
-        ax.set_title("The ceiling is an\nupper bound", loc="left")
-    fig.tight_layout()
+    fig.tight_layout(w_pad=2.5)
     save(fig, "Fig9_simulation")
 
 # =============================================================== Supplementary: GNN ablation
@@ -652,7 +629,6 @@ for i, g in enumerate(genes["gene"]):
 ax.set_yticks(range(len(genes)), genes["gene"], fontsize=6)
 ax.set_xticks(range(len(cols)), [c for _, c in cols], fontsize=6, rotation=40, ha="left")
 ax.xaxis.tick_top()
-ax.set_title("Control: fitness contrast.  Drugs: beyond control", loc="left", fontsize=6.5, color=INK2, pad=34)
 ax.grid(False)
 cats = genes["category"].tolist()
 for i in range(1, len(cats)):
