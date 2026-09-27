@@ -119,6 +119,16 @@ def run_external(name: str, Xl: sp.csr_matrix, genes: pd.Index, obs: pd.DataFram
             idx = np.flatnonzero(m)
             if y[idx].sum() < 10 or (1 - y[idx]).sum() < 10:
                 continue
+            # label-free typicality: negative mean distance to the 15 nearest neighbours in PC space.
+            # No labels are used, so it is scored directly rather than cross-validated.
+            from sklearn.neighbors import NearestNeighbors
+
+            k = min(16, len(idx))
+            nn = NearestNeighbors(n_neighbors=k).fit(pca[idx])
+            dist, _ = nn.kneighbors(pca[idx])
+            rows.append({"dataset": name, "analysis": "within_external", "label": label, "subset": sub_name,
+                         "model": "density_label_free",
+                         **evaluate(y[idx], -dist[:, 1:].mean(1), groups[idx], n_boot=300, seed=cfg["seed"])})
             for fname, F in feature_sets.items():
                 if sub_name == "singleton" and "clone" in fname:  # clone size is constant there
                     continue
