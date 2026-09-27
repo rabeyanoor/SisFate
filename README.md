@@ -39,6 +39,9 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `21_geneformer.py` | Geneformer V2-104M_CLcancer embeddings: `tokens` (CPU) -> `embed` (GPU; `kaggle/geneformer/`) -> `analyze` |
 | `22_patient_nact.py` | ReSisTrace signatures in 11 HGSOC patients before/after neoadjuvant chemotherapy (GSE165897) -> `results/patient_nact.csv` |
 | `23_audit_manuscript.py` | re-checks every number quoted in `paper/manuscript.md` against `results/` (63 checks) |
+| `24_schaff_multitreatment.py` | second lineage system: six treatments in parallel (Schaff et al. 2026, GSE279162); clone size as the fitness proxy, cross-treatment transfer, clone ceiling |
+| `25_simulation.py` | synthetic lineage experiments with a known answer: bias and interval coverage of the drug-specific gain, and when the sister ceiling is valid |
+| `26_design_tool.py` | how many families and control cells a new experiment needs -> `results/design_*.csv` |
 | `run_rest.sh` | lean version of the heavy runs actually used for the paper |
 | `paper/build/build_docx.js` | `paper/manuscript.md` -> `paper/manuscript.docx` with embedded figures |
 

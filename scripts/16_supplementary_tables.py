@@ -170,6 +170,44 @@ tables = {
     ),
 }
 
+
+# Tables that only exist once the corresponding analysis has been run
+_optional = {
+    "S22_schaff_prediction": (
+        ["schaff_predict.csv", "schaff_clone_size_adjusted.csv"],
+        "Second lineage system (Schaff et al. 2026, GSE279162): lineage-grouped AUROC for clone size, "
+        "expression, both and the label-free density score in six treatments, and whether expression adds "
+        "over clone size (residual AUROC and likelihood-ratio test). Rows tagged with the barcode-assignment "
+        "thresholds; untagged rows are the default (merge 0.55, 2 UMIs, 50%).",
+    ),
+    "S23_schaff_transfer_ceiling": (
+        ["schaff_transfer.csv", "schaff_ceiling.csv"],
+        "Cross-treatment transfer of out-of-fold scores, and the clone-concordance ceiling. `saturated` marks "
+        "treatments where the implied correlation exceeded one, so no ceiling can be estimated.",
+    ),
+    "S24_simulation_calibration": (
+        ["simulation_calibration.csv"],
+        "Synthetic experiments with a known answer: bias of the drug-specific gain, coverage of its 95% "
+        "interval, and bias of the sister ceiling, across effect size, label noise, experiment size, sister "
+        "similarity, a depth confound, and whether fate is driven by the cell's own state or the shared one.",
+    ),
+    "S25_design": (
+        ["design_plan.csv", "design_arm_split.csv", "design_resistrace.csv"],
+        "Experiment planning: families per arm needed for a given drug-specific gain and label prevalence, "
+        "how the two arms trade off, and what the published ReSisTrace design can resolve.",
+    ),
+}
+for name, (files, desc) in _optional.items():
+    frames = []
+    for f in files:
+        if (RES / f).exists():
+            d = pd.read_csv(RES / f)
+            if len(files) > 1:
+                d.insert(0, "source", f.removesuffix(".csv"))
+            frames.append(d)
+    if frames:
+        tables[name] = (pd.concat(frames, ignore_index=True), desc)
+
 index = pd.DataFrame(
     [{"sheet": k, "description": v[1], "rows": len(v[0])} for k, v in tables.items()]
 )

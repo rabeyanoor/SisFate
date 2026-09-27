@@ -460,6 +460,69 @@ ax.set_title("11 HGSOC patients before/after NACT", loc="left")
 fig.tight_layout()
 save(fig, "Fig6_external_clinical")
 
+# =============================================================== Fig 7: second lineage system (Schaff 2026)
+if (R / "schaff_predict.csv").exists():
+    SP = pd.read_csv(R / "schaff_predict.csv")
+    SA = pd.read_csv(R / "schaff_clone_size_adjusted.csv")
+    ST = pd.read_csv(R / "schaff_transfer.csv")
+    TREAT = ["Dabrafenib", "Trametinib", "CoCl2", "Acid", "Cisplatin", "Doxorubicin"]
+    order = [t for t in TREAT if t in set(SP["treatment"])]
+    fig, axes = plt.subplots(1, 3, figsize=(7.4, 2.9), gridspec_kw={"width_ratios": [1.5, 1.1, 1.0]})
+
+    ax = axes[0]
+    tag(ax, "a")
+    MODELS = [("clone_size", "Clone size before treatment", INK2), ("expression", "Expression", BLUE),
+              ("expression+clone_size", "Expression + clone size", VIOLET),
+              ("density_label_free", "Label-free density", AQUA)]
+    yy = np.arange(len(order))
+    for k, (m, lab_, c) in enumerate(MODELS):
+        d = SP[SP["model"] == m].set_index("treatment").reindex(order)
+        off = (k - 1.5) * 0.18
+        ax.errorbar(d["auroc"], yy + off, xerr=[d["auroc"] - d["auroc_lo"], d["auroc_hi"] - d["auroc"]],
+                    fmt="o", ms=3, lw=0.8, color=c, label=lab_)
+    ax.axvline(0.5, color=MUTED, ls="--", lw=0.8)
+    ax.set_yticks(yy, order, fontsize=6.5)
+    ax.invert_yaxis()
+    ax.set_xlabel("AUROC (lineage survives treatment)")
+    ax.set_title("Six treatments, same untreated cells", loc="left")
+    ax.legend(frameon=False, fontsize=5.6, loc="upper center", bbox_to_anchor=(0.45, -0.19), ncol=2,
+              handletextpad=0.2, columnspacing=0.8)
+
+    ax = axes[1]
+    tag(ax, "b")
+    M = ST.pivot(index="train", columns="test", values="auroc").reindex(index=order, columns=order)
+    im = ax.imshow(M.to_numpy(float), cmap="Blues", vmin=0.47, vmax=0.67)
+    for i in range(len(order)):
+        for j in range(len(order)):
+            v = M.iat[i, j]
+            ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=5,
+                    color="white" if v > 0.60 else INK)
+    ax.set_xticks(range(len(order)), order, rotation=40, ha="right", fontsize=5.8)
+    ax.set_yticks(range(len(order)), order, fontsize=5.8)
+    ax.set_xlabel("Labels being ranked")
+    ax.set_ylabel("Score trained on")
+    ax.grid(False)
+    ax.set_title("Cross-treatment transfer", loc="left")
+
+    ax = axes[2]
+    tag(ax, "c")
+    A = SA.set_index("treatment").reindex(order)
+    x = np.arange(len(order))
+    ax.bar(x - 0.2, A["auroc_expression"] - 0.5, 0.38, bottom=0.5, color=BLUE, label="Expression")
+    ax.bar(x + 0.2, A["auroc_expression_residual_on_clone_size"] - 0.5, 0.38, bottom=0.5, color=MUTED,
+           label="After removing clone size")
+    for i, t in enumerate(order):
+        if A.loc[t, "lrt_p"] < 0.05:
+            ax.text(i, max(A.loc[t, "auroc_expression"], 0.5) + 0.006, "*", ha="center", fontsize=7, color=INK)
+    ax.axhline(0.5, color=INK2, lw=0.6)
+    ax.set_xticks(x, order, rotation=40, ha="right", fontsize=5.8)
+    ax.set_ylim(0.42, 0.76)
+    ax.set_ylabel("AUROC")
+    ax.legend(frameon=False, fontsize=5.6, loc="upper right")
+    ax.set_title("Expression beyond growth\n(* LRT p < 0.05)", loc="left")
+    fig.tight_layout()
+    save(fig, "Fig7_schaff_multitreatment")
+
 # =============================================================== Supplementary: GNN ablation
 G = REAL[(REAL["split"].isin(["within", "rep_holdout"])) & REAL["model"].isin(["pca_logreg", "mlp", "mlp_pretrain",
                                                                                 "persist_gnn_nopretrain", "persist_gnn"])]

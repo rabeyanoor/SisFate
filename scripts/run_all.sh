@@ -37,6 +37,8 @@ $PY scripts/12_cnv_subclones.py
 for cc in keep regress_all; do $PY scripts/13_robustness.py --cc-mode $cc --n-perm 100; done
 $PY scripts/15_typicality.py
 $PY scripts/20_delta_auroc_ci.py                                                                     # ~15 min
+$PY scripts/25_simulation.py --n-rep 25                                                               # ~4 h
+$PY scripts/26_design_tool.py
 
 # ---- alternative representations                                              ~1 h (+ GPU for Geneformer)
 uv run --with harmonypy --with scvi-tools python scripts/17_sensitivity.py
@@ -52,6 +54,8 @@ tools/renv/bin/Rscript scripts/export_seurat.R data/external/scastral/Afa.TS.Seu
 gzip -f data/external/scastral/export/counts.mtx
 $PY scripts/10_external_validation.py
 $PY scripts/22_patient_nact.py                # patients before/after chemotherapy (GSE165897)
+./scripts/00c_download_schaff.sh              # second lineage system, six treatments
+$PY scripts/24_schaff_multitreatment.py
 rm -f results/tcga_ov_cox.csv
 for sig in specific_Carboplatin specific_Olaparib specific_NK all_Carboplatin fitness_Control; do
   $PY scripts/09_tcga_ov.py --signature $sig
