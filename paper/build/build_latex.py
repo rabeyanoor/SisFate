@@ -35,6 +35,26 @@ SPECIALS = {"−": "$-$", "–": "--", "—": "---", "×": "$\\times$", "≤": "
             "ø": "\\o{}", "å": "\\aa{}", "Ö": "\\\"O", "Ä": "\\\"A", "Ü": "\\\"U"}
 
 
+MATH_TOKEN = "\x00MATH%d\x00"
+
+
+def protect_math(t: str):
+    """Pull $...$ and $$...$$ spans out before escaping, so their LaTeX is passed through untouched."""
+    spans = []
+
+    def grab(m):
+        spans.append(m.group(0))
+        return MATH_TOKEN % (len(spans) - 1)
+
+    return re.sub(r"\$\$.+?\$\$|\$[^$]+\$", grab, t, flags=re.S), spans
+
+
+def restore_math(t: str, spans) -> str:
+    for i, sp in enumerate(spans):
+        t = t.replace(MATH_TOKEN % i, sp)
+    return t
+
+
 def esc(t: str) -> str:
     """Escape LaTeX specials, then translate unicode, leaving markdown emphasis for later."""
     t = t.replace("\\", "\\textbackslash{}")
@@ -59,7 +79,8 @@ def esc(t: str) -> str:
 
 
 def inline(t: str) -> str:
-    """**bold**, *italic*, `code` -> LaTeX, after escaping."""
+    """**bold**, *italic*, `code` -> LaTeX, after escaping. Math spans pass through verbatim."""
+    t, spans = protect_math(t)
     out, last = [], 0
     for m in re.finditer(r"(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)", t):
         out.append(esc(t[last:m.start()]))
@@ -72,7 +93,7 @@ def inline(t: str) -> str:
             out.append(r"\texttt{" + esc(tok[1:-1]) + "}")
         last = m.end()
     out.append(esc(t[last:]))
-    return "".join(out)
+    return restore_math("".join(out), spans)
 
 
 def figure_for(label: str) -> str:
@@ -104,6 +125,9 @@ for block in [b.strip() for b in MD.split("\n\n") if b.strip()]:
     if line.startswith("### "):
         body.append("\\subsection*{" + inline(line[4:]) + "}\n")
         continue
+    if block.startswith("$$") and block.endswith("$$"):
+        body.append("\\begin{equation}\n" + block[2:-2].strip() + "\n\\end{equation}\n")
+        continue
     if in_legends:
         m = re.match(r"^\*\*(Figure S?\d+)\.", line)
         if m:
@@ -119,6 +143,7 @@ TEX = r"""\documentclass[11pt,a4paper]{article}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}

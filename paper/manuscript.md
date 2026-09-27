@@ -260,32 +260,83 @@ Several limitations apply. First, ReSisTrace labels are noisy. Cells whose siste
 **Fitness analysis.** Throughout, fitness is defined operationally as what predicts a sister's recovery without any drug: the score of a PCA-logistic model trained on the lineage labels of the untreated control arm. Technical covariates (sequencing depth, detected genes, mitochondrial fraction, cell-cycle scores) are not part of this definition and were handled separately by regression. For each drug arm, the fitness score was the prediction of this model trained on all labelled control cells. We report the drug model's out-of-fold AUROC; the fitness model's AUROC on the drug-arm labels; the AUROC of the drug logit after within-sample linear regression on the fitness logit; the mean AUROC within fitness-score quintiles; a one-degree-of-freedom likelihood-ratio test for adding the drug logit to a model containing the fitness logit; and the size-matched specificity index (ΔAUROC). For the latter, the drug model was fitted by the same lineage-grouped five-fold cross-validation, but each training fold was reduced to a random set of whole families containing as many cells as the labelled control arm (4,183), so that the drug model never had more training data than the fitness model. Out-of-fold drug scores and the fitness score were then compared on all drug-arm cells, and ΔAUROC was averaged over 10 random reductions. Its 95% confidence interval came from 1,000 paired family-level bootstrap resamples: each resample reweighted whole families, and the seed-averaged ΔAUROC was recomputed with both scores on the same resampled cells. We used this bootstrap rather than a DeLong test because sisters are not independent observations. It resamples families to re-score models that were fitted once, so it describes how much the evaluation would move and not how much the whole procedure would move; in the synthetic experiments it covered the truth less often than its nominal rate, and the intervals quoted here should therefore be read as a lower bound on the uncertainty. The package also provides a slower interval that refits the fitness model and the capped out-of-fold drug model inside every replicate (`scripts/28_delta_refit_bootstrap.py`). The one-sided p-value is the fraction of resamples with ΔAUROC ≤ 0. An earlier, simpler estimate (five random training sets, scored on the held-out drug-arm cells) gave similar values and is reported in Table S3.
 
 **Synthetic experiments.** To check the estimators against a known answer we generated lineage experiments
-from a model in which every quantity they estimate has a closed form. A family has a latent state
-z ~ N(0, I) in ten dimensions; its two sisters are measured as z plus independent Gaussian noise of
-standard deviation s, so the correlation between sisters is 1/(1 + s²) per dimension. The treated sister's
-survival follows a liability built from u = f·x_treated + (1 − f)·z, where f decides whether fate is driven
-by the treated cell's own realised state (f = 1) or only by the state the sisters share (f = 0). The
-liability is a·u₁ in the control arm and a·u₁ + b·u₂ in the drug arm, plus independent noise scaled so the
-total variance is one, so the first dimension is a generic fitness axis and the second is drug-specific. A
-cell is a positive when its liability exceeds the (1 − prevalence) quantile, and a fraction of true positives
-is then flipped to negative to imitate a sister that was not recovered. Because the measurement noise is
-Gaussian and independent of z, the best possible drug score is a·x₁ + b·x₂ and the best possible fitness
-score is x₁, so the population value of every reported quantity follows from one large draw. We swept the
+from a model in which every quantity they estimate has a closed form. A family carries a latent state $z \sim N(0, I_{10})$, and its two sisters are
+measured with independent noise,
+
+$$x_A = z + s\,\varepsilon_A, \qquad x_B = z + s\,\varepsilon_B,
+\qquad \varepsilon \sim N(0, I_{10}),$$
+
+so that sisters correlate at $1/(1+s^2)$ in each dimension. Whether the treated sister survives follows a
+liability built from
+
+$$u = f\,x_B + (1-f)\,z, \qquad
+L = a\,u_1 + b\,u_2 + \sqrt{1 - a^2 - b^2}\;\eta, \qquad \eta \sim N(0,1),$$
+
+with $b = 0$ in the control arm, so dimension 1 is a generic fitness axis and dimension 2 is drug-specific.
+The parameter $f$ decides whether fate is driven by the treated cell's own realised state ($f = 1$, which is
+what the ceiling assumes) or only by the state the sisters share ($f = 0$). A cell is a positive when $L$
+exceeds its $(1-p)$ quantile, and a fraction of true positives is then flipped to negative to imitate a sister
+that was not recovered. Because the measurement noise is Gaussian and independent of $z$, the conditional mean
+$E[z \mid x_A]$ is proportional to $x_A$, so the best possible drug score is $a\,x_{A1} + b\,x_{A2}$ and the
+best possible fitness score is $x_{A1}$; the population value of every reported quantity therefore follows
+from one large draw. We swept the
 drug-specific strength (including zero), label noise, the number of families, sister similarity, a
 sequencing-depth confound, and f, running 25 independent experiments per setting and comparing the framework's
 estimates with the population values.
 
 **Experiment design.** The standard error of the size-matched gain was calibrated on those runs as
-k/√n_eff, where n_eff is the harmonic mean of the drug and control family counts, since the drug model is
-trained down to the control arm's size and adding drug families alone therefore stops helping. Rarer
-positives were taken to scale the error as 1/√(p(1 − p)). The resulting calculator returns the families per
+
+$$\operatorname{se}(\Delta) \;=\; \frac{k}{\sqrt{n_{\text{eff}}}}
+\sqrt{\frac{p_0(1-p_0)}{p(1-p)}}, \qquad
+n_{\text{eff}} = \frac{2}{\,1/n_{\text{drug}} + 1/n_{\text{control}}\,},$$
+
+where $n_{\text{drug}}$ and $n_{\text{control}}$ are family counts, $p$ is the label prevalence and
+$p_0 = 0.1$ the prevalence at which $k$ was calibrated. The effective size is the harmonic mean because the
+drug model is trained down to the control arm's size, so adding drug families alone stops helping. The
+constant $k$ was fitted to the spread of the estimate across independent synthetic experiments rather than to
+the width of the reported interval, which the same study shows is too narrow. The resulting calculator returns the families per
 arm needed to detect a given gain at a given power, and is provided in the package.
 
-**Ceiling.** For any score, sister concordance was the Pearson correlation over symmetrised pre-treatment sister pairs, after rank-based inverse-normal transformation of model scores. The most concordant linear direction was found by solving the generalised eigenproblem between the symmetrised sister cross-covariance and the total covariance (ridge 10⁻²), with five-fold cross-validation over families. Under a latent-liability model, the treated sister survives when its liability exceeds a threshold set by the arm's prevalence. We corrected each observed AUROC for label noise, using AUROC_obs = (1 − π)·AUROC + π/2, where π is the fraction of observed negatives that are true positives. We then inverted the bivariate-normal AUROC to obtain the implied correlation between score and sister liability, divided it by the score's sister concordance, and converted the result back into the AUROC expected if the treated sister itself were scored.
+**Ceiling.** Write $S_A$ for a model's score on the sequenced sister and $S_B$ for the same model's score
+on its treated sibling, and $L_B$ for the latent liability that decides whether the treated sister survives:
+it survives when $L_B$ exceeds a threshold set by the arm's prevalence $p$. Sister concordance is the
+symmetrised Pearson correlation
+
+$$c \;=\; \operatorname{corr}(S_A, S_B)$$
+
+taken over pre-treatment sister pairs after a rank-based inverse-normal transform of the scores, which makes
+the Gaussian liability model applicable. The most concordant linear direction was found by solving the
+generalised eigenproblem between the symmetrised sister cross-covariance and the total covariance (ridge
+$10^{-2}$), with five-fold cross-validation over families.
+
+A fraction $\pi$ of observed negatives are really positives whose sister was not recovered. Such a cell
+contributes a coin flip rather than a signal, so the observed AUROC is a mixture of the true one and $1/2$:
+
+$$\mathrm{AUROC}_{\text{obs}} \;=\; (1-\pi)\,\mathrm{AUROC} \;+\; \tfrac{1}{2}\pi .$$
+
+Inverting this gives the noise-corrected value. Under the bivariate-normal model the AUROC of a score against
+a dichotomised liability is a monotone function $g$ of their correlation, so
+
+$$\rho_{\text{obs}} \;=\; g^{-1}\!\left(\mathrm{AUROC}\right), \qquad
+\rho_{\text{obs}} = \operatorname{corr}(S_A, L_B),$$
+
+which we evaluate by bisection on a large simulated sample. The step that gives the bound is the assumption
+that the sequenced sister bears on its sibling's fate only through the state the two share, that is
+$S_A \perp L_B \mid S_B$. Under it,
+
+$$\rho_{\text{fate}} \;=\; \operatorname{corr}(S_B, L_B) \;=\; \frac{\rho_{\text{obs}}}{c},
+\qquad \mathrm{AUROC}_{\text{if sister seen}} \;=\; g\!\left(\rho_{\text{fate}}\right),$$
+
+and the sister cost is the difference between that and the observed AUROC. When the assumption fails, because
+fate depends on state the sisters share rather than on the treated cell's own, $\operatorname{corr}(S_A, L_B)$
+exceeds $c \cdot \operatorname{corr}(S_B, L_B)$ and the formula overstates the ceiling; the reported
+ceilings are therefore upper bounds, and the sister costs upper bounds too (Results, Fig. 9c). The estimate
+is not identifiable when $\rho_{\text{obs}} \geq c$, since $\rho_{\text{fate}}$ would exceed one; those
+cases are flagged as saturated and not reported.
 
 **Typicality score.** For each cell, we computed the mean Euclidean distance to its 15 nearest neighbours in the 50-component space among cells of the same sample, and used its negative as a label-free score. The direction (denser = pre-resistant) is the only choice made with reference to the labels.
 
-**Differential expression and pathways.** Wilcoxon tests compared pre-resistant with pre-sensitive cells within each sample. Replicate z-scores were combined by Stouffer's method, and genes with opposite signs in the two replicates were flagged. Drug-specific genes had FDR < 0.05 for the drug contrast and for the difference from the control contrast, z_diff = (z_drug − z_control)/√2, and consistent signs. Preranked GSEA (Subramanian et al., 2005; GSEApy, Fang et al., 2023) used the MSigDB Hallmark collection (Liberzon et al., 2015) with 1,000 permutations. Signatures took up to 50 genes in each direction with FDR < 0.05, ranked by z-score, after removing mitochondrial and ribosomal genes. The fitness signature used the control contrast; the whole-contrast signature of a drug arm used its drug contrast without reference to the control; and the drug-specific signature of a drug arm used only its drug-specific genes, ranked by z_diff (carboplatin 25 up and 31 down, NK 16 up and 50 down, olaparib 50 and 50).
+**Differential expression and pathways.** Wilcoxon tests compared pre-resistant with pre-sensitive cells within each sample. Replicate z-scores were combined by Stouffer's method, and genes with opposite signs in the two replicates were flagged. Drug-specific genes had FDR < 0.05 for the drug contrast and for the difference from the control contrast, $z_{\text{diff}} = (z_{\text{drug}} - z_{\text{control}})/\sqrt{2}$, which is the standardised difference of two approximately independent z-scores, and consistent signs. Preranked GSEA (Subramanian et al., 2005; GSEApy, Fang et al., 2023) used the MSigDB Hallmark collection (Liberzon et al., 2015) with 1,000 permutations. Signatures took up to 50 genes in each direction with FDR < 0.05, ranked by z-score, after removing mitochondrial and ribosomal genes. The fitness signature used the control contrast; the whole-contrast signature of a drug arm used its drug contrast without reference to the control; and the drug-specific signature of a drug arm used only its drug-specific genes, ranked by z_diff (carboplatin 25 up and 31 down, NK 16 up and 50 down, olaparib 50 and 50).
 
 **Copy-number clusters.** Genes detected in at least 10% of cells in every sample and located on GENCODE v44 autosomes or chromosome X (11,883 genes) were normalised and log-transformed. Each sample was analysed with infercnvpy (https://github.com/icbi-lab/infercnvpy; window of 100 genes, step 10), following the approach of InferCNV (Patel et al., 2014), against one fixed reference panel of 200 random cells from each pre-treatment sample. Profiles were pooled, reduced to 20 principal components and clustered by k-means, with k from 2 to 8 chosen by silhouette. Enrichment was tested with Fisher's exact test and Benjamini–Hochberg correction. Confound tests compared grouped out-of-fold predictions from cluster identity, expression and both, within-cluster AUROC, and a likelihood-ratio test for expression beyond cluster identity.
 
@@ -351,7 +402,7 @@ AUROC if the treated sister were scored, as fate moves from depending on the tre
 
 **Figure S1. Label-free typicality.** AUROC of the local-density score (negative mean distance to the 15 nearest neighbours within the sample), compared with the supervised PCA-logistic model and the control-arm (fitness) model, for each arm.
 
-**Figure S2. Pre-specified marker panel.** z-scores for pre-resistant versus pre-sensitive cells. The control column shows the control (fitness) contrast; the drug columns show the difference from the control contrast, z_diff = (z_drug − z_control)/√2. Asterisks mark FDR < 0.05 for z_diff. Genes not among the 5,005 retained genes (CDKN2A, RB1, GLB1, KDM5A) are omitted.
+**Figure S2. Pre-specified marker panel.** z-scores for pre-resistant versus pre-sensitive cells. The control column shows the control (fitness) contrast; the drug columns show the difference from the control contrast, $z_{\text{diff}} = (z_{\text{drug}} - z_{\text{control}})/\sqrt{2}$. Asterisks mark FDR < 0.05 for z_diff. Genes not among the 5,005 retained genes (CDKN2A, RB1, GLB1, KDM5A) are omitted.
 
 **Figure S3. Graph model ablation.** Within-arm AUROC for logistic regression, an MLP, an MLP with sister-pair pretraining, the graph network, and the graph network with pretraining (mean ± s.d. over seeds).
 
