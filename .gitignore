@@ -36,11 +36,11 @@ paper/sources/
 read_paper_for_sitation/
 
 # Manuscript drafts and generated documents (built by paper/build/)
-paper/manuscript_v*_backup.md
-paper/manuscript_v*_before_*.md
+paper/drafts/
 paper/manuscript.docx
 paper/latex/
 paper/overleaf_project.zip
+paper/overleaf_project/
 
 # Kaggle upload staging
 kaggle/geneformer/dataset/*.npz
