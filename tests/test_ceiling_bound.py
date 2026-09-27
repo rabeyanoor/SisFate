@@ -36,3 +36,19 @@ def test_sister_cost_is_not_understated():
         t = ground_truth(n=120_000, fate_from_own=f, seed=11)
         est = sister_ceiling(t["truth_auroc_drug"], t["truth_score_concordance"], 0.1, 0.0, n_sim=120_000)
         assert est["sister_cost"] >= t["truth_sister_cost"] - 0.02, (f, est["sister_cost"], t["truth_sister_cost"])
+
+
+def test_partial_correlation_identity_stated_in_methods():
+    """The Methods claim rho_obs = c*rho_fate + rho_{AL.B}*sqrt((1-c^2)(1-rho_fate^2)), and that a positive
+    partial correlation forces rho_obs > c*rho_fate. Both are checked on random correlation matrices."""
+    rng = np.random.default_rng(0)
+    for _ in range(500):
+        M = rng.normal(size=(3, 3))
+        C = M @ M.T
+        d = np.sqrt(np.diag(C))
+        C = C / np.outer(d, d)
+        c, rho_fate, rho_obs = C[0, 1], C[1, 2], C[0, 2]
+        partial = (rho_obs - c * rho_fate) / np.sqrt((1 - c ** 2) * (1 - rho_fate ** 2))
+        assert np.isclose(rho_obs, c * rho_fate + partial * np.sqrt((1 - c ** 2) * (1 - rho_fate ** 2)))
+        if partial > 0:
+            assert rho_obs > c * rho_fate
