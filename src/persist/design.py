@@ -29,14 +29,17 @@ __all__ = ["calibrate", "se_delta", "power", "required_families", "plan_table"]
 
 # Fallback calibration, overwritten by calibrate() when the simulation table is present.
 # Fitted on the simulation study: prevalence 0.1, sister correlation ~0.67, 10 latent dimensions.
-_K = 0.60
+_K = 0.65  # refreshed by calibrate() from results/simulation_calibration.csv
 _REF_PREVALENCE = 0.1
 
 
 def calibrate(path: str | Path = "results/simulation_calibration.csv") -> float:
     """Refit the constant k from the n_families sweep of the simulation study.
 
-    Uses the mean 95% interval width w at each family count: se = w / (2 * 1.96), and k = se * sqrt(n_eff).
+    Calibration uses the spread of the estimate across independent synthetic experiments (`sd_delta`), not
+    the width of the reported interval. The interval is the evaluation-only bootstrap, which the same study
+    shows understates that spread by a factor of 1.2 to 1.9, so calibrating on it would make a planned
+    experiment look smaller than it needs to be.
     """
     global _K
     d = pd.read_csv(path)
@@ -45,8 +48,7 @@ def calibrate(path: str | Path = "results/simulation_calibration.csv") -> float:
         return _K
     n_ctrl = 1800  # the control arm held fixed in that sweep
     n_eff = 2 / (1 / d["value"].to_numpy(float) + 1 / n_ctrl)
-    se = d["mean_ci_width"].to_numpy() / (2 * 1.96)
-    _K = float(np.mean(se * np.sqrt(n_eff)))
+    _K = float(np.mean(d["sd_delta"].to_numpy() * np.sqrt(n_eff)))
     return _K
 
 

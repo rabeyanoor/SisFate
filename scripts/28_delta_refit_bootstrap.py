@@ -83,8 +83,9 @@ for mode in args.cc_modes:
             pick_c = rng.integers(0, len(c_fams), len(c_fams))
             parts = [d_members[d_fams[j]] for j in pick_d]
             di = np.concatenate(parts)
-            # each drawn copy of a family is its own group, so a family picked twice is not merged
-            gb = np.repeat(np.arange(len(parts)), [len(x) for x in parts])
+            # Copies of a family keep that family's id: giving each copy its own id would let one copy
+            # train while an identical copy tests, which leaks and inflates every replicate.
+            gb = np.repeat(pick_d, [len(x) for x in parts])
             ci = np.concatenate([c_members[c_fams[j]] for j in pick_c])
             if yd[di].sum() < 20 or yc[ci].sum() < 20 or len(np.unique(yd[di])) < 2:
                 continue

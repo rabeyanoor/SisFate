@@ -202,6 +202,12 @@ _optional = {
         "control-arm model and against two baselines that use no control-arm labels (other drug arms, and the "
         "label-free density score), with their agreement with the control score.",
     ),
+    "S27_delta_refit_bootstrap": (
+        ["delta_auroc_refit_ci.csv"],
+        "Drug-specific gain with an interval from refitting the whole procedure inside each bootstrap "
+        "replicate: percentile and basic (pivotal) limits, the spread of the replicates, and the one-sided "
+        "bootstrap p-value. This is the interval quoted in the text.",
+    ),
 }
 for name, (files, desc) in _optional.items():
     frames = []

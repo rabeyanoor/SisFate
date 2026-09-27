@@ -547,6 +547,58 @@ if (R / "control_free_fitness.csv").exists():
     fig.tight_layout()
     save(fig, "Fig8_control_free")
 
+# =============================================================== Fig 9: estimators against a known answer
+if (R / "simulation_calibration.csv").exists():
+    SIM = pd.read_csv(R / "simulation_calibration.csv")
+    fig, axes = plt.subplots(1, 3, figsize=(7.4, 2.6))
+
+    ax = axes[0]
+    tag(ax, "a")
+    lim = [-0.005, 0.062]
+    ax.plot(lim, lim, color=MUTED, ls="--", lw=0.8, zorder=0)
+    ax.errorbar(SIM["truth_delta"], SIM["mean_delta"], yerr=SIM["sd_delta"], fmt="o", ms=3.5, lw=0.8,
+                color=BLUE, ecolor=MUTED)
+    dc = SIM[SIM["parameter"] == "depth_effect"]
+    dc = dc[dc["value"] > 0]
+    ax.plot(dc["truth_delta"], dc["mean_delta"], "o", ms=5, mfc="none", color=RED, label="depth confound")
+    ax.set_xlim(lim)
+    ax.set_ylim(lim)
+    ax.set_xlabel("True drug-specific gain")
+    ax.set_ylabel("Estimated gain")
+    ax.legend(frameon=False, fontsize=5.8, loc="upper left")
+    ax.set_title("Recovery of a known effect", loc="left")
+
+    ax = axes[1]
+    tag(ax, "b")
+    lbl = {"drug_specific_strength": "effect size", "label_noise": "label noise", "n_families": "experiment size",
+           "sister_similarity": "sister similarity", "depth_confound": "depth confound",
+           "fate_driven_by_own_state": "fate source"}
+    groups = [g for g in lbl if g in set(SIM["setting"])]
+    for i, g in enumerate(groups):
+        d = SIM[SIM["setting"] == g]
+        # only the setting that actually has a confound is marked, not its zero baseline
+        hot = (d["parameter"] == "depth_effect") & (d["value"] > 0)
+        ax.plot([i] * (~hot).sum(), d.loc[~hot, "coverage_delta_95"], "o", ms=3.5, color=INK2)
+        ax.plot([i] * hot.sum(), d.loc[hot, "coverage_delta_95"], "o", ms=3.5, color=RED)
+    ax.axhline(0.95, color=MUTED, ls="--", lw=0.8)
+    ax.set_xticks(range(len(groups)), [lbl[g] for g in groups], rotation=35, ha="right", fontsize=5.6)
+    ax.set_ylim(0, 1.0)
+    ax.set_ylabel("Coverage of the 95% interval")
+    ax.set_title("Evaluation-only intervals\nare too narrow", loc="left")
+
+    ax = axes[2]
+    tag(ax, "c")
+    f = SIM[SIM["parameter"] == "fate_from_own"].sort_values("value", ascending=False)
+    if len(f):
+        ax.plot(f["value"], f["bias_ceiling_vs_empirical"], "o-", ms=4, lw=1, color=VIOLET)
+        ax.axhline(0, color=INK2, lw=0.6)
+        ax.set_xlabel("Fate driven by the cell's own state")
+        ax.set_ylabel("Ceiling error (estimate $-$ actual)")
+        ax.invert_xaxis()
+        ax.set_title("The ceiling is an\nupper bound", loc="left")
+    fig.tight_layout()
+    save(fig, "Fig9_simulation")
+
 # =============================================================== Supplementary: GNN ablation
 G = REAL[(REAL["split"].isin(["within", "rep_holdout"])) & REAL["model"].isin(["pca_logreg", "mlp", "mlp_pretrain",
                                                                                 "persist_gnn_nopretrain", "persist_gnn"])]

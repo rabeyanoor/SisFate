@@ -266,11 +266,65 @@ if (R / "control_free_fitness.csv").exists():
     if not bracketed:
         fails.append("control-arm value is not bracketed by the two substitutes in every arm")
 
+# --- synthetic experiments
+if (R / "simulation_calibration.csv").exists():
+    SIM = pd.read_csv(R / "simulation_calibration.csv")
+    b0 = SIM[(SIM["parameter"] == "b") & (SIM["value"] == 0)].iloc[0]
+    check("simulation null estimate", -0.001, round(b0["mean_delta"], 3), 0.0006)
+    check("simulation false positives at zero effect", 0.08, b0["false_positive_rate"], 0.0006)
+    bb = SIM[(SIM["parameter"] == "b") & (SIM["value"] > 0)]
+    check("simulation bias range with an effect", [0.001, 0.005],
+          [round(bb["bias_delta"].min(), 3), round(bb["bias_delta"].max(), 3)], 0.0006)
+    ln = SIM[SIM["parameter"] == "label_noise"]
+    check("simulation label-noise bias bound", 0.003, round(ln["bias_delta"].abs().max() + 0.0007, 3), 0.0011)
+    dc = SIM[(SIM["parameter"] == "depth_effect") & (SIM["value"] > 0)].iloc[0]
+    check("simulation depth-confound bias", -0.018, round(dc["bias_delta"], 3), 0.0006)
+    check("simulation depth-confound coverage", 0.24, dc["coverage_delta_95"], 0.0006)
+    rest = SIM[~((SIM["parameter"] == "depth_effect") & (SIM["value"] > 0))]
+    check("simulation coverage range", [0.52, 0.88],
+          [round(rest["coverage_delta_95"].min(), 2), round(rest["coverage_delta_95"].max(), 2)], 0.006)
+    ff = SIM[SIM["parameter"] == "fate_from_own"].set_index("value")
+    check("ceiling accurate when assumption holds", 0.005,
+          round(abs(ff.loc[1.0, "bias_ceiling_vs_empirical"]) + 0.0005, 3), 0.0011)
+    check("ceiling drift at half and zero", [0.052, 0.114],
+          [round(ff.loc[0.5, "bias_ceiling_vs_empirical"], 3),
+           round(ff.loc[0.0, "bias_ceiling_vs_empirical"], 3)], 0.0006)
+    nf = SIM[SIM["parameter"] == "n_families"]
+    fac = nf["sd_delta"] / (nf["mean_ci_width"] / (2 * 1.96))
+    check("interval too narrow by factor", [1.2, 1.9], [round(fac.min(), 1), round(fac.max(), 1)], 0.06)
+
+# --- refitting bootstrap (headline intervals)
+if (R / "delta_auroc_refit_ci.csv").exists():
+    RF = pd.read_csv(R / "delta_auroc_refit_ci.csv")
+    k = RF[RF["cc_mode"] == "keep"].set_index("drug_arm")
+    if len(k) == 3:
+        check("refit point estimates", [0.017, 0.022, 0.014],
+              [round(k.loc[a, "delta"], 3) for a in ["Carboplatin", "Olaparib", "NK"]], 0.0006)
+        check("refit CI carboplatin", [-0.002, 0.043],
+              [round(k.loc["Carboplatin", "delta_lo"], 3), round(k.loc["Carboplatin", "delta_hi"], 3)], 0.0006)
+        check("refit CI olaparib", [-0.004, 0.046],
+              [round(k.loc["Olaparib", "delta_lo"], 3), round(k.loc["Olaparib", "delta_hi"], 3)], 0.0006)
+        check("refit CI NK", [-0.011, 0.038],
+              [round(k.loc["NK", "delta_lo"], 3), round(k.loc["NK", "delta_hi"], 3)], 0.0006)
+        check("refit p-value range", [0.07, 0.21],
+              [round(k["p_boot_delta_le_0"].min(), 2), round(k["p_boot_delta_le_0"].max(), 2)], 0.006)
+        checks += 1
+        if not (k["delta_lo"] < 0).all():
+            fails.append("a refit interval excludes zero, but the text says none does")
+
+# --- design calculation
+if (R / "design_resistrace.csv").exists():
+    DS = pd.read_csv(R / "design_resistrace.csv")
+    check("resolvable gain range", [0.023, 0.025],
+          [round(DS["smallest_detectable_delta_80pct"].min(), 3),
+           round(DS["smallest_detectable_delta_80pct"].max(), 3)], 0.0011)
+    check("control families", 3879, int(DS["n_control_families"].iloc[0]), 0)
+
 # --- phrases that must stay in step with the tables
 in_text("32,642 pre-treatment cells", "labelled cell count in text")
 in_text("3,477 pairs of sisters", "sister pair count in text")
 in_text("8,806 malignant cells", "patient malignant cell count")
-in_text("Supplementary Tables S1–S26", "supplementary table range")
+in_text("Supplementary Tables S1–S27", "supplementary table range")
 
 print(f"{checks} checks, {len(fails)} failed")
 for f in fails:
