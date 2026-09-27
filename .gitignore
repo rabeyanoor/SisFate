@@ -4,16 +4,15 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 tools/
-paper/build/node_modules/
+scripts/build/node_modules/
 
 # Local editor and tooling state
 .vscode/
 .idea/
 .DS_Store
 
-# Data: everything is public and re-downloadable with scripts/00*_download*.sh
+# Data: public and re-downloadable with scripts/00*_download*.sh
 data/
-# except the clinical table typed from a paper, which has no other source
 !data/external/
 data/external/*
 !data/external/zhang2022/
@@ -30,17 +29,19 @@ results/figures/paper/plos/
 logs/
 paper.zip
 
-# Literature full texts: copyrighted, fetched by paper/lit/fetch_lit.py
-paper/lit/*.txt
-paper/sources/
-read_paper_for_sitation/
+# Reference material: copyrighted full texts and superseded drafts.
+# The bibliography and the fetcher that rebuilds it are kept.
+reference/*
+!reference/lit/
+reference/lit/*
+!reference/lit/bibliography.json
+!reference/lit/fetch_lit.py
 
-# Manuscript drafts and generated documents (built by paper/build/)
-paper/drafts/
-paper/manuscript.docx
-paper/latex/
-paper/overleaf_project.zip
-paper/overleaf_project/
+# Everything built from new_paper/manuscript.md
+new_paper/manuscript.docx
+new_paper/latex/
+new_paper/overleaf_project.zip
+new_paper/figures/
 
 # Kaggle upload staging
 kaggle/geneformer/dataset/*.npz

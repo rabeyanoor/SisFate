@@ -16,10 +16,10 @@ Everything else in this folder is either built from it or supports it:
 ## The loop for every change
 
 ```bash
-nano paper/manuscript.md                  # 1. edit
+nano new_paper/manuscript.md                  # 1. edit
 python scripts/23_audit_manuscript.py     # 2. verify: 112 checks, names any number that drifted
-python paper/build/build_latex.py         # 3. rebuild Overleaf version
-node paper/build/build_docx.js            # 3. rebuild Word version
+python scripts/build/build_latex.py         # 3. rebuild Overleaf version
+node scripts/build/build_docx.js            # 3. rebuild Word version
 ```
 
 Step 2 is the point of the whole setup. If you change a number by hand and it no longer matches `results/`,

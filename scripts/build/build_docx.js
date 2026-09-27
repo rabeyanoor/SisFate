@@ -1,5 +1,5 @@
-// Build a submission-style .docx from paper/manuscript.md with figures embedded after their legends.
-// Usage: node build_docx.js   (run from paper/build)
+// Build a submission-style .docx from new_paper/manuscript.md with figures embedded after their legends.
+// Usage: node build_docx.js   (run from scripts/build)
 const fs = require("fs");
 const path = require("path");
 const {
@@ -8,7 +8,7 @@ const {
 } = require("docx");
 
 const ROOT = path.resolve(__dirname, "..", "..");
-const md = fs.readFileSync(path.join(ROOT, "paper", "manuscript.md"), "utf8");
+const md = fs.readFileSync(path.join(ROOT, "new_paper", "manuscript.md"), "utf8");
 const FIG = path.join(ROOT, "results", "figures", "paper");
 const FIGMAP = {
   "Figure 1": "Fig1_design_data.png", "Figure 2": "Fig2_predictability.png", "Figure 3": "Fig3_fitness_confound.png",
@@ -104,7 +104,7 @@ const doc = new Document({
 });
 
 Packer.toBuffer(doc).then((buf) => {
-  const out = path.join(ROOT, "paper", "manuscript.docx");
+  const out = path.join(ROOT, "new_paper", "manuscript.docx");
   fs.writeFileSync(out, buf);
   console.log("wrote", out, buf.length, "bytes");
 });

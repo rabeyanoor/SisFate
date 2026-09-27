@@ -31,24 +31,24 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `13_robustness.py` | singleton-only cells, exact family-level permutation p-values, Shen et al. benchmark protocol |
 | `14_figures.py` | publication figures `results/figures/paper/Fig1-6`, `FigS*` (PNG + PDF, 300 dpi) and PLOS submission TIFFs in `plos/` (450 dpi, LZW, ≤ 7.5 in wide) |
 | `15_typicality.py` | label-free local-density score vs labels |
-| `16_supplementary_tables.py` | `paper/supplementary/Supplementary_Tables.xlsx` (S1–S20); run with `uv run --with openpyxl` |
+| `16_supplementary_tables.py` | `new_paper/Supplementary_Tables.xlsx` (S1–S20); run with `uv run --with openpyxl` |
 | `17_sensitivity.py` | main and fitness analyses on Harmony, Pearson-residual and scVI representations; `uv run --with harmonypy --with scvi-tools` |
 | `18_marker_panel.py` | pre-specified proliferation/arrest/senescence/persister marker panel (Fig. S3) |
 | `19_gnn_sweep.py` | one-at-a-time GNN hyperparameter sweep -> `results/gnn_sweep.csv` |
 | `20_delta_auroc_ci.py` | size-matched drug-specific gain (ΔAUROC) over the fitness model, 10 subsamples, paired family bootstrap CI -> `results/delta_auroc_ci.csv` |
 | `21_geneformer.py` | Geneformer V2-104M_CLcancer embeddings: `tokens` (CPU) -> `embed` (GPU; `kaggle/geneformer/`) -> `analyze` |
 | `22_patient_nact.py` | ReSisTrace signatures in 11 HGSOC patients before/after neoadjuvant chemotherapy (GSE165897) -> `results/patient_nact.csv` |
-| `23_audit_manuscript.py` | re-checks every number quoted in `paper/manuscript.md` against `results/` (63 checks) |
+| `23_audit_manuscript.py` | re-checks every number quoted in `new_paper/manuscript.md` against `results/` (63 checks) |
 | `24_schaff_multitreatment.py` | second lineage system: six treatments in parallel (Schaff et al. 2026, GSE279162); clone size as the fitness proxy, cross-treatment transfer, clone ceiling |
 | `25_simulation.py` | synthetic lineage experiments with a known answer: bias and interval coverage of the drug-specific gain, and when the sister ceiling is valid |
 | `26_design_tool.py` | how many families and control cells a new experiment needs -> `results/design_*.csv` |
 | `27_control_free_fitness.py` | substitutes for an untreated arm, checked against the real one -> `results/control_free_fitness.csv` |
 | `28_delta_refit_bootstrap.py` | slower interval for the drug-specific gain that refits the whole procedure inside each bootstrap replicate |
-| `paper/build/build_latex.py` | `paper/manuscript.md` -> Overleaf project in `paper/latex/` |
+| `scripts/build/build_latex.py` | `new_paper/manuscript.md` -> Overleaf project in `new_paper/latex/` |
 | `run_rest.sh` | lean version of the heavy runs actually used for the paper |
-| `paper/build/build_docx.js` | `paper/manuscript.md` -> `paper/manuscript.docx` with embedded figures |
+| `scripts/build/build_docx.js` | `new_paper/manuscript.md` -> `new_paper/manuscript.docx` with embedded figures |
 
-Literature: `paper/lit/` holds metadata, abstracts and (24 of 27) full texts; five further full texts (Schaff 2026, Iyer 2025, Oliveira 2025, Kronheim 2026, Soragni 2025) and Shen et al. v2 are PDFs in `read_paper_for_sitation/` fetched by `paper/lit/fetch_lit.py`; claims cited in the manuscript were checked against them.
+Literature: `reference/lit/` holds metadata, abstracts and (24 of 27) full texts; five further full texts (Schaff 2026, Iyer 2025, Oliveira 2025, Kronheim 2026, Soragni 2025) and Shen et al. v2 are PDFs in `read_paper_for_sitation/` fetched by `reference/lit/fetch_lit.py`; claims cited in the manuscript were checked against them.
 
 Every metric row is appended to `results/results.csv` with the config hash; test-set predictions are saved in `results/preds/`.
 
@@ -63,7 +63,7 @@ Every metric row is appended to `results/results.csv` with the config hash; test
 * **Subclones:** InferCNV subclone calls are not on GEO, so `12_cnv_subclones.py` infers copy-number profiles with infercnvpy and clusters them (k chosen by silhouette); `within_cluster_auroc` in the model tables is a separate check inside 8 k-means expression-state clusters.
 
 ## Findings
-See `paper/manuscript.md` (or `.docx`) for the full write-up; every number there comes from `results/`.
+See `new_paper/manuscript.md` (or `.docx`) for the full write-up; every number there comes from `results/`.
 
 ## Licence
 MIT (see `LICENSE`). Cite via `CITATION.cff`.

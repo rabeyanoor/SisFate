@@ -1,5 +1,5 @@
 """Fetch metadata, abstract and (if open access) full text for the literature review from Europe PMC.
-Each paper is located by exact title so nothing is taken from memory; results go to paper/lit/."""
+Each paper is located by exact title so nothing is taken from memory; results go to reference/lit/."""
 import json, re, time, urllib.parse, urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path

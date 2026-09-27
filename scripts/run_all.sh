@@ -66,4 +66,4 @@ for cc in keep regress regress_all; do $PY scripts/11_summarize.py --cc-mode $cc
 $PY scripts/14_figures.py                   # results/figures/paper/*.png|pdf and plos/*.tif
 uv run --with openpyxl python scripts/16_supplementary_tables.py
 $PY scripts/23_audit_manuscript.py           # fails if any quoted number disagrees with results/
-(cd paper/build && npm install --silent && node build_docx.js)
+(cd scripts/build && npm install --silent && node build_docx.js)

@@ -1,4 +1,4 @@
-# Pre-treatment transcriptional prediction of sister-cell fate is dominated by fitness and limited by sister discordance
+# Growth fitness, not drug tolerance, explains most pre-treatment prediction of cancer cell fate
 
 ## Abstract
 

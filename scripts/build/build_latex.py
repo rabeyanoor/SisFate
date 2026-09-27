@@ -1,18 +1,18 @@
-"""Turn paper/manuscript.md into an Overleaf-ready LaTeX project in paper/latex/.
+"""Turn new_paper/manuscript.md into an Overleaf-ready LaTeX project in new_paper/latex/.
 
 The markdown is the single source of truth: it is what `scripts/23_audit_manuscript.py` checks, and both the
 .docx and this .tex are generated from it, so the three cannot drift apart. Figures are copied as PDFs where
 they exist (vector) and PNG otherwise.
 
-Run: python paper/build/build_latex.py
+Run: python scripts/build/build_latex.py
 """
 import re
 import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-MD = (ROOT / "paper" / "manuscript.md").read_text()
-OUT = ROOT / "paper" / "latex"
+MD = (ROOT / "new_paper" / "manuscript.md").read_text()
+OUT = ROOT / "new_paper" / "latex"
 FIGDIR = ROOT / "results" / "figures" / "paper"
 (OUT / "figures").mkdir(parents=True, exist_ok=True)
 
@@ -138,7 +138,7 @@ for block in [b.strip() for b in MD.split("\n\n") if b.strip()]:
         body.append(inline(line) + "\n")
 
 TEX = r"""\documentclass[11pt,a4paper]{article}
-% Generated from paper/manuscript.md by paper/build/build_latex.py -- edit the markdown, not this file.
+% Generated from new_paper/manuscript.md by scripts/build/build_latex.py -- edit the markdown, not this file.
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -162,9 +162,9 @@ TEX = r"""\documentclass[11pt,a4paper]{article}
 (OUT / "main.tex").write_text(TEX)
 (OUT / "README.md").write_text(
     "# Overleaf project\n\n"
-    "Generated from `paper/manuscript.md`. Upload this folder to Overleaf (New Project -> Upload Project,\n"
+    "Generated from `new_paper/manuscript.md`. Upload this folder to Overleaf (New Project -> Upload Project,\n"
     "after zipping it) and compile `main.tex` with pdfLaTeX.\n\n"
-    "Do not edit `main.tex` by hand: it is overwritten by `python paper/build/build_latex.py`. Edit the\n"
+    "Do not edit `main.tex` by hand: it is overwritten by `python scripts/build/build_latex.py`. Edit the\n"
     "markdown, then rerun `scripts/23_audit_manuscript.py` and the build.\n\n"
     "Line numbers are on for review; remove `\\linenumbers` for a clean copy.\n")
 print(f"wrote {OUT/'main.tex'} ({len(TEX):,} chars, {len(list((OUT/'figures').iterdir()))} figures)")
