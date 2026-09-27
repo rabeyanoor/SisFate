@@ -197,6 +197,28 @@ Several limitations apply. First, ReSisTrace labels are noisy. Cells whose siste
 
 **Fitness analysis.** Throughout, fitness is defined operationally as what predicts a sister's recovery without any drug: the score of a PCA-logistic model trained on the lineage labels of the untreated control arm. Technical covariates (sequencing depth, detected genes, mitochondrial fraction, cell-cycle scores) are not part of this definition and were handled separately by regression. For each drug arm, the fitness score was the prediction of this model trained on all labelled control cells. We report the drug model's out-of-fold AUROC; the fitness model's AUROC on the drug-arm labels; the AUROC of the drug logit after within-sample linear regression on the fitness logit; the mean AUROC within fitness-score quintiles; a one-degree-of-freedom likelihood-ratio test for adding the drug logit to a model containing the fitness logit; and the size-matched specificity index (ΔAUROC). For the latter, the drug model was fitted by the same lineage-grouped five-fold cross-validation, but each training fold was reduced to a random set of whole families containing as many cells as the labelled control arm (4,183), so that the drug model never had more training data than the fitness model. Out-of-fold drug scores and the fitness score were then compared on all drug-arm cells, and ΔAUROC was averaged over 10 random reductions. Its 95% confidence interval came from 1,000 paired family-level bootstrap resamples: each resample reweighted whole families, and the seed-averaged ΔAUROC was recomputed with both scores on the same resampled cells. We used this bootstrap rather than a DeLong test because sisters are not independent observations. The one-sided p-value is the fraction of resamples with ΔAUROC ≤ 0. An earlier, simpler estimate (five random training sets, scored on the held-out drug-arm cells) gave similar values and is reported in Table S3.
 
+**Synthetic experiments.** To check the estimators against a known answer we generated lineage experiments
+from a model in which every quantity they estimate has a closed form. A family has a latent state
+z ~ N(0, I) in ten dimensions; its two sisters are measured as z plus independent Gaussian noise of
+standard deviation s, so the correlation between sisters is 1/(1 + s²) per dimension. The treated sister's
+survival follows a liability built from u = f·x_treated + (1 − f)·z, where f decides whether fate is driven
+by the treated cell's own realised state (f = 1) or only by the state the sisters share (f = 0). The
+liability is a·u₁ in the control arm and a·u₁ + b·u₂ in the drug arm, plus independent noise scaled so the
+total variance is one, so the first dimension is a generic fitness axis and the second is drug-specific. A
+cell is a positive when its liability exceeds the (1 − prevalence) quantile, and a fraction of true positives
+is then flipped to negative to imitate a sister that was not recovered. Because the measurement noise is
+Gaussian and independent of z, the best possible drug score is a·x₁ + b·x₂ and the best possible fitness
+score is x₁, so the population value of every reported quantity follows from one large draw. We swept the
+drug-specific strength (including zero), label noise, the number of families, sister similarity, a
+sequencing-depth confound, and f, running 25 independent experiments per setting and comparing the framework's
+estimates with the population values.
+
+**Experiment design.** The standard error of the size-matched gain was calibrated on those runs as
+k/√n_eff, where n_eff is the harmonic mean of the drug and control family counts, since the drug model is
+trained down to the control arm's size and adding drug families alone therefore stops helping. Rarer
+positives were taken to scale the error as 1/√(p(1 − p)). The resulting calculator returns the families per
+arm needed to detect a given gain at a given power, and is provided in the package.
+
 **Ceiling.** For any score, sister concordance was the Pearson correlation over symmetrised pre-treatment sister pairs, after rank-based inverse-normal transformation of model scores. The most concordant linear direction was found by solving the generalised eigenproblem between the symmetrised sister cross-covariance and the total covariance (ridge 10⁻²), with five-fold cross-validation over families. Under a latent-liability model, the treated sister survives when its liability exceeds a threshold set by the arm's prevalence. We corrected each observed AUROC for label noise, using AUROC_obs = (1 − π)·AUROC + π/2, where π is the fraction of observed negatives that are true positives. We then inverted the bivariate-normal AUROC to obtain the implied correlation between score and sister liability, divided it by the score's sister concordance, and converted the result back into the AUROC expected if the treated sister itself were scored.
 
 **Typicality score.** For each cell, we computed the mean Euclidean distance to its 15 nearest neighbours in the 50-component space among cells of the same sample, and used its negative as a label-free score. The direction (denser = pre-resistant) is the only choice made with reference to the labels.
