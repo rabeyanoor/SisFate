@@ -1,22 +1,47 @@
+# Environments and caches
 .venv/
 __pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+tools/
+paper/build/node_modules/
+
+# Editor and assistant state (local only)
+.claude/
+.vscode/
+.idea/
+.DS_Store
+
+# Data: everything is public and re-downloadable with scripts/00*_download*.sh
 data/
+# except the clinical table typed from a paper, which has no other source
 !data/external/
 data/external/*
 !data/external/zhang2022/
 data/external/zhang2022/*
 !data/external/zhang2022/clinical_table1.csv
 !data/external/zhang2022/SOURCE.txt
-results/preds/
+
+# Large or regenerable outputs
 *.h5ad
-tools/
+*.npy
+*.npz
+results/preds/
+results/figures/paper/plos/
 logs/
 paper.zip
-paper/build/node_modules/
-kaggle/geneformer/dataset/*.npz
-read_paper_for_sitation/
+
+# Literature full texts: copyrighted, fetched by paper/lit/fetch_lit.py
 paper/lit/*.txt
 paper/sources/
-.claude/
+read_paper_for_sitation/
+
+# Manuscript drafts and generated documents (built by paper/build/)
 paper/manuscript_v*_backup.md
 paper/manuscript_v*_before_*.md
+paper/manuscript.docx
+paper/latex/
+paper/overleaf_project.zip
+
+# Kaggle upload staging
+kaggle/geneformer/dataset/*.npz
