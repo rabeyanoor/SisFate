@@ -1,0 +1,79 @@
+# PERSIST-GNN default configuration. Every script reads this file; override with --config.
+seed: 0
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  ref_dir: data/ref
+  results_dir: results
+
+data:
+  arms: [Carboplatin, Olaparib, NK, Control]
+  replicates: [1, 2]
+  include_post_expression: false   # post-treatment matrices are only needed for label audit
+
+preprocess:
+  # GEO cells are already QC-filtered by the authors (Supp. Data 14 thresholds);
+  # these extra filters are off by default so counts match the paper.
+  min_cells_per_gene: 3
+  max_pct_mt: null
+  n_keep_genes: 5000        # genes stored in the combined object (for interpretation)
+  n_hvg: 2000               # genes used as model features
+  exclude_mt_ribo_from_hvg: true
+  scale: per_sample         # per_sample | global  (per-sample z-scoring = simple batch correction)
+  cc_mode: keep             # keep | regress  (regress S/G2M scores out of scaled data)
+  n_pcs: 50
+
+labels:
+  positive: pre-resistant
+  negative: pre-sensitive
+
+splits:
+  n_folds: 5
+  n_shuffles: 5             # label-shuffled controls per experiment (group-level permutation)
+
+graph:
+  k: 15
+  metric: cosine
+  within_sample: true       # no edges across samples -> replicate hold-out stays honest
+
+baselines:
+  logistic_C: 0.05
+  knn_smooth_alpha: 0.5     # x_smooth = (1-a) x + a * mean_neighbours(x)
+  catboost:
+    iterations: 800
+    depth: 6
+    learning_rate: 0.05
+    auto_class_weights: Balanced
+    thread_count: 6
+
+gnn:
+  hidden: 128
+  emb_dim: 64
+  n_layers: 2
+  dropout: 0.3
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  max_epochs: 200
+  patience: 25
+  val_fraction: 0.15
+  seeds: [0, 1, 2]
+
+contrastive:
+  epochs: 200
+  batch_pairs: 256
+  temperature: 0.1
+  lr: 1.0e-3
+  aug_noise: 0.1
+  aug_dropout: 0.2
+  simclr_weight: 0.5        # weight of augmentation-only term on unpaired cells
+  finetune_lr_mult: 0.3
+
+ceiling:
+  pca_dims: [10, 20, 50]
+  ridge: 1.0e-2
+  label_noise_pi: [0.0, 0.1, 0.2]   # fraction of observed negatives that are true positives
+  n_sim: 400000
+
+interpret:
+  top_n_signature: 50
+  fdr: 0.05

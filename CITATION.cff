@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the accompanying article."
+title: "SisFate: pre-treatment prediction of sister-cell fate in ReSisTrace lineage-tracing data"
+authors:
+  - family-names: Noor
+    given-names: Rabeya
+license: MIT
+version: 1.0.0
+date-released: 2026-09-27

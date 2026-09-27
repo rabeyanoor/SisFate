@@ -1,0 +1,15 @@
+check,arm,n,auroc,perm_null_mean,perm_null_sd,perm_p,draw,cc_mode
+all_cells,Carboplatin,8942,0.723482277034123,0.5007646991418564,0.01642962037601933,0.009900990099009901,,regress_all
+singletons_only,Carboplatin,7142,0.7289303635776423,,,,,regress_all
+all_cells,Olaparib,9394,0.7269871764803986,0.5010564698841568,0.01455546587003161,0.009900990099009901,,regress_all
+singletons_only,Olaparib,7501,0.7331995897870822,,,,,regress_all
+all_cells,NK,10123,0.6803241363740145,0.4999969763826482,0.015229643367223026,0.009900990099009901,,regress_all
+singletons_only,NK,8234,0.6865540208332949,,,,,regress_all
+all_cells,Control,4183,0.7041542413885448,0.49987002222218097,0.01921336995437396,0.009900990099009901,,regress_all
+singletons_only,Control,3621,0.7171397589436512,,,,,regress_all
+benchmark_protocol_ungrouped,Olaparib,1808,0.7466887579293602,,,,0.0,regress_all
+benchmark_protocol_grouped,Olaparib,1808,0.7382625890829353,,,,0.0,regress_all
+benchmark_protocol_ungrouped,Olaparib,1808,0.7175140966403009,,,,1.0,regress_all
+benchmark_protocol_grouped,Olaparib,1808,0.713051384211763,,,,1.0,regress_all
+benchmark_protocol_ungrouped,Olaparib,1808,0.7297311849009319,,,,2.0,regress_all
+benchmark_protocol_grouped,Olaparib,1808,0.7191538100086146,,,,2.0,regress_all

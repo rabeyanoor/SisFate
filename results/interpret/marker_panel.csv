@@ -1,0 +1,85 @@
+category,gene,arm,z_drug,z_control,z_diff,padj_diff,class
+Proliferation / replication,MKI67,Carboplatin,-2.0418253,-0.44564316,-1.1286712,0.8669414138495317,ns
+Proliferation / replication,TOP2A,Carboplatin,-5.2079964,-1.9500775,-2.3036966,0.2775576853633065,shared_with_fitness
+Proliferation / replication,MCM2,Carboplatin,-1.6763003,1.1365725,-1.9890015,0.4105392152821225,ns
+Proliferation / replication,PCNA,Carboplatin,-1.6260548,1.19174,-1.9924818,0.4081385150786928,ns
+Proliferation / replication,CCNB1,Carboplatin,1.1513044,0.79413414,0.2525575,0.9998427707862332,ns
+Proliferation / replication,E2F1,Carboplatin,-1.0723574,0.62428814,-1.1997095,0.8137698152381084,ns
+Proliferation / replication,CDK1,Carboplatin,-6.6590543,-2.4792686,-2.955555,0.1041142073465642,shared_with_fitness
+G1 arrest / CDK inhibitors,CDKN1A,Carboplatin,-2.7455192,-4.8342266,1.4769392,0.6744524698221034,shared_with_fitness
+G1 arrest / CDK inhibitors,CDKN1B,Carboplatin,-3.6513467,-3.40566,-0.17372678,0.9998427707862332,shared_with_fitness
+G1 arrest / CDK inhibitors,CDKN2A,Carboplatin,,,,,"not among the 5,005 retained genes"
+G1 arrest / CDK inhibitors,RB1,Carboplatin,,,,,"not among the 5,005 retained genes"
+G1 arrest / CDK inhibitors,TP53,Carboplatin,1.0183439,0.9480191,0.04972717,0.9998427707862332,ns
+Senescence / SASP,IL6,Carboplatin,-0.8448878,-1.1017684,0.18164201,0.9998427707862332,ns
+Senescence / SASP,CXCL8,Carboplatin,-1.6061282,0.40295994,-1.4206398,0.7020619895207979,ns
+Senescence / SASP,SERPINE1,Carboplatin,-4.908801,-3.0259542,-1.3313738,0.7435319277327455,shared_with_fitness
+Senescence / SASP,GLB1,Carboplatin,,,,,"not among the 5,005 retained genes"
+Senescence / SASP,IGFBP3,Carboplatin,-2.0608892,-0.47200257,-1.1235126,0.8692854430077864,ns
+Quiescence / dormancy,HES1,Carboplatin,-1.3093971,1.0104147,-1.6403548,0.5832466951164524,ns
+Quiescence / dormancy,NR2F1,Carboplatin,-2.3329377,-0.23547935,-1.483127,0.6693933616850722,ns
+Quiescence / dormancy,DYRK1A,Carboplatin,-3.5778966,-1.6871562,-1.3369554,0.7416942907956872,shared_with_fitness
+Quiescence / dormancy,CDKN1C,Carboplatin,-2.5215383,-3.8827,0.9624867,0.9474097913509356,ns
+Reported persister markers,KDM5A,Carboplatin,,,,,"not among the 5,005 retained genes"
+Reported persister markers,KDM5B,Carboplatin,-4.112002,-2.5698423,-1.0904715,0.889042565329483,shared_with_fitness
+Reported persister markers,ALDH1A1,Carboplatin,-0.13163039,-0.22363715,0.065058604,0.9998427707862332,ns
+Reported persister markers,AXL,Carboplatin,-2.4405377,-2.4207833,-0.013968477,0.9998427707862332,ns
+Reported persister markers,NGFR,Carboplatin,-0.5724808,-0.82723373,0.18013753,0.9998427707862332,ns
+Reported persister markers,CD44,Carboplatin,-5.3780627,-1.3412127,-2.854484,0.119198615351506,shared_with_fitness
+Reported persister markers,IGFBP7,Carboplatin,4.1161094,-2.6283617,4.769061,0.0023684594563325,drug_specific
+Proliferation / replication,MKI67,Olaparib,0.12297184,-0.44564316,0.40207154,0.9999760734504792,ns
+Proliferation / replication,TOP2A,Olaparib,-3.116547,-1.9500775,-0.82481855,0.9012402975266957,shared_with_fitness
+Proliferation / replication,MCM2,Olaparib,-2.4381669,1.1365725,-2.5277226,0.1308881853024014,ns
+Proliferation / replication,PCNA,Olaparib,-1.7601867,1.19174,-2.0873275,0.2693094956343833,ns
+Proliferation / replication,CCNB1,Olaparib,2.1856482,0.79413414,0.98394907,0.8144787234758396,ns
+Proliferation / replication,E2F1,Olaparib,-2.3520465,0.62428814,-2.1045864,0.261558114354253,ns
+Proliferation / replication,CDK1,Olaparib,-6.036677,-2.4792686,-2.5154676,0.1340016473734353,shared_with_fitness
+G1 arrest / CDK inhibitors,CDKN1A,Olaparib,-2.8390474,-4.8342266,1.4108047,0.579168480083786,shared_with_fitness
+G1 arrest / CDK inhibitors,CDKN1B,Olaparib,-0.5939113,-3.40566,1.9882065,0.3097767399216684,ns
+G1 arrest / CDK inhibitors,CDKN2A,Olaparib,,,,,"not among the 5,005 retained genes"
+G1 arrest / CDK inhibitors,RB1,Olaparib,,,,,"not among the 5,005 retained genes"
+G1 arrest / CDK inhibitors,TP53,Olaparib,-1.5431408,0.9480191,-1.7615161,0.4033683304982381,ns
+Senescence / SASP,IL6,Olaparib,-1.2069615,-1.1017684,-0.07438278,0.9999760734504792,ns
+Senescence / SASP,CXCL8,Olaparib,-1.3465563,0.40295994,-1.2370949,0.6618911640642208,ns
+Senescence / SASP,SERPINE1,Olaparib,-4.4155674,-3.0259542,-0.9826049,0.8153193087708364,shared_with_fitness
+Senescence / SASP,GLB1,Olaparib,,,,,"not among the 5,005 retained genes"
+Senescence / SASP,IGFBP3,Olaparib,-1.5672159,-0.47200257,-0.77443284,0.930589491079329,ns
+Quiescence / dormancy,HES1,Olaparib,-0.8014078,1.0104147,-1.281152,0.6427539128663518,ns
+Quiescence / dormancy,NR2F1,Olaparib,0.69700193,-0.23547935,0.65936387,0.98548297658534,ns
+Quiescence / dormancy,DYRK1A,Olaparib,-3.7985513,-1.6871562,-1.4929818,0.5379921298814181,shared_with_fitness
+Quiescence / dormancy,CDKN1C,Olaparib,-0.7870469,-3.8827,2.1889572,0.2350947080541141,ns
+Reported persister markers,KDM5A,Olaparib,,,,,"not among the 5,005 retained genes"
+Reported persister markers,KDM5B,Olaparib,-4.720932,-2.5698423,-1.5210501,0.5239816886287959,shared_with_fitness
+Reported persister markers,ALDH1A1,Olaparib,-0.31404522,-0.22363715,-0.063928165,0.9999760734504792,ns
+Reported persister markers,AXL,Olaparib,-1.3994832,-2.4207833,0.7221682,0.9562398588510952,ns
+Reported persister markers,NGFR,Olaparib,0.2267016,-0.82723373,0.7452448,0.9453090416889272,ns
+Reported persister markers,CD44,Olaparib,-6.787458,-1.3412127,-3.851077,0.0057704448414958,drug_specific
+Reported persister markers,IGFBP7,Olaparib,3.810196,-2.6283617,4.5527477,0.0005300270341059,drug_specific
+Proliferation / replication,MKI67,NK,-1.8205054,-0.44564316,-0.9721744,0.8784951994863649,ns
+Proliferation / replication,TOP2A,NK,-4.9046206,-1.9500775,-2.0891776,0.2835871708666471,shared_with_fitness
+Proliferation / replication,MCM2,NK,-2.5218563,1.1365725,-2.5868998,0.1289103792828818,shared_with_fitness
+Proliferation / replication,PCNA,NK,-4.9031506,1.19174,-4.3097386,0.0024789552861413,drug_specific
+Proliferation / replication,CCNB1,NK,0.1513191,0.79413414,-0.45453888,0.9994469871480148,ns
+Proliferation / replication,E2F1,NK,-3.637103,0.62428814,-3.0132587,0.0631016954312783,shared_with_fitness
+Proliferation / replication,CDK1,NK,-7.5758576,-2.4792686,-3.6038327,0.0166457849900846,drug_specific
+G1 arrest / CDK inhibitors,CDKN1A,NK,-5.6207666,-4.8342266,-0.5561678,0.9994469871480148,shared_with_fitness
+G1 arrest / CDK inhibitors,CDKN1B,NK,-2.3108902,-3.40566,0.7741191,0.9853653786038864,ns
+G1 arrest / CDK inhibitors,CDKN2A,NK,,,,,"not among the 5,005 retained genes"
+G1 arrest / CDK inhibitors,RB1,NK,,,,,"not among the 5,005 retained genes"
+G1 arrest / CDK inhibitors,TP53,NK,-2.7076797,0.9480191,-2.5849695,0.1289484043750809,shared_with_fitness
+Senescence / SASP,IL6,NK,-1.1405813,-1.1017684,-0.027444849,0.9994469871480148,ns
+Senescence / SASP,CXCL8,NK,-2.3241467,0.40295994,-1.9283556,0.358143115204865,ns
+Senescence / SASP,SERPINE1,NK,-6.061874,-3.0259542,-2.1467195,0.2619032774360365,shared_with_fitness
+Senescence / SASP,GLB1,NK,,,,,"not among the 5,005 retained genes"
+Senescence / SASP,IGFBP3,NK,-0.6471161,-0.47200257,-0.123823985,0.9994469871480148,ns
+Quiescence / dormancy,HES1,NK,-0.5276399,1.0104147,-1.0875689,0.8182583022036125,ns
+Quiescence / dormancy,NR2F1,NK,-0.5100648,-0.23547935,-0.19416122,0.9994469871480148,ns
+Quiescence / dormancy,DYRK1A,NK,-2.5860314,-1.6871562,-0.6356008,0.9994469871480148,shared_with_fitness
+Quiescence / dormancy,CDKN1C,NK,-1.0643892,-3.8827,1.9928467,0.3294773220635899,ns
+Reported persister markers,KDM5A,NK,,,,,"not among the 5,005 retained genes"
+Reported persister markers,KDM5B,NK,-0.5570437,-2.5698423,1.4232637,0.6237485675814417,ns
+Reported persister markers,ALDH1A1,NK,-0.0056745554,-0.22363715,0.15412283,0.9994469871480148,ns
+Reported persister markers,AXL,NK,-4.268853,-2.4207833,-1.3067828,0.6927560080468765,shared_with_fitness
+Reported persister markers,NGFR,NK,-0.9411641,-0.82723373,-0.08056092,0.9994469871480148,ns
+Reported persister markers,CD44,NK,-6.889165,-1.3412127,-3.9229946,0.0070598840630243,drug_specific
+Reported persister markers,IGFBP7,NK,1.9697636,-2.6283617,3.2513657,0.0393006148348418,ns
