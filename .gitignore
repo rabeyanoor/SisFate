@@ -24,10 +24,15 @@ data/external/zhang2022/*
 *.h5ad
 *.npy
 *.npz
+*.zip
 results/preds/
 results/figures/paper/plos/
 logs/
-paper.zip
+
+# Intermediate figures from scripts/11_summarize.py; the paper figures are in
+# results/figures/paper/ and are built by scripts/14_figures.py
+results/figures/*.png
+results/figures/*.pdf
 
 # Reference material: copyrighted full texts and superseded drafts.
 # The bibliography and the fetcher that rebuilds it are kept.
