@@ -147,6 +147,14 @@ check("watermelon expression", 0.61, ext("watermelon", "within_external", "all",
 check("watermelon singleton expression", 0.58, ext("watermelon", "within_external", "singleton", "pca"), 0.005)
 check("tnbc clone size", 0.88, ext("tnbc_afatinib", "within_external", "all", "clone_size"), 0.005)
 check("tnbc expression", 0.64, ext("tnbc_afatinib", "within_external", "all", "pca"), 0.005)
+check("watermelon density", [0.533, 0.517, 0.552],
+      [ext("watermelon", "within_external", "all", "density_label_free"),
+       X[(X["dataset"] == "watermelon") & (X["model"] == "density_label_free") & (X["subset"] == "all")]["auroc_lo"].iloc[0],
+       X[(X["dataset"] == "watermelon") & (X["model"] == "density_label_free") & (X["subset"] == "all")]["auroc_hi"].iloc[0]], 0.0006)
+check("tnbc density", [0.570, 0.530, 0.605],
+      [ext("tnbc_afatinib", "within_external", "all", "density_label_free"),
+       X[(X["dataset"] == "tnbc_afatinib") & (X["model"] == "density_label_free") & (X["subset"] == "all")]["auroc_lo"].iloc[0],
+       X[(X["dataset"] == "tnbc_afatinib") & (X["model"] == "density_label_free") & (X["subset"] == "all")]["auroc_hi"].iloc[0]], 0.0006)
 check("tnbc singleton control transfer", 0.64,
       ext("tnbc_afatinib", "transfer_from_resistrace", "singleton", "trained_on_Control"), 0.005)
 

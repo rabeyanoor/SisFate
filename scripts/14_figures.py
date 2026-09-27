@@ -403,6 +403,7 @@ for ax, (ds, title), letter in zip(axes[:2], [("watermelon", "Watermelon: PC9 + 
     d = X[X["dataset"] == ds]
     rows = [("within_external", "all", "clone_size", "Clone size"), ("within_external", "all", "covariates", "Covariates"),
             ("within_external", "all", "pca", "Expression"), ("within_external", "all", "pca+clone_size", "Expr. + clone size"),
+            ("within_external", "all", "density_label_free", "Label-free density"),
             ("within_external", "singleton", "pca", "Expression, singletons"),
             ("transfer_from_resistrace", "all", "trained_on_all_drugs", "ReSisTrace drugs → here"),
             ("transfer_from_resistrace", "all", "trained_on_Control", "ReSisTrace Control → here")]
