@@ -6,8 +6,7 @@ __pycache__/
 tools/
 paper/build/node_modules/
 
-# Editor and assistant state (local only)
-.claude/
+# Local editor and tooling state
 .vscode/
 .idea/
 .DS_Store
