@@ -1,70 +1,69 @@
 # Working on this paper
 
-**The paper is `manuscript.md`. That is the only file you edit.**
-
-Everything else in this folder is either built from it or supports it:
+**The paper to read and submit is `hi.docx`.** It holds the whole paper in one file: the main text with its
+nine figures, then the supplement (Supplementary Notes 1–3 and Supplementary Figs. S1–S3) on a new page.
 
 | File | What it is |
 |---|---|
-| `manuscript.md` | **the paper** — the single source of truth |
-| `manuscript.docx` | built from it, for Word users and most journal portals |
-| `overleaf_project.zip` | built from it, for Overleaf |
-| `supplementary/Supplementary_Tables.xlsx` | 27 result tables, built by `scripts/16_supplementary_tables.py` |
+| `hi.docx` | **the paper** — built from the two `.md` files below; do not edit it in Word |
+| `manuscript.md` | source of the main text — the single source of truth, checked by the audit |
+| `supplementary_information.md` | source of the supplement |
+| `Supplementary_Tables.xlsx` | Tables S1–S27 (Additional file 2), built by `scripts/16_supplementary_tables.py` |
+| `figures/` | every figure as a separate file: vector `.pdf` (upload these to the journal) and `.png` (for viewing and slides); 450 dpi TIFFs, if a journal asks, are in `results/figures/paper/plos/`; copies of `results/figures/paper/`, refresh after rerunning `scripts/14_figures.py` |
+| `charts/` | summary charts for talks and slides (not in the paper), built by `scripts/30`–`31` |
 | `GUIDE.md` | this file |
-| `drafts/`, `lit/`, `sources/`, `build/`, `latex/` | old versions, literature, and build machinery — ignore them |
 
 ## The loop for every change
 
 ```bash
-nano new_paper/manuscript.md                  # 1. edit
-python scripts/23_audit_manuscript.py     # 2. verify: 112 checks, names any number that drifted
-python scripts/build/build_latex.py         # 3. rebuild Overleaf version
-node scripts/build/build_docx.js            # 3. rebuild Word version
+nano new_paper/manuscript.md                  # 1. edit (or supplementary_information.md)
+python scripts/23_audit_manuscript.py         # 2. verify: 120 checks, names any number that drifted
+node scripts/build/build_docx.js              # 3. rebuild new_paper/hi.docx
 ```
 
 Step 2 is the point of the whole setup. If you change a number by hand and it no longer matches `results/`,
 the audit fails and tells you which one. If you reran an analysis and the number legitimately moved, update
-the check too.
+the check too. An Overleaf/LaTeX version can be built on demand with `python scripts/build/build_latex.py`
+(writes `results/latex/main.tex`).
 
 ## What only you can write
 
 | Where | What goes there |
 |---|---|
-| above `## Abstract` | author names, affiliation, corresponding email, ORCIDs — there is no author block yet |
-| `**Author contributions.**` | who did what |
+| the `[Author names]` block under the title | author names, affiliations, corresponding email, ORCIDs |
+| `**Authors' contributions.**`, `**Acknowledgements.**` (under Declarations) | who did what, and thanks |
 | `**Funding.**` | grant numbers, or "received no specific grant" |
 | `[REPOSITORY URL]`, `[ZENODO DOI]` | after the code is public |
 
 To make the code public: `git push -u origin main` with a token that has the `repo` scope, then connect the
 repository on zenodo.org and cut a release there to mint the DOI.
 
-## Overleaf
+## Structure (Genome Biology research article)
 
-Upload `overleaf_project.zip`: **New Project → Upload Project → compile `main.tex` with pdfLaTeX**. Line
-numbers are on for review; delete `\linenumbers` for a clean copy.
-
-`main.tex` is generated, so the next `build_latex.py` overwrites it. Either keep editing the markdown and
-re-upload, or switch to Overleaf entirely and stop regenerating.
+Title and authors → Abstract (Background / Results / Conclusions, 349 words; limit about 350) → Keywords →
+Background → Results → Discussion → Conclusions → Methods → Declarations → References → Additional files.
 
 ## Figures
 
-Cited in order 1, 2, 3, S1, 4, S2, 5, S3, 6, 7, 8, 9. In the built versions each sits under its legend,
-which is what journals want at submission. Files are in `results/figures/paper/`: `.pdf` for LaTeX, `.png`
-for Word, `plos/*.tif` (450 dpi) for final submission. Panels are drawn at final size in Arial 5.6–8.5 pt —
-do not rescale; change `figsize` in `scripts/14_figures.py` and rebuild instead.
+Every figure sits directly after the paragraph that first cites it, with its legend underneath, and they are
+cited in order: 1, 2, S1, 3, S2, 4, S3, 5, 6, 7, 8, 9. The builders place a figure wherever a paragraph starts
+with `**Fig. N |` or `**Supplementary Fig. N |`, so to move a figure, move its legend paragraph. Files are in
+`results/figures/paper/`: `.pdf` for LaTeX, `.png` for Word, `plos/*.tif` (450 dpi) for upload at submission,
+when journals usually want each figure as a separate file as well. Panels are drawn at final size in Arial
+5.6–8.5 pt — do not rescale; change `figsize` in `scripts/14_figures.py` and rebuild instead.
 
-| Fig | File | Goes with the section |
+| Fig | File | Results section |
 |---|---|---|
 | 1 | `Fig1_design_data` | The pre-treatment state predicts a sister's fate |
 | 2 | `Fig2_predictability` | same section, model comparison |
-| 3 | `Fig3_fitness_confound` | Most of the signal is shared with the untreated control |
-| S1 | `FigS1_typicality` | A label-free measure of typicality |
+| S1 | `FigS1_gnn_ablation` | same section, graph network (Supplementary Note 1) |
+| 3 | `Fig3_fitness_confound` | Most of the signal is growth fitness |
+| S2 | `FigS2_typicality` | same section, label-free typicality |
 | 4 | `Fig4_biology` | What distinguishes the shared and drug-specific components |
-| S2 | `FigS2_marker_panel` | same section, marker panel |
+| S3 | `FigS3_marker_panel` | same section, marker panel (Supplementary Note 2) |
 | 5 | `Fig5_ceiling` | Sister discordance caps predictability |
-| S3 | `FigS3_gnn_ablation` | A graph model adds nothing over a linear model |
-| 6 | `Fig6_external_clinical` | Little transfer to other systems |
-| 7 | `Fig7_schaff_multitreatment` | A second lineage system, six treatments |
+| 6 | `Fig6_schaff_multitreatment` | Clone size, not state, dominates a second lineage system |
+| 7 | `Fig7_external_clinical` | same section, clone-level data sets, TCGA and patients |
 | 8 | `Fig8_control_free` | Without an untreated arm |
 | 9 | `Fig9_simulation` | The estimators, checked against a known answer |
 
@@ -73,8 +72,8 @@ do not rescale; change `figsize` in `scripts/14_figures.py` and rebuild instead.
 - Read it end to end, out loud. You defend every sentence in review.
 - Write a cover letter: what the paper shows, why it fits that journal, and the AI-use statement ICMJE asks
   for at submission.
-- Check the journal's limits. About 13,400 words suits PLOS Computational Biology or Genome Biology;
-  Nature-family formats are shorter and need cutting.
+- The format follows Genome Biology. Check its live guidelines once more when you submit; Nature-family
+  formats are much shorter and would need cutting.
 - Consider bioRxiv first. An independent preregistered reanalysis of one of our datasets appeared on
   20 September 2026 (Aviv, Zenodo 22850050), so priority matters.
 

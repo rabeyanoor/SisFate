@@ -140,7 +140,7 @@ tables = {
     ),
     "S16_marker_panel": (
         pd.read_csv(RES / "interpret" / "marker_panel.csv"),
-        "Pre-specified marker panel (Fig. S2): drug contrast, control contrast and their difference.",
+        "Pre-specified marker panel (Fig. S3): drug contrast, control contrast and their difference.",
     ),
     "S17_representations": (
         reps := pd.read_csv(RES / "sensitivity_representations.csv"),

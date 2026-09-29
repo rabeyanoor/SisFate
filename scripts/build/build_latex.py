@@ -1,26 +1,33 @@
-"""Turn new_paper/manuscript.md into an Overleaf-ready LaTeX project in new_paper/latex/.
+"""Turn new_paper/manuscript.md into an Overleaf-ready LaTeX project in results/latex/.
 
 The markdown is the single source of truth: it is what `scripts/23_audit_manuscript.py` checks, and both the
 .docx and this .tex are generated from it, so the three cannot drift apart. Figures are copied as PDFs where
 they exist (vector) and PNG otherwise.
 
-Run: python scripts/build/build_latex.py
+Each figure is placed where its legend sits in the markdown, which is right after the paragraph that first
+cites it, with the legend as its caption. The supplementary information is built the same way into its own file.
+
+Run: python scripts/build/build_latex.py                      (manuscript.md -> main.tex)
+     python scripts/build/build_latex.py supplementary_information  (-> supplementary_information.tex)
 """
 import re
 import shutil
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-MD = (ROOT / "new_paper" / "manuscript.md").read_text()
-OUT = ROOT / "new_paper" / "latex"
+NAME = sys.argv[1] if len(sys.argv) > 1 else "manuscript"
+MD = (ROOT / "new_paper" / f"{NAME}.md").read_text()
+TEXNAME = "main.tex" if NAME == "manuscript" else f"{NAME}.tex"
+OUT = ROOT / "results" / "latex"
 FIGDIR = ROOT / "results" / "figures" / "paper"
 (OUT / "figures").mkdir(parents=True, exist_ok=True)
 
 FIGMAP = {
     "1": "Fig1_design_data", "2": "Fig2_predictability", "3": "Fig3_fitness_confound",
-    "4": "Fig4_biology", "5": "Fig5_ceiling", "6": "Fig6_external_clinical",
-    "7": "Fig7_schaff_multitreatment", "8": "Fig8_control_free", "9": "Fig9_simulation",
-    "S1": "FigS1_typicality", "S2": "FigS2_marker_panel", "S3": "FigS3_gnn_ablation",
+    "4": "Fig4_biology", "5": "Fig5_ceiling", "6": "Fig6_schaff_multitreatment",
+    "7": "Fig7_external_clinical", "8": "Fig8_control_free", "9": "Fig9_simulation",
+    "S1": "FigS1_gnn_ablation", "S2": "FigS2_typicality", "S3": "FigS3_marker_panel",
 }
 
 SPECIALS = {"−": "$-$", "–": "--", "—": "---", "×": "$\\times$", "≤": "$\\leq$", "≥": "$\\geq$",
@@ -96,7 +103,7 @@ def inline(t: str) -> str:
     return restore_math("".join(out), spans)
 
 
-def figure_for(label: str) -> str:
+def figure_for(label: str, legend: str) -> str:
     stem = FIGMAP.get(label)
     if not stem:
         return ""
@@ -104,14 +111,13 @@ def figure_for(label: str) -> str:
         src = FIGDIR / f"{stem}{ext}"
         if src.exists():
             shutil.copy(src, OUT / "figures" / src.name)
-            star = "*" if label in ("1", "6") else ""
-            return (f"\\begin{{figure{star}}}[htbp]\n  \\centering\n"
+            return ("\\begin{figure}[!htbp]\n  \\centering\n"
                     f"  \\includegraphics[width=\\linewidth]{{figures/{src.name}}}\n"
-                    f"\\end{{figure{star}}}\n\n")
+                    f"  \\caption*{{{legend}}}\n\\end{{figure}}\n\n")
     return ""
 
 
-body, in_refs, in_legends = [], False, False
+body, in_refs = [], False
 for block in [b.strip() for b in MD.split("\n\n") if b.strip()]:
     line = " ".join(block.split("\n"))
     if line.startswith("# "):
@@ -119,7 +125,7 @@ for block in [b.strip() for b in MD.split("\n\n") if b.strip()]:
         continue
     if line.startswith("## "):
         h = line[3:]
-        in_refs, in_legends = h == "References", h == "Figure legends"
+        in_refs = h == "References"
         body.append("\\section*{" + inline(h) + "}\n")
         continue
     if line.startswith("### "):
@@ -128,10 +134,12 @@ for block in [b.strip() for b in MD.split("\n\n") if b.strip()]:
     if block.startswith("$$") and block.endswith("$$"):
         body.append("\\begin{equation}\n" + block[2:-2].strip() + "\n\\end{equation}\n")
         continue
-    if in_legends:
-        m = re.match(r"^\*\*(Supplementary )?Fig\. (\d+)", line)
-        if m:
-            body.append(figure_for(("S" if m.group(1) else "") + m.group(2)))
+    m = re.match(r"^\*\*(Supplementary )?Fig\. (\d+) \|", line)
+    if m:
+        fig = figure_for(("S" if m.group(1) else "") + m.group(2), inline(line))
+        if fig:
+            body.append(fig)
+            continue
     if in_refs:
         body.append("\\noindent " + inline(line) + "\\par\\vspace{2pt}\n")
     else:
@@ -159,7 +167,7 @@ TEX = r"""\documentclass[11pt,a4paper]{article}
 \begin{document}
 """ + "\n".join(body) + "\n\\end{document}\n"
 
-(OUT / "main.tex").write_text(TEX)
+(OUT / TEXNAME).write_text(TEX)
 (OUT / "README.md").write_text(
     "# Overleaf project\n\n"
     "Generated from `new_paper/manuscript.md`. Upload this folder to Overleaf (New Project -> Upload Project,\n"
@@ -167,4 +175,4 @@ TEX = r"""\documentclass[11pt,a4paper]{article}
     "Do not edit `main.tex` by hand: it is overwritten by `python scripts/build/build_latex.py`. Edit the\n"
     "markdown, then rerun `scripts/23_audit_manuscript.py` and the build.\n\n"
     "Line numbers are on for review; remove `\\linenumbers` for a clean copy.\n")
-print(f"wrote {OUT/'main.tex'} ({len(TEX):,} chars, {len(list((OUT/'figures').iterdir()))} figures)")
+print(f"wrote {OUT/TEXNAME} ({len(TEX):,} chars, {len(list((OUT/'figures').iterdir()))} figures)")

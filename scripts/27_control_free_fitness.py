@@ -8,9 +8,9 @@ real thing, because it has both.
 Three proxies, none of which uses control-arm labels:
   density        the label-free typicality score (negative mean distance to the 15 nearest neighbours in
                  principal-component space within a sample). No labels at all.
-  shared         the part of the signal common to the drug arms: out-of-fold scores from each drug arm are
-                 rank-normalised and averaged over the *other* arms, so an arm is never its own proxy. This
-                 is the proxy available whenever several treatments were run in parallel.
+  shared         the part of the signal common to the drug arms: a model is trained on each *other* drug arm
+                 and applied to this one, and the predicted probabilities are averaged, so an arm is never its
+                 own proxy. This is the proxy available whenever several treatments were run in parallel.
   leave_one_arm  a model trained on the pooled labels of the other drug arms, scored on this arm.
 
 For each drug arm we report the proxy's own AUROC, its agreement with the control-arm fitness score, and the

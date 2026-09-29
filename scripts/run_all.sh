@@ -17,6 +17,8 @@ $PY scripts/03_label_audit.py
 # ---- main models                                                              ~1 h
 for cc in keep regress regress_all; do
   $PY scripts/04_baselines.py --cc-mode $cc --models cov_logreg pca_logreg hvg_logreg pca_smooth_logreg
+  $PY scripts/04_baselines.py --cc-mode $cc --models pca_logreg_pooled
+  $PY scripts/04_baselines.py --cc-mode $cc --models pca_logreg_tuned --n-shuffles 1
   $PY scripts/06_fitness_confound.py --cc-mode $cc
 done
 $PY scripts/04_baselines.py --cc-mode keep --models pca_catboost --n-shuffles 1                     # ~2 h
@@ -42,9 +44,6 @@ $PY scripts/26_design_tool.py
 $PY scripts/27_control_free_fitness.py     # substitutes for an untreated arm (Fig. 8)
 $PY scripts/28_delta_refit_bootstrap.py --cc-modes keep regress regress_all --n-boot 60
                                         # the intervals quoted in the text; ~3 h
-$PY scripts/27_control_free_fitness.py     # substitutes for an untreated arm (Fig. 8)
-$PY scripts/28_delta_refit_bootstrap.py --cc-modes keep regress regress_all --n-boot 60
-                                        # the intervals quoted in the text; ~3 h
 
 # ---- alternative representations                                              ~1 h (+ GPU for Geneformer)
 uv run --with harmonypy --with scvi-tools python scripts/17_sensitivity.py
@@ -53,6 +52,10 @@ uv run --with transformers --with huggingface_hub python scripts/21_geneformer.p
 #   uv run --with transformers --with huggingface_hub python scripts/21_geneformer.py embed
 # and put emb_V2-104M_CLcancer.npy in data/processed/geneformer/ before:
 $PY scripts/21_geneformer.py analyze
+$PY scripts/29_scgpt.py export
+# The scGPT forward pass ran on a Kaggle T4 GPU (kaggle/scgpt/kernel/scgpt_embed.py, ~7 min on the GPU); put its
+# output emb_scgpt_human.npy in data/processed/scgpt/ before:
+$PY scripts/29_scgpt.py analyze
 
 # ---- external data and TCGA                                                   ~15 min
 ./scripts/00b_download_external.sh           # Watermelon, TNBC, and GSE165897 patient data
@@ -62,6 +65,9 @@ $PY scripts/10_external_validation.py
 $PY scripts/22_patient_nact.py                # patients before/after chemotherapy (GSE165897)
 ./scripts/00c_download_schaff.sh              # second lineage system, six treatments
 $PY scripts/24_schaff_multitreatment.py
+$PY scripts/24_schaff_multitreatment.py --merge-r 0.70 --tag _r70                # barcode threshold sensitivity
+$PY scripts/24_schaff_multitreatment.py --merge-r 0.85 --tag _r85
+$PY scripts/24_schaff_multitreatment.py --min-umi 3 --min-frac 0.6 --tag _strict
 rm -f results/tcga_ov_cox.csv
 for sig in specific_Carboplatin specific_Olaparib specific_NK all_Carboplatin fitness_Control; do
   $PY scripts/09_tcga_ov.py --signature $sig

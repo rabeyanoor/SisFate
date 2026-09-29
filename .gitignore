@@ -47,6 +47,7 @@ new_paper/manuscript.docx
 new_paper/latex/
 new_paper/overleaf_project.zip
 new_paper/figures/
+new_paper
 
 # Kaggle upload staging
 kaggle/geneformer/dataset/*.npz

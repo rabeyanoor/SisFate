@@ -10,7 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_latex_builds_and_validates():
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build" / "build_latex.py")], check=True, cwd=ROOT)
-    t = (ROOT / "new_paper" / "latex" / "main.tex").read_text()
+    # the supplement (with Figs. S1-S3) is built into the same folder
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "build" / "build_latex.py"), "supplementary_information"],
+                   check=True, cwd=ROOT)
+    t = (ROOT / "results" / "latex" / "main.tex").read_text()
     body = "\n".join(l for l in t.split("\n") if not l.lstrip().startswith("%"))
     for env in set(re.findall(r"\\begin\{(\w+\*?)\}", t)):
         assert len(re.findall(r"\\begin\{" + re.escape(env) + r"\}", t)) == \
@@ -28,5 +31,5 @@ def test_latex_builds_and_validates():
     legends = re.findall(r"^\*\*(Supplementary )?Fig\. (\d+)", md, re.M)
     included = len(re.findall(r"\\includegraphics", t))
     assert included == len(legends), f"{len(legends)} legends but {included} figures included"
-    for stem in ["Fig1_design_data", "Fig7_schaff_multitreatment", "Fig9_simulation", "FigS3_gnn_ablation"]:
-        assert any((ROOT / "new_paper" / "latex" / "figures").glob(stem + ".*")), stem
+    for stem in ["Fig1_design_data", "Fig6_schaff_multitreatment", "Fig9_simulation", "FigS1_gnn_ablation"]:
+        assert any((ROOT / "results" / "latex" / "figures").glob(stem + ".*")), stem

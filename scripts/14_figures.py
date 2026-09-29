@@ -442,7 +442,7 @@ ax.set_yticks(range(len(order)), [SIG_LABEL[o] for o in order], fontsize=5.8)
 ax.invert_yaxis()
 ax.set_xlabel("Post-NACT − treatment-naive score (within-patient z)")
 fig.tight_layout()
-save(fig, "Fig6_external_clinical")
+save(fig, "Fig7_external_clinical")
 
 # =============================================================== Fig 7: second lineage system (Schaff 2026)
 if (R / "schaff_predict.csv").exists():
@@ -502,7 +502,7 @@ if (R / "schaff_predict.csv").exists():
     ax.set_ylabel("AUROC")
     ax.legend(frameon=False, fontsize=5.6, loc="upper right")
     fig.tight_layout()
-    save(fig, "Fig7_schaff_multitreatment")
+    save(fig, "Fig6_schaff_multitreatment")
 
 # =============================================================== Fig 8: substitutes for an untreated arm
 if (R / "control_free_fitness.csv").exists():
@@ -590,7 +590,7 @@ if G["model"].nunique() > 1:
     ax.set_xticks(range(len(order)), [MODEL_LABEL[m] for m in order], rotation=25, ha="right")
     ax.set_ylabel("Within-arm AUROC (mean ± s.d. over seeds)")
     ax.legend(frameon=False, ncol=2)
-    save(fig, "FigS3_gnn_ablation")
+    save(fig, "FigS1_gnn_ablation")
 
 # =============================================================== Supplementary: typicality
 T2 = pd.read_csv(R / "typicality.csv")
@@ -609,7 +609,7 @@ ax.set_xticks(x, ARMS)
 ax.set_ylim(0.5, 0.82)
 ax.set_ylabel("AUROC")
 ax.legend(frameon=False, fontsize=6, loc="upper right", ncol=1)
-save(fig, "FigS1_typicality")
+save(fig, "FigS2_typicality")
 
 # =============================================================== Supplementary: marker panel
 MP = pd.read_csv(R / "interpret" / "marker_panel.csv")
@@ -638,4 +638,4 @@ for c in dict.fromkeys(cats):
     idx = [i for i, x in enumerate(cats) if x == c]
     ax.text(len(cols) - 0.4, np.mean(idx), c, fontsize=6, color=INK2, va="center", ha="left")
 fig.colorbar(im, ax=ax, shrink=0.5, pad=0.42, label="z, pre-resistant vs pre-sensitive\n(drug columns: beyond control; * FDR < 0.05)")
-save(fig, "FigS2_marker_panel")
+save(fig, "FigS3_marker_panel")

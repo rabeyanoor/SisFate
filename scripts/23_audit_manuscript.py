@@ -66,6 +66,9 @@ check("benchmark protocol, grouped CV", [0.734, 0.747],
       [bp[bp["check"] == "benchmark_protocol_grouped"]["auroc"].min(),
        bp[bp["check"] == "benchmark_protocol_grouped"]["auroc"].max()], 0.0006)
 perm = rob[rob["check"] == "all_cells"]  # the exact permutation test is run on all labelled cells
+shuf = res[res["shuffled"] & (res["split"] == "within") & (res["fold"].astype(str) == "oof")]
+cb = shuf[shuf["model"] == "pca_catboost"]["auroc"]
+check("shuffled-label gradient boosting range", [0.550, 0.562], [round(cb.min(), 3), round(cb.max(), 3)], 0.0006)
 check("permutation null mean range", [0.500, 0.501],
       [round(perm["perm_null_mean"].min(), 3), round(perm["perm_null_mean"].max(), 3)], 0.0006)
 check("permutation null sd range", [0.015, 0.019],
@@ -118,13 +121,24 @@ check("Geneformer size-matched gain range", [0.017, 0.030],
 ALT = RP[RP["representation"] != "baseline"]
 check("all alternative representations, drug range", [0.671, 0.746],
       [round(ALT["auroc_drug_model_on_drug"].min(), 3), round(ALT["auroc_drug_model_on_drug"].max(), 3)], 0.0006)
-check("all alternative representations, fitness range", [0.634, 0.722],
+check("all alternative representations, fitness range", [0.627, 0.722],
       [round(ALT["auroc_fitness_model_on_drug"].min(), 3),
        round(ALT["auroc_fitness_model_on_drug"].max(), 3)], 0.0006)
-check("all alternative representations, gain range", [0.013, 0.032],
+check("all alternative representations, gain range", [0.013, 0.049],
       [round(ALT["specificity_index_size_matched"].min(), 3),
        round(ALT["specificity_index_size_matched"].max(), 3)], 0.0006)
 in_text("Geneformer 0.67–0.68", "foundation model in abstract")
+SG = RP[RP["representation"] == "scgpt_human"]
+if len(SG):
+    check("scGPT embedding dimension", 512, SG["n_dims"].iloc[0], 0)
+    check("scGPT drug-arm range", [0.673, 0.693],
+          [round(SG["auroc_drug_model_on_drug"].min(), 3), round(SG["auroc_drug_model_on_drug"].max(), 3)], 0.0006)
+    check("scGPT fitness range", [0.627, 0.658],
+          [round(SG["auroc_fitness_model_on_drug"].min(), 3), round(SG["auroc_fitness_model_on_drug"].max(), 3)], 0.0006)
+    check("scGPT gain range", [0.030, 0.049],
+          [round(SG["specificity_index_size_matched"].min(), 3),
+           round(SG["specificity_index_size_matched"].max(), 3)], 0.0006)
+    in_text("scGPT 0.67–0.69", "second foundation model in abstract")
 
 # --- typicality
 T = pd.read_csv(R / "typicality.csv")
@@ -228,6 +242,12 @@ if (R / "schaff_predict.csv").exists():
     check("schaff clone size range", [0.68, 0.90], [round(cs.min(), 2), round(cs.max(), 2)], 0.006)
     check("schaff expression range", [0.54, 0.66], [round(ex.min(), 2), round(ex.max(), 2)], 0.006)
     check("schaff untreated cells", 7165, int(SP["n_test"].iloc[0]), 0)
+    log = ROOT / "logs" / "schaff.log"  # the lineage count is only logged by scripts/24
+    if log.exists():
+        m = re.search(r"untreated cells with a lineage: \d+, lineages: (\d+)", log.read_text())
+        if m:
+            check("schaff untreated lineages", 1359, int(m.group(1)), 0)
+    in_text("7,165 untreated cells from 1,359 lineages", "schaff lineage count in text")
     check("schaff prevalence range", [0.306, 0.783],
           [round(SP["prevalence"].min(), 3), round(SP["prevalence"].max(), 3)], 0.0006)
     SA = pd.read_csv(R / "schaff_clone_size_adjusted.csv").set_index("treatment")
