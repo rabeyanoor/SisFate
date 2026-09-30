@@ -1,7 +1,7 @@
 """Do the ReSisTrace signatures mark cancer cells that persist through chemotherapy in patients?
 
 Data: Zhang et al. (2022, Sci Adv) scRNA-seq of 11 high-grade serous ovarian cancer patients sampled before
-(treatment-naive, TN) and after three cycles of neoadjuvant carboplatin-paclitaxel (post-NACT, PN); GEO
+(treatment-naive, TN) and after three cycles of neoadjuvant platinum-taxane chemotherapy (post-NACT, PN); GEO
 GSE165897. Clinical data (platinum-free interval, chemotherapy response score) are from their Table 1
 (data/external/zhang2022/clinical_table1.csv).
 
