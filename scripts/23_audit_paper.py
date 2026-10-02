@@ -1,7 +1,7 @@
-"""Check the numbers quoted in new_paper/manuscript.md against the tables in results/.
+"""Check the numbers quoted in new_paper/paper.md against the tables in results/.
 
 Each check names the sentence it verifies, recomputes the value from a results file, and compares with a
-tolerance. Anything that does not match is printed and the script exits non-zero, so the manuscript cannot
+tolerance. Anything that does not match is printed and the script exits non-zero, so the paper cannot
 drift away from the analyses. Values quoted from other papers are listed at the end and are not checked here.
 """
 import json
@@ -14,19 +14,19 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 R = ROOT / "results"
-MD = (ROOT / "new_paper" / "manuscript.md").read_text()
+MD = (ROOT / "new_paper" / "paper.md").read_text()
 fails, checks = [], 0
 
 
 def check(name: str, quoted, computed, tol=0.0006):
-    """quoted: value(s) as written in the manuscript; computed: value(s) from results/."""
+    """quoted: value(s) as written in the paper; computed: value(s) from results/."""
     global checks
     checks += 1
     q = [quoted] if not isinstance(quoted, (list, tuple)) else list(quoted)
     c = [computed] if not isinstance(computed, (list, tuple)) else list(computed)
     ok = len(q) == len(c) and all(abs(float(a) - float(b)) <= tol for a, b in zip(q, c))
     if not ok:
-        fails.append(f"{name}: manuscript {q} vs results {[round(float(x), 4) for x in c]}")
+        fails.append(f"{name}: paper {q} vs results {[round(float(x), 4) for x in c]}")
 
 
 def in_text(s: str, name: str):
@@ -41,6 +41,7 @@ res = res[(res["cc_mode"] == "keep") & ((res["split"] != "within") | (res["fold"
 res["shuffled"] = res["shuffled"].astype(str).str.lower() == "true"
 real = res[~res["shuffled"]].drop_duplicates(["model", "split", "train", "test", "seed", "notes"], keep="last")
 W = real[real["split"] == "within"].groupby(["model", "train"])["auroc"].mean()
+W_MAIN = W  # W is reused for other tables below
 ARMS = ["Carboplatin", "Olaparib", "NK", "Control"]
 
 # --- Results, first section
@@ -127,7 +128,6 @@ check("all alternative representations, fitness range", [0.627, 0.722],
 check("all alternative representations, gain range", [0.013, 0.049],
       [round(ALT["specificity_index_size_matched"].min(), 3),
        round(ALT["specificity_index_size_matched"].max(), 3)], 0.0006)
-in_text("Geneformer 0.67–0.68", "foundation model in abstract")
 SG = RP[RP["representation"] == "scgpt_human"]
 if len(SG):
     check("scGPT embedding dimension", 512, SG["n_dims"].iloc[0], 0)
@@ -138,7 +138,6 @@ if len(SG):
     check("scGPT gain range", [0.030, 0.049],
           [round(SG["specificity_index_size_matched"].min(), 3),
            round(SG["specificity_index_size_matched"].max(), 3)], 0.0006)
-    in_text("scGPT 0.67–0.69", "second foundation model in abstract")
 
 # --- typicality
 T = pd.read_csv(R / "typicality.csv")
@@ -198,7 +197,7 @@ TC = pd.read_csv(R / "tcga_ov_cox.csv").drop_duplicates(["signature", "endpoint"
 ola = TC[(TC["signature"] == "specific_Olaparib") & (TC["endpoint"] == "OS")].iloc[0]
 check("TCGA olaparib HR", [1.20, 1.03, 1.39], [ola["HR_per_sd"], ola["lo"], ola["hi"]], 0.005)
 check("TCGA olaparib p", 0.017, ola["p"], 0.0006)
-# Benjamini-Hochberg over the 10 tests, as in the manuscript
+# Benjamini-Hochberg over the 10 tests, as in the paper
 _p = TC["p"].to_numpy()
 _o = _p.argsort()
 _q = _p[_o] * len(_p) / np.arange(1, len(_p) + 1)
@@ -298,11 +297,10 @@ if (R / "simulation_calibration.csv").exists():
     ln = SIM[SIM["parameter"] == "label_noise"]
     check("simulation label-noise bias bound", 0.003, round(ln["bias_delta"].abs().max() + 0.0007, 3), 0.0011)
     dc = SIM[(SIM["parameter"] == "depth_effect") & (SIM["value"] > 0)].iloc[0]
-    check("simulation depth-confound bias", -0.018, round(dc["bias_delta"], 3), 0.0006)
-    check("simulation depth-confound coverage", 0.24, dc["coverage_delta_95"], 0.0006)
-    rest = SIM[~((SIM["parameter"] == "depth_effect") & (SIM["value"] > 0))]
-    check("simulation coverage range", [0.52, 0.88],
-          [round(rest["coverage_delta_95"].min(), 2), round(rest["coverage_delta_95"].max(), 2)], 0.006)
+    check("simulation depth-confound bias and truth", [-0.002, 0.015],
+          [round(dc["bias_delta"], 3), round(dc["truth_delta"], 3)], 0.0006)
+    check("simulation coverage range, all settings", [0.52, 0.88],
+          [round(SIM["coverage_delta_95"].min(), 2), round(SIM["coverage_delta_95"].max(), 2)], 0.006)
     ff = SIM[SIM["parameter"] == "fate_from_own"].set_index("value")
     check("ceiling accurate when assumption holds", 0.005,
           round(abs(ff.loc[1.0, "bias_ceiling_vs_empirical"]) + 0.0005, 3), 0.0011)
@@ -320,40 +318,130 @@ if (R / "delta_auroc_refit_ci.csv").exists():
     if len(k) == 3:
         check("refit point estimates", [0.017, 0.022, 0.014],
               [round(k.loc[a, "delta"], 3) for a in ["Carboplatin", "Olaparib", "NK"]], 0.0006)
-        check("refit CI carboplatin", [-0.002, 0.043],
-              [round(k.loc["Carboplatin", "delta_lo"], 3), round(k.loc["Carboplatin", "delta_hi"], 3)], 0.0006)
+        check("refit CI carboplatin", [-0.0002, 0.043],
+              [round(k.loc["Carboplatin", "delta_lo"], 4), round(k.loc["Carboplatin", "delta_hi"], 3)], 0.0006)
         check("refit CI olaparib", [-0.004, 0.046],
               [round(k.loc["Olaparib", "delta_lo"], 3), round(k.loc["Olaparib", "delta_hi"], 3)], 0.0006)
-        check("refit CI NK", [-0.011, 0.038],
+        check("refit CI NK", [-0.010, 0.043],
               [round(k.loc["NK", "delta_lo"], 3), round(k.loc["NK", "delta_hi"], 3)], 0.0006)
-        check("refit p-value range", [0.07, 0.21],
+        check("refit p-value range", [0.03, 0.20],
               [round(k["p_boot_delta_le_0"].min(), 2), round(k["p_boot_delta_le_0"].max(), 2)], 0.006)
         checks += 1
         if not (k["delta_lo"] < 0).all():
             fails.append("a keep-mode refit interval excludes zero, but the text says none does")
-    check("refit intervals excluding zero, all variants", 1, int((RF["delta_lo"] > 0).sum()), 0)
+    check("refit intervals excluding zero, all variants", 2, int((RF["delta_lo"] > 0).sum()), 0)
     check("refit arm-variant combinations", 9, len(RF), 0)
-    check("refit positive estimates", 8, int((RF["delta"] > 0.001).sum()), 0)
+    check("refit estimates above 0.01", 8, int((RF["delta"] > 0.01).sum()), 0)
+    check("refit smallest estimate (NK, all covariates removed)", 0.001, round(RF["delta"].min(), 3), 0.0006)
+    ex = RF[RF["delta_lo"] > 0].sort_values("drug_arm")
+    check("refit intervals excluding zero", [0.001, 0.044, 0.0004, 0.047],
+          [round(ex.iloc[0]["delta_lo"], 3), round(ex.iloc[0]["delta_hi"], 3),
+           round(ex.iloc[1]["delta_lo"], 4), round(ex.iloc[1]["delta_hi"], 3)], 0.0006)
+    checks += 1
+    if set(ex["cc_mode"]) != {"regress"}:
+        fails.append("the refit intervals excluding zero are not both from the cell-cycle-removed variant")
     ol = RF[RF["drug_arm"] == "Olaparib"].set_index("cc_mode")
-    check("olaparib p across variants", [0.066, 0.033, 0.098],
+    check("olaparib p across variants", [0.035, 0.020, 0.080],
           [round(ol.loc[m, "p_boot_delta_le_0"], 3) for m in ["keep", "regress", "regress_all"]], 0.0011)
     rg = RF[(RF["cc_mode"] == "regress") & (RF["drug_arm"] == "Olaparib")].iloc[0]
-    check("olaparib regress interval", [0.025, 0.002, 0.047],
-          [round(rg["delta"], 3), round(rg["delta_lo"], 3), round(rg["delta_hi"], 3)], 0.0011)
+    check("olaparib regress interval", [0.025, 0.0004, 0.047],
+          [round(rg["delta"], 3), round(rg["delta_lo"], 4), round(rg["delta_hi"], 3)], 0.0011)
 
 # --- design calculation
 if (R / "design_resistrace.csv").exists():
     DS = pd.read_csv(R / "design_resistrace.csv")
-    check("resolvable gain range", [0.023, 0.025],
+    check("resolvable gain range", [0.025, 0.028],
           [round(DS["smallest_detectable_delta_80pct"].min(), 3),
            round(DS["smallest_detectable_delta_80pct"].max(), 3)], 0.0011)
     check("control families", 3879, int(DS["n_control_families"].iloc[0]), 0)
+
+DRUGS3 = ["Carboplatin", "Olaparib", "NK"]
+
+# --- abstract length (Genome Biology: at most 350 words)
+_ab = MD[MD.index("## Abstract") + len("## Abstract"):MD.index("**Keywords")]
+_n_words = len(re.findall(r"\S+", _ab))
+checks += 1
+if _n_words > 350:
+    fails.append(f"abstract has {_n_words} words, more than 350")
+
+# --- fitness / general treatment / drug-unique (scripts/33)
+TL = pd.read_csv(R / "three_level_decomposition.csv")
+TL = TL[TL["cc_mode"] == "keep"].set_index("arm")
+check("general-treatment gains", [0.004, 0.006, 0.006], [round(TL.loc[a, "gain_general"], 3) for a in DRUGS3], 0.0006)
+check("drug-unique gains", [0.012, 0.020, 0.012], [round(TL.loc[a, "gain_unique"], 3) for a in DRUGS3], 0.0006)
+sh = TL["gain_general"] / TL["gain_total"]
+check("shared fraction a fifth to a third", [0.20, 0.33], [sh.min(), sh.max()], 0.02)
+checks += 1
+if not (TL["gain_general_lo"] < 0).all():
+    fails.append("a general-treatment interval excludes zero")
+check("olaparib general interval", [-0.021, 0.026],
+      [TL.loc["Olaparib", "gain_general_lo"], TL.loc["Olaparib", "gain_general_hi"]], 0.0006)
+check("olaparib unique interval", [0.003, 0.042],
+      [TL.loc["Olaparib", "gain_unique_lo"], TL.loc["Olaparib", "gain_unique_hi"]], 0.0006)
+check("carboplatin, NK unique intervals", [-0.012, 0.029, -0.002, 0.035],
+      [TL.loc["Carboplatin", "gain_unique_lo"], TL.loc["Carboplatin", "gain_unique_hi"],
+       TL.loc["NK", "gain_unique_lo"], TL.loc["NK", "gain_unique_hi"]], 0.0006)
+check("unique intervals excluding zero", 1, int((TL["gain_unique_lo"] > 0).sum()), 0)
+check("three-level bootstrap replicates", 200, int(TL["n_boot"].min()), 0)
+
+# --- genes unique to one drug (scripts/34)
+DU = pd.read_csv(R / "drug_unique_summary.csv").set_index("arm")
+check("drug-unique gene counts", [8, 4, 48], [DU.loc[a, "n_unique"] for a in ["Carboplatin", "Olaparib", "NK"]], 0)
+PS = pd.read_csv(R / "drug_unique_prespecified.csv").set_index(["arm", "term"])
+check("olaparib DNA repair p, adjusted", [0.042, 0.094],
+      [PS.loc[("Olaparib", "DNA Repair"), "nom_p"], PS.loc[("Olaparib", "DNA Repair"), "bh_prespecified"]], 0.0006)
+check("NK allograft p, adjusted", [0.047, 0.094],
+      [PS.loc[("NK", "Allograft Rejection"), "nom_p"], PS.loc[("NK", "Allograft Rejection"), "bh_prespecified"]], 0.0006)
+
+# --- published claims of Dai et al. 2024 (scripts/35)
+PC = pd.read_csv(R / "published_claims.csv")
+PCI = PC.set_index(["source", "arm", "gene_set"])
+SURV = ["nuclear-transcribed mRNA catabolic process, nonsense-mediated decay", "cytoplasmic translation",
+        "protein targeting to ER"]
+ctl = [PCI.loc[("published_log2FC", "Control", s), "NES"] for s in SURV]
+drg = [PCI.loc[("published_log2FC", a, s), "NES"] for a in DRUGS3 for s in SURV]
+sub = [PCI.loc[("published_minus_control", a, s), "NES"] for a in DRUGS3 for s in SURV]
+check("surveillance NES control", [1.64, 1.76], [min(ctl), max(ctl)], 0.006)
+check("surveillance NES drug arms", [1.75, 2.25], [min(drg), max(drg)], 0.006)
+check("surveillance NES minus control", [1.51, 2.28], [min(sub), max(sub)], 0.006)
+checks += 1
+if max(PCI.loc[("published_log2FC", "Control", s), "NOM p-val"] for s in SURV) >= 0.001:
+    fails.append("surveillance sets not p < 0.001 in the control arm")
+check("surveillance minus control max p", 0.008,
+      max(PCI.loc[("published_minus_control", a, s), "NOM p-val"] for a in DRUGS3 for s in SURV), 0.0006)
+UPR = "PERK-mediated unfolded protein response"
+check("UPR control p", 0.54, PCI.loc[("published_log2FC", "Control", UPR), "NOM p-val"], 0.006)
+check("UPR beyond control max p", 0.013, max(PCI.loc[("published_minus_control", a, UPR), "NOM p-val"] for a in DRUGS3), 0.0006)
+def con(src, a):
+    return PCI.loc[(src, a, "HRD_COV362_connectivity"), "NES"]
+check("HRD connectivity control", -1.52, con("published_log2FC", "Control"), 0.006)
+check("HRD connectivity drug arms", [-1.76, -1.54], [min(con("published_log2FC", a) for a in DRUGS3),
+                                                     max(con("published_log2FC", a) for a in DRUGS3)], 0.006)
+check("HRD connectivity minus control", [-1.73, -1.41], [min(con("published_minus_control", a) for a in DRUGS3),
+                                                         max(con("published_minus_control", a) for a in DRUGS3)], 0.006)
+tc = PC[(PC["source"] == "published_log2FC") & PC["gene_set"].isin(["HRD_TCGA_up", "HRD_TCGA_down"])]["NOM p-val"]
+checks += 1
+if not (tc > 0.3).all():
+    fails.append("TCGA HRD sets not all p > 0.3")
+checks += 1
+if not con("published_log2FC", "NK") == min(con("published_log2FC", a) for a in DRUGS3):
+    fails.append("NK is not the strongest HRD connection")
+
+# --- upper bound on the drug-specific gain: refit-interval upper ends against the above-chance AUROC
+RF = pd.read_csv(R / "delta_auroc_refit_ci.csv")
+RFk = RF[RF["cc_mode"] == "keep"].set_index("drug_arm")
+check("refit upper ends", [0.043, 0.046], [RFk["delta_hi"].min(), RFk["delta_hi"].max()], 0.0006)
+above = [W_MAIN[("pca_logreg", a)] - 0.5 for a in DRUGS3]
+check("above-chance AUROC range", [0.22, 0.25], [min(above), max(above)], 0.006)
+checks += 1
+if not all(RFk.loc[a, "delta_hi"] / (W_MAIN[("pca_logreg", a)] - 0.5) < 0.2 for a in DRUGS3):
+    fails.append("upper end of the drug-specific gain is not below a fifth of the above-chance AUROC in every arm")
 
 # --- phrases that must stay in step with the tables
 in_text("32,642 pre-treatment cells", "labelled cell count in text")
 in_text("3,477 pairs of sisters", "sister pair count in text")
 in_text("8,806 malignant cells", "patient malignant cell count")
-in_text("Supplementary Tables S1–S27", "supplementary table range")
+in_text("Supplementary Tables S1–S30", "supplementary table range")
 
 print(f"{checks} checks, {len(fails)} failed")
 for f in fails:

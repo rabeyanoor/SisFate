@@ -1,14 +1,14 @@
 # Working on this paper
 
 **The paper to read and submit is `hi.docx`.** It holds the whole paper in one file: the main text with its
-nine figures, then the supplement (Supplementary Notes 1–3 and Supplementary Figs. S1–S3) on a new page.
+seven figures, then the supplement (Supplementary Notes 1–3 and Supplementary Figs. S1–S5) on a new page.
 
 | File | What it is |
 |---|---|
 | `hi.docx` | **the paper** — built from the two `.md` files below; do not edit it in Word |
-| `manuscript.md` | source of the main text — the single source of truth, checked by the audit |
+| `paper.md` | source of the main text — the single source of truth, checked by the audit |
 | `supplementary_information.md` | source of the supplement |
-| `Supplementary_Tables.xlsx` | Tables S1–S27 (Additional file 2), built by `scripts/16_supplementary_tables.py` |
+| `Supplementary_Tables.xlsx` | Tables S1–S30 (Additional file 2), built by `scripts/16_supplementary_tables.py` |
 | `figures/` | every figure as a separate file: vector `.pdf` (upload these to the journal) and `.png` (for viewing and slides); 450 dpi TIFFs, if a journal asks, are in `results/figures/paper/plos/`; copies of `results/figures/paper/`, refresh after rerunning `scripts/14_figures.py` |
 | `charts/` | summary charts for talks and slides (not in the paper), built by `scripts/30`–`31` |
 | `GUIDE.md` | this file |
@@ -16,9 +16,10 @@ nine figures, then the supplement (Supplementary Notes 1–3 and Supplementary F
 ## The loop for every change
 
 ```bash
-nano new_paper/manuscript.md                  # 1. edit (or supplementary_information.md)
-python scripts/23_audit_manuscript.py         # 2. verify: 120 checks, names any number that drifted
+nano new_paper/paper.md                  # 1. edit (or supplementary_information.md)
+python scripts/23_audit_paper.py         # 2. verify: 148 checks, names any number that drifted
 node scripts/build/build_docx.js              # 3. rebuild new_paper/hi.docx
+uv run --with pypandoc_binary python scripts/build/docx_math.py   #    then make its equations native Word equations
 ```
 
 Step 2 is the point of the whole setup. If you change a number by hand and it no longer matches `results/`,
@@ -64,8 +65,8 @@ when journals usually want each figure as a separate file as well. Panels are dr
 | 5 | `Fig5_ceiling` | Sister discordance caps predictability |
 | 6 | `Fig6_schaff_multitreatment` | Clone size, not state, dominates a second lineage system |
 | 7 | `Fig7_external_clinical` | same section, clone-level data sets, TCGA and patients |
-| 8 | `Fig8_control_free` | Without an untreated arm |
-| 9 | `Fig9_simulation` | The estimators, checked against a known answer |
+| S4 | `FigS4_control_free` | Without an untreated arm |
+| S5 | `FigS5_simulation` | The estimators, checked against a known answer |
 
 ## Before submitting
 

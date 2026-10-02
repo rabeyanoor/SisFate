@@ -31,6 +31,7 @@ ap.add_argument("--n-rep", type=int, default=40, help="replicate experiments per
 ap.add_argument("--n-boot", type=int, default=400)
 ap.add_argument("--n-subsamples", type=int, default=5)
 ap.add_argument("--quick", action="store_true", help="a single small setting, for a smoke test")
+ap.add_argument("--settings", nargs="+", help="rerun only these settings and update their rows in the existing table")
 args = ap.parse_args()
 cfg = load_config(args.config)
 log = get_logger("simulation")
@@ -50,6 +51,8 @@ SETTINGS = [("drug_specific_strength", "b", [0.0, 0.15, 0.25, 0.40]),
 if args.quick:
     SETTINGS = [("drug_specific_strength", "b", [0.0, 0.25])]
     args.n_rep, args.n_boot = 4, 100
+if args.settings:
+    SETTINGS = [s for s in SETTINGS if s[0] in args.settings]
 
 rows = []
 for setting, key, values in SETTINGS:
@@ -112,5 +115,12 @@ for setting, key, values in SETTINGS:
                  f"{rows[-1]['mean_score_concordance']:.3f}")
 
 df = pd.DataFrame(rows)
+if args.settings and (R / "simulation_calibration.csv").exists():
+    old = pd.read_csv(R / "simulation_calibration.csv")
+    key = ["setting", "value"]
+    new = df.set_index(key)
+    old = old.set_index(key)
+    old.update(new)
+    df = old.reset_index()[df.columns]
 df.to_csv(R / "simulation_calibration.csv", index=False)
 print(df.round(4).to_string(index=False))

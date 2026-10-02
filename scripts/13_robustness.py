@@ -5,7 +5,7 @@
   benchmark_protocol  mimic Shen et al. 2026: olaparib arm, pre-resistant vs an equal-size random subset
                     of pre-sensitive cells (3 draws), plain stratified 5-fold CV without lineage groups
   grouped_balanced  same balanced draws but with lineage-grouped folds, to show the grouping effect
-  permutation_p     family-level label permutations (n=200) for an exact within-arm p-value
+  permutation_p     family-level label permutations (n=100) for an exact within-arm p-value
 """
 import argparse
 import sys
@@ -25,7 +25,7 @@ from persist.utils import get_logger, load_config  # noqa: E402
 ap = argparse.ArgumentParser()
 ap.add_argument("--config")
 ap.add_argument("--cc-mode", choices=["keep", "regress", "regress_all"])
-ap.add_argument("--n-perm", type=int, default=200)
+ap.add_argument("--n-perm", type=int, default=100)
 args = ap.parse_args()
 cfg = load_config(args.config)
 log = get_logger("robustness")

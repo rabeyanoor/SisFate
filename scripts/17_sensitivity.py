@@ -98,6 +98,9 @@ ctx.feats["pca"] = base_pca
 
 df = pd.DataFrame(rows)
 out = Path(cfg["paths"]["results_dir"]) / "sensitivity_representations.csv"
+if out.exists():  # keep rows written by 21_geneformer.py and 29_scgpt.py for other representations
+    old = pd.read_csv(out)
+    df = pd.concat([old[~old["representation"].isin(args.reps)], df], ignore_index=True)
 df.to_csv(out, index=False)
 cols = ["representation", "drug_arm", "auroc_drug_model_on_drug", "auroc_fitness_model_on_drug",
         "auroc_control_model_on_control", "specificity_index_size_matched", "auroc_drug_residual_on_drug"]

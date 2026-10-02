@@ -1,13 +1,13 @@
-"""Turn new_paper/manuscript.md into an Overleaf-ready LaTeX project in results/latex/.
+"""Turn new_paper/paper.md into an Overleaf-ready LaTeX project in results/latex/.
 
-The markdown is the single source of truth: it is what `scripts/23_audit_manuscript.py` checks, and both the
+The markdown is the single source of truth: it is what `scripts/23_audit_paper.py` checks, and both the
 .docx and this .tex are generated from it, so the three cannot drift apart. Figures are copied as PDFs where
 they exist (vector) and PNG otherwise.
 
 Each figure is placed where its legend sits in the markdown, which is right after the paragraph that first
 cites it, with the legend as its caption. The supplementary information is built the same way into its own file.
 
-Run: python scripts/build/build_latex.py                      (manuscript.md -> main.tex)
+Run: python scripts/build/build_latex.py                      (paper.md -> main.tex)
      python scripts/build/build_latex.py supplementary_information  (-> supplementary_information.tex)
 """
 import re
@@ -16,9 +16,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-NAME = sys.argv[1] if len(sys.argv) > 1 else "manuscript"
+NAME = sys.argv[1] if len(sys.argv) > 1 else "paper"
 MD = (ROOT / "new_paper" / f"{NAME}.md").read_text()
-TEXNAME = "main.tex" if NAME == "manuscript" else f"{NAME}.tex"
+TEXNAME = "main.tex" if NAME == "paper" else f"{NAME}.tex"
 OUT = ROOT / "results" / "latex"
 FIGDIR = ROOT / "results" / "figures" / "paper"
 (OUT / "figures").mkdir(parents=True, exist_ok=True)
@@ -26,8 +26,9 @@ FIGDIR = ROOT / "results" / "figures" / "paper"
 FIGMAP = {
     "1": "Fig1_design_data", "2": "Fig2_predictability", "3": "Fig3_fitness_confound",
     "4": "Fig4_biology", "5": "Fig5_ceiling", "6": "Fig6_schaff_multitreatment",
-    "7": "Fig7_external_clinical", "8": "Fig8_control_free", "9": "Fig9_simulation",
+    "7": "Fig7_external_clinical",
     "S1": "FigS1_gnn_ablation", "S2": "FigS2_typicality", "S3": "FigS3_marker_panel",
+    "S4": "FigS4_control_free", "S5": "FigS5_simulation",
 }
 
 SPECIALS = {"−": "$-$", "–": "--", "—": "---", "×": "$\\times$", "≤": "$\\leq$", "≥": "$\\geq$",
@@ -146,7 +147,7 @@ for block in [b.strip() for b in MD.split("\n\n") if b.strip()]:
         body.append(inline(line) + "\n")
 
 TEX = r"""\documentclass[11pt,a4paper]{article}
-% Generated from new_paper/manuscript.md by scripts/build/build_latex.py -- edit the markdown, not this file.
+% Generated from new_paper/paper.md by scripts/build/build_latex.py -- edit the markdown, not this file.
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -170,9 +171,9 @@ TEX = r"""\documentclass[11pt,a4paper]{article}
 (OUT / TEXNAME).write_text(TEX)
 (OUT / "README.md").write_text(
     "# Overleaf project\n\n"
-    "Generated from `new_paper/manuscript.md`. Upload this folder to Overleaf (New Project -> Upload Project,\n"
+    "Generated from `new_paper/paper.md`. Upload this folder to Overleaf (New Project -> Upload Project,\n"
     "after zipping it) and compile `main.tex` with pdfLaTeX.\n\n"
     "Do not edit `main.tex` by hand: it is overwritten by `python scripts/build/build_latex.py`. Edit the\n"
-    "markdown, then rerun `scripts/23_audit_manuscript.py` and the build.\n\n"
+    "markdown, then rerun `scripts/23_audit_paper.py` and the build.\n\n"
     "Line numbers are on for review; remove `\\linenumbers` for a clean copy.\n")
 print(f"wrote {OUT/TEXNAME} ({len(TEX):,} chars, {len(list((OUT/'figures').iterdir()))} figures)")

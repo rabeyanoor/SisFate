@@ -41,9 +41,14 @@ $PY scripts/15_typicality.py
 $PY scripts/20_delta_auroc_ci.py                                                                     # ~15 min
 $PY scripts/25_simulation.py --n-rep 25                                                               # ~4 h
 $PY scripts/26_design_tool.py
-$PY scripts/27_control_free_fitness.py     # substitutes for an untreated arm (Fig. 8)
-$PY scripts/28_delta_refit_bootstrap.py --cc-modes keep regress regress_all --n-boot 60
-                                        # the intervals quoted in the text; ~3 h
+$PY scripts/27_control_free_fitness.py     # substitutes for an untreated arm (Fig. S4)
+for cc in keep regress regress_all; do       # the intervals quoted in the text; ~3 h per mode, run in parallel
+  $PY scripts/28_delta_refit_bootstrap.py --cc-modes $cc --n-boot 200 --out delta_auroc_refit_ci_$cc.csv &
+done; wait
+$PY -c "import pandas as pd; pd.concat(pd.read_csv(f'results/delta_auroc_refit_ci_{m}.csv') for m in ['keep', 'regress', 'regress_all']).to_csv('results/delta_auroc_refit_ci.csv', index=False)"
+for cc in keep regress_all; do               # fitness / general treatment / drug-unique; ~2 h per arm, in parallel
+  for a in Carboplatin Olaparib NK; do $PY scripts/33_three_level_decomposition.py --cc-modes $cc --arms $a --n-boot 200 & done; wait
+done
 
 # ---- alternative representations                                              ~1 h (+ GPU for Geneformer)
 uv run --with harmonypy --with scvi-tools python scripts/17_sensitivity.py
@@ -63,6 +68,8 @@ tools/renv/bin/Rscript scripts/export_seurat.R data/external/scastral/Afa.TS.Seu
 gzip -f data/external/scastral/export/counts.mtx
 $PY scripts/10_external_validation.py
 $PY scripts/22_patient_nact.py                # patients before/after chemotherapy (GSE165897)
+$PY scripts/34_drug_unique_genes.py           # genes unique to one drug (needs 08)
+uv run --with openpyxl python scripts/35_published_claims.py   # Dai et al. 2024 claims vs the untreated arm
 ./scripts/00c_download_schaff.sh              # second lineage system, six treatments
 $PY scripts/24_schaff_multitreatment.py
 $PY scripts/24_schaff_multitreatment.py --merge-r 0.70 --tag _r70                # barcode threshold sensitivity
@@ -73,9 +80,11 @@ for sig in specific_Carboplatin specific_Olaparib specific_NK all_Carboplatin fi
   $PY scripts/09_tcga_ov.py --signature $sig
 done
 
-# ---- summaries, figures, tables, manuscript
+# ---- summaries, figures, tables, paper
 for cc in keep regress regress_all; do $PY scripts/11_summarize.py --cc-mode $cc; done
 $PY scripts/14_figures.py                   # results/figures/paper/*.png|pdf and plos/*.tif
+$PY scripts/30_model_comparison_chart.py && $PY scripts/31_summary_charts.py   # plain charts in new_paper/charts/
 uv run --with openpyxl python scripts/16_supplementary_tables.py
-$PY scripts/23_audit_manuscript.py           # fails if any quoted number disagrees with results/
+$PY scripts/23_audit_paper.py           # fails if any quoted number disagrees with results/
 (cd scripts/build && npm install --silent && node build_docx.js)
+uv run --with pypandoc_binary python scripts/build/docx_math.py   # equations -> native Word equations

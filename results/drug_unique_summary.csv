@@ -1,0 +1,4 @@
+arm,n_genes,n_unique,n_unique_up,n_unique_down,top_up,top_down,n_hallmark_fdr05,hallmark_up,hallmark_down
+Carboplatin,4966,8,7,1,LYPD1;ANXA1;ITGB4;PSMB6;EMC6;NAA38;ANXA2,PBX1,2,Oxidative Phosphorylation,TGF-beta Signaling
+Olaparib,4966,4,1,3,MT2A,EPDR1;EPN2;GLOD4,3,E2F Targets;G2-M Checkpoint,Interferon Alpha Response
+NK,4966,48,4,44,STX18;APP;ERBB4;GLOD4,DDAH2;SH3BGRL3;CTNNAL1;CAV1;ITGB4;IGFBP6;CD59;TGFB1;SELENOM;PPP1R14A,2,,p53 Pathway;Inflammatory Response

@@ -23,9 +23,10 @@ Dimension 0 is a generic fitness axis shared by both arms, dimension 1 is drug-s
 when l exceeds the (1 - prevalence) quantile; a fraction `label_noise` of true positives is then flipped to
 negative, which is how ReSisTrace loses a sister.
 
-Ground truth. z and the measurement noise are Gaussian and independent, so E[z | x] is proportional to x and
-the best possible drug score is a * x[0] + b * x[1], the best possible fitness score x[0]. The population
-value of everything the framework reports therefore follows from one large draw.
+Ground truth. Everything is jointly Gaussian, so the best possible score of the sequenced sister is the linear
+predictor E[l | x_seq], available in closed form (`optimal_weights`). Without the depth confound it is
+a * x[0] + b * x[1] for the drug arm and x[0] for the fitness model; with it, both also read depth from the
+remaining dimensions. The population value of everything the framework reports then follows from one large draw.
 """
 from __future__ import annotations
 
@@ -48,8 +49,6 @@ def _draw(rng, n, d, sister_noise, depth_effect):
 
 def _liability(z, x_tre, is_drug, a, b, fate_from_own, depth, depth_effect, rng):
     u = fate_from_own * x_tre + (1 - fate_from_own) * z
-    u = u / np.sqrt(fate_from_own ** 2 * (1 + 0.0) + (1 - fate_from_own) ** 2 + 2 * fate_from_own
-                    * (1 - fate_from_own) + 1e-12) if False else u
     share = a * u[:, 0] + (b * u[:, 1] if is_drug else 0.0)
     resid = 1 - a ** 2 - (b ** 2 if is_drug else 0.0)
     l = share + np.sqrt(max(resid, 1e-12)) * rng.standard_normal(len(u))
@@ -90,6 +89,27 @@ def simulate(n_families: int = 4000, d: int = 10, a: float = 0.55, b: float = 0.
             np.concatenate(arms), extras)
 
 
+def optimal_weights(d: int, a: float, b: float, sister_noise: float, depth_effect: float, fate_from_own: float,
+                    is_drug: bool) -> np.ndarray:
+    """Weights of E[l | x_seq], the best possible linear score of the sequenced sister, in closed form.
+
+    x_seq and l are jointly Gaussian, and labels threshold l plus independent noise, so P(y = 1 | x_seq) is
+    monotone in E[l | x_seq] = x_seq @ beta with beta = Cov(x_seq)^-1 Cov(x_seq, l). Without the depth confound
+    beta is proportional to (a, b, 0, ...) for the drug arm and to (1, 0, ...) for the control arm. With it,
+    depth is shared by every dimension, both sisters and the liability, so the best score also reads depth
+    from the other dimensions and no longer has that simple form.
+    """
+    s2, dl, f = sister_noise ** 2, depth_effect ** 2, fate_from_own
+    w = np.zeros(d)
+    w[0] = a
+    if is_drug:
+        w[1] = b
+    one = np.ones(d)
+    cov_x = (1 + s2) * np.eye(d) + dl * np.outer(one, one)
+    cov_xl = w + (f * dl * w.sum() + dl) * one   # Cov(x_seq, u) = I + f * depth^2 * 11', plus depth's direct term
+    return np.linalg.solve(cov_x, cov_xl)
+
+
 def ground_truth(n: int = 400_000, d: int = 10, a: float = 0.55, b: float = 0.25, sister_noise: float = 0.7,
                  prevalence: float = 0.1, label_noise: float = 0.0, depth_effect: float = 0.0,
                  fate_from_own: float = 1.0, seed: int = 12345) -> dict:
@@ -98,9 +118,11 @@ def ground_truth(n: int = 400_000, d: int = 10, a: float = 0.55, b: float = 0.25
     z, x_seq, x_tre, depth = _draw(rng, n, d, sister_noise, depth_effect)
     l = _liability(z, x_tre, True, a, b, fate_from_own, depth, depth_effect, rng)
     y = _label(l, prevalence, label_noise, rng)
-    s_seq = a * x_seq[:, 0] + b * x_seq[:, 1]          # optimal score from the sequenced sister
-    s_tre = a * x_tre[:, 0] + b * x_tre[:, 1]          # the same score on the treated sister itself
-    s_fit = x_seq[:, 0]
+    w_drug = optimal_weights(d, a, b, sister_noise, depth_effect, fate_from_own, True)
+    w_fit = optimal_weights(d, a, b, sister_noise, depth_effect, fate_from_own, False)
+    s_seq = x_seq @ w_drug                              # optimal score from the sequenced sister
+    s_tre = x_tre @ w_drug                              # the same score on the treated sister itself
+    s_fit = x_seq @ w_fit                               # optimal score learnt from the untreated arm
     return {"truth_auroc_drug": roc_auc_score(y, s_seq), "truth_auroc_fitness": roc_auc_score(y, s_fit),
             "truth_delta": roc_auc_score(y, s_seq) - roc_auc_score(y, s_fit),
             "truth_if_sister_seen": roc_auc_score(y, s_tre),

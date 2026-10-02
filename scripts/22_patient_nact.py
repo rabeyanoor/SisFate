@@ -89,17 +89,17 @@ clin0 = pd.read_csv(D / "clinical_table1.csv").set_index("patient_id")
 same_site = (clin0["location_tn"] == clin0["location_pn"]).reindex(sorted(np.unique(patients))).to_numpy()
 sig = json.load(open(R / "interpret" / "signatures.json"))
 rng = np.random.default_rng(cfg["seed"])
+expressed_set = set(expressed)
+pos = {g: k for k, g in enumerate(expressed)}  # gene index -> position among expressed genes
 bins = pd.qcut(mean_expr[expressed], 20, labels=False, duplicates="drop")
 rows, per_patient = [], []
 for name in SIGS:
-    up = [gidx[g] for g in sig[name]["up"] if g in gidx and gidx[g] in set(expressed)]
-    dn = [gidx[g] for g in sig[name]["down"] if g in gidx and gidx[g] in set(expressed)]
+    up = [gidx[g] for g in sig[name]["up"] if g in gidx and gidx[g] in expressed_set]
+    dn = [gidx[g] for g in sig[name]["down"] if g in gidx and gidx[g] in expressed_set]
     Zu, Zd = zscore_within_patient(up), zscore_within_patient(dn)
     score = Zu.mean(1) - Zd.mean(1)
     shift = patient_shift(score)
     # null: random up/down sets of the same sizes, matched to the expression bins of the real genes
-    pos = {g: k for k, g in enumerate(expressed)}
-
     def matched(idx):
         out = []
         for g in idx:

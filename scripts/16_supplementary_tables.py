@@ -208,6 +208,23 @@ _optional = {
         "replicate: percentile and basic (pivotal) limits, the spread of the replicates, and the one-sided "
         "bootstrap p-value. This is the interval quoted in the text.",
     ),
+    "S28_three_level": (
+        ["three_level_decomposition.csv"],
+        "Fitness, general-treatment and drug-unique parts of each drug arm's signal: AUROC of models trained on "
+        "the untreated arm, on the other drug arms and on the arm itself, all at the control arm's training "
+        "size, with refitting family-bootstrap (basic) 95% intervals for the two gains.",
+    ),
+    "S29_drug_unique_genes": (
+        ["drug_unique_summary.csv", "drug_unique_prespecified.csv"],
+        "Genes and Hallmark gene sets unique to one drug (drug-arm z-score minus the mean of the other two drug "
+        "arms), and the four pre-specified pathway tests.",
+    ),
+    "S30_published_claims": (
+        ["published_claims.csv"],
+        "The pathway and HRD claims of Dai et al. (2024) re-scored in every arm, including the untreated control, "
+        "from their published fold changes (Supplementary Data 2 and 4 of that study) and from our z-scores; "
+        "preranked GSEA NES and nominal p, and HRD connectivity (NES_up - NES_down) / 2.",
+    ),
 }
 for name, (files, desc) in _optional.items():
     frames = []

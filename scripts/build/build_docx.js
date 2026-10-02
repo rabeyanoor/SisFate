@@ -1,6 +1,6 @@
 // Build a submission-style .docx from a markdown file in new_paper/. Each figure is embedded where its legend
 // sits in the markdown (right after the paragraph that first cites it), image first, legend underneath.
-// Usage: node build_docx.js          the whole paper in one file: manuscript.md, then supplementary_information.md
+// Usage: node build_docx.js          the whole paper in one file: paper.md, then supplementary_information.md
 //                                     on a new page -> new_paper/hi.docx
 //        node build_docx.js <name>   a single new_paper/<name>.md -> new_paper/<name>.docx
 const fs = require("fs");
@@ -13,15 +13,14 @@ const {
 const ROOT = path.resolve(__dirname, "..", "..");
 const NAME = process.argv[2] || "hi";
 const read = (n) => fs.readFileSync(path.join(ROOT, "new_paper", n + ".md"), "utf8");
-const md = NAME === "hi" ? read("manuscript") + "\n\n" + read("supplementary_information") : read(NAME);
+const md = NAME === "hi" ? read("paper") + "\n\n" + read("supplementary_information") : read(NAME);
 const FIG = path.join(ROOT, "results", "figures", "paper");
 const FIGMAP = {
   "1": "Fig1_design_data.png", "2": "Fig2_predictability.png", "3": "Fig3_fitness_confound.png",
   "4": "Fig4_biology.png", "5": "Fig5_ceiling.png", "6": "Fig6_schaff_multitreatment.png",
   "7": "Fig7_external_clinical.png",
-  "8": "Fig8_control_free.png",
-  "9": "Fig9_simulation.png",
   "S1": "FigS1_gnn_ablation.png", "S2": "FigS2_typicality.png", "S3": "FigS3_marker_panel.png",
+  "S4": "FigS4_control_free.png", "S5": "FigS5_simulation.png",
 };
 
 function pngSize(file) {
@@ -29,15 +28,24 @@ function pngSize(file) {
   return { w: b.readUInt32BE(16), h: b.readUInt32BE(20), data: b };
 }
 
-// inline markdown: **bold**, *italic*, `code`
+// TeX math is written as a placeholder run here; docx_math.py then swaps each one for Word's own equation
+// markup (OMML) converted by pandoc, so equations stay editable in Word.
+const MATH = [];
+function mathRun(tex, display, base) {
+  MATH.push({ tex, display });
+  return new TextRun({ text: `@@MATH${MATH.length - 1}@@`, ...base });
+}
+
+// inline markdown: $math$, **bold**, *italic*, `code`
 function runs(text, base = {}) {
   const out = [];
-  const re = /(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
+  const re = /(\$[^$]+\$|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
   let last = 0, m;
   while ((m = re.exec(text)) !== null) {
     if (m.index > last) out.push(new TextRun({ text: text.slice(last, m.index), ...base }));
     const t = m[0];
-    if (t.startsWith("**")) out.push(new TextRun({ text: t.slice(2, -2), bold: true, ...base }));
+    if (t.startsWith("$")) out.push(mathRun(t.slice(1, -1), false, base));
+    else if (t.startsWith("**")) out.push(new TextRun({ text: t.slice(2, -2), bold: true, ...base }));
     else if (t.startsWith("*")) out.push(new TextRun({ text: t.slice(1, -1), italics: true, ...base }));
     else out.push(new TextRun({ text: t.slice(1, -1), font: "Consolas", ...base }));
     last = m.index + t.length;
@@ -65,6 +73,11 @@ for (const block of blocks) {
   }
   if (line.startsWith("### ")) {
     children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: runs(line.slice(4)) }));
+    continue;
+  }
+  if (line.startsWith("$$") && line.endsWith("$$")) {  // a displayed equation
+    children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 160 },
+      children: [mathRun(line.slice(2, -2).trim(), true, {})] }));
     continue;
   }
   const fm = line.match(/^\*\*(Supplementary )?Fig\. (\d+) \|/);
@@ -114,5 +127,6 @@ const doc = new Document({
 Packer.toBuffer(doc).then((buf) => {
   const out = path.join(ROOT, "new_paper", NAME + ".docx");
   fs.writeFileSync(out, buf);
-  console.log("wrote", out, buf.length, "bytes");
+  fs.writeFileSync(out.replace(/\.docx$/, ".math.json"), JSON.stringify(MATH));
+  console.log("wrote", out, buf.length, "bytes,", MATH.length, "equations to convert with docx_math.py");
 });

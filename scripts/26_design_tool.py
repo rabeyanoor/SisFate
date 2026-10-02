@@ -11,8 +11,8 @@ import argparse
 import sys
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
+from scipy import stats
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from persist.design import calibrate, plan_table, power, required_families, se_delta  # noqa: E402
@@ -54,12 +54,14 @@ print(split.pivot(index="n_drug_families", columns="n_control_families",
 audit = pd.read_csv(R / "label_audit.csv")
 audit["arm"] = audit["sample"].str.split("_").str[0]
 fam = audit.groupby("arm")["n_families"].sum()
+# smallest gain whose two-sided 95% interval excludes zero with 80% probability
+z_alpha, z_power = stats.norm.ppf(0.975), stats.norm.ppf(args.target_power)
 obs = []
 for arm in ["Carboplatin", "Olaparib", "NK"]:
     prev = float(audit[audit["arm"] == arm]["prevalence"].mean())
     se = se_delta(int(fam[arm]), int(fam["Control"]), prev)
     obs.append({"arm": arm, "n_drug_families": int(fam[arm]), "n_control_families": int(fam["Control"]),
-                "prevalence": prev, "se_delta": se, "smallest_detectable_delta_80pct": 2.49 * se,
+                "prevalence": prev, "se_delta": se, "smallest_detectable_delta_80pct": (z_alpha + z_power) * se,
                 "power_at_delta_0.02": power(0.02, int(fam[arm]), int(fam["Control"]), prev)})
 obs = pd.DataFrame(obs)
 obs.to_csv(R / "design_resistrace.csv", index=False)

@@ -31,3 +31,11 @@ for f in GSE165897_UMIcounts_HGSOC.tsv.gz GSE165897_cellInfo_HGSOC.tsv.gz; do
     "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE165nnn/GSE165897/suppl/$f"
 done
 ls -lh data/external/zhang2022
+
+# Dai et al. 2024 Supplementary Data 2 (per-arm fold changes) and 4 (HRD signature), for scripts/35
+mkdir -p data/ref/dai2024_supp
+for i in 5 7; do
+  f=41467_2024_45478_MOESM${i}_ESM.xlsx
+  [ -s data/ref/dai2024_supp/$f ] || curl -sL -o data/ref/dai2024_supp/$f \
+    "https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-024-45478-7/MediaObjects/$f"
+done

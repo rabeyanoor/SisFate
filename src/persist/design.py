@@ -66,9 +66,13 @@ def se_delta(n_drug: int, n_control: int, prevalence: float = 0.1, k: float | No
 
 def power(delta: float, n_drug: int, n_control: int, prevalence: float = 0.1, alpha: float = 0.05,
           k: float | None = None) -> float:
-    """Probability that the 95% interval for a true gain of `delta` excludes zero (one-sided)."""
+    """Probability that the two-sided (1 - alpha) interval for a true gain of `delta` excludes zero.
+
+    The paper calls a gain resolved when its two-sided 95% interval excludes zero, so the critical value is
+    the 1 - alpha/2 normal quantile; the negligible chance of excluding zero on the wrong side is ignored.
+    """
     se = se_delta(n_drug, n_control, prevalence, k)
-    return float(stats.norm.cdf(abs(delta) / se - stats.norm.ppf(1 - alpha)))
+    return float(stats.norm.cdf(abs(delta) / se - stats.norm.ppf(1 - alpha / 2)))
 
 
 def required_families(delta: float, target_power: float = 0.8, prevalence: float = 0.1, ratio: float = 1.0,

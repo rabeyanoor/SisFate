@@ -1,5 +1,5 @@
 \documentclass[11pt,a4paper]{article}
-% Generated from new_paper/manuscript.md by scripts/build/build_latex.py -- edit the markdown, not this file.
+% Generated from new_paper/paper.md by scripts/build/build_latex.py -- edit the markdown, not this file.
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -29,7 +29,7 @@ Additional file 1 for: Growth fitness, not drug tolerance, explains most pre-tre
 
 \textbf{Supplementary Note 2. Pre-specified marker panel and the IGF axis.} To check this at the level of individual genes, we fixed a panel of 28 marker genes in advance, covering proliferation, G1 arrest, senescence, quiescence and previously reported persister markers (Fig. S3; 24 were among the retained genes). In the control contrast, recovered cells expressed markedly less of the CDK inhibitors CDKN1A (p21; z = $-$4.8, FDR $<$ 10$^-$$^4$), CDKN1B and CDKN1C, which fits a proliferative fitness state. Beyond the control contrast, the replication and mitosis genes CDK1, PCNA, MCM2 and E2F1 were lower in pre-resistant cells in all three drug arms (z between $-$1.2 and $-$4.3). Individually, however, only CDK1 and PCNA for NK cells passed correction (FDR 0.017 and 0.003). Senescence-associated secretory genes (IL6, CXCL8, SERPINE1) were not higher in pre-resistant cells, and CDKN1C was only modestly and non-significantly higher. The drug-specific state therefore looks like slower cycling among otherwise fit cells rather than senescence, although at the level of single genes the evidence is weak.
 
-Among the drug-specific genes were several members of the insulin-like growth factor axis. IGFBP7 and IGF2BP1 were drug-specific for both carboplatin (FDR 0.002 and 0.015) and olaparib (FDR 0.001 and $<$ 0.001), and IGF2 for olaparib (FDR $<$ 0.001). None reached significance for NK cells, and IGFBP2 itself was not differentially expressed. IGF-1 receptor signalling supports drug-tolerant persisters (Sharma et al., 2010), and IGFBP2 confers afatinib tolerance in triple-negative breast cancer (Pellecchia et al., 2024). We note the overlap as a hypothesis, not a finding. CD44, which marked multi-treatment resistance in melanoma (Schaff et al., 2026), was lower, not higher, in pre-resistant cells in all three drug arms (FDR $\leq$ 3 $\times$ 10$^-$$^6$) and was not differentially expressed in the control arm (FDR 0.45). The difference from the control contrast was significant for olaparib and NK cells (FDR 0.006 and 0.007) but not for carboplatin (FDR 0.12). In melanoma, CD44-high cells resisted MAPK inhibitors and hypoxic stress, whereas CD44-low cells were more resistant to doxorubicin (Schaff et al., 2026), so the direction of a pre-existing marker may depend on the kind of stress.
+Among the drug-specific genes were several members of the insulin-like growth factor axis. IGFBP7 and IGF2BP1 were drug-specific for both carboplatin (FDR 0.002 and 0.015) and olaparib (FDR 0.001 and $<$ 0.001), and IGF2 for olaparib (FDR $<$ 0.001). None was drug-specific for NK cells: IGFBP7 passed the test of difference from the control contrast (FDR 0.039) but not the drug contrast itself, so it is starred in Fig. S3 without being called drug-specific (Table S16), and IGFBP2 itself was not drug-specific in any arm (in the olaparib arm it was differentially expressed, FDR 0.012, but not significantly differently from the control contrast, FDR 0.78). IGF-1 receptor signalling supports drug-tolerant persisters (Sharma et al., 2010), and IGFBP2 confers afatinib tolerance in triple-negative breast cancer (Pellecchia et al., 2024). We note the overlap as a hypothesis, not a finding. CD44, which marked multi-treatment resistance in melanoma (Schaff et al., 2026), was lower, not higher, in pre-resistant cells in all three drug arms (FDR $\leq$ 3 $\times$ 10$^-$$^6$) and was not differentially expressed in the control arm (FDR 0.45). The difference from the control contrast was significant for olaparib and NK cells (FDR 0.006 and 0.007) but not for carboplatin (FDR 0.12). In melanoma, CD44-high cells resisted MAPK inhibitors and hypoxic stress, whereas CD44-low cells were more resistant to doxorubicin (Schaff et al., 2026), so the direction of a pre-existing marker may depend on the kind of stress.
 
 \textbf{Supplementary Note 3. Inferred copy-number subclones.} Dai et al. (2024) reported that InferCNV subclone A was enriched among pre-resistant cells under all treatment conditions, especially carboplatin and olaparib. Its signature was also positively associated with the treatment pre-resistance signatures and negatively with the control pre-survival signature. Per-cell subclone calls are not public, so we inferred copy-number profiles ourselves with infercnvpy (11,883 genes, 970 genomic windows) and clustered them (k = 6, chosen by silhouette). The clusters were only weakly separated (silhouette 0.21). Still, the largest cluster reproduced the published pattern: it was over-represented among pre-resistant cells in the carboplatin (odds ratio 2.24), olaparib (2.04) and NK (1.34) arms (all FDR $<$ 10$^-$$^3$), but not in the control arm (1.14, p = 0.14).
 
@@ -55,6 +55,20 @@ Cluster identity alone predicted the labels poorly (AUROC 0.54--0.60). Within cl
   \centering
   \includegraphics[width=\linewidth]{figures/FigS3_marker_panel.pdf}
   \caption*{\textbf{Supplementary Fig. 3 | Pre-specified marker panel.} z-scores for pre-resistant versus pre-sensitive cells. The control column shows the control (fitness) contrast; the drug columns show the difference from the control contrast, $z_{\text{diff}} = (z_{\text{drug}} - z_{\text{control}})/\sqrt{2}$. Asterisks mark FDR $<$ 0.05 for z\_diff. Genes not among the 5,005 retained genes (CDKN2A, RB1, GLB1, KDM5A) are omitted.}
+\end{figure}
+
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/FigS4_control_free.pdf}
+  \caption*{\textbf{Supplementary Fig. 4 | Substitutes for an untreated arm.} For each drug arm of ReSisTrace, the drug-specific gain measured against the real control-arm model (black) and against two substitutes that use no control-arm labels: a model trained on the other drug arms (blue) and the label-free density score (green). Error bars are 95\% family-bootstrap intervals. The control-arm value lies between the two substitutes in every arm.}
+\end{figure}
+
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/FigS5_simulation.pdf}
+  \caption*{\textbf{Supplementary Fig. 5 | The estimators checked against a known answer.} \textbf{a}, Estimated against true drug-specific gain across synthetic settings; the line is equality and bars are the spread over 25 independent experiments. \textbf{b}, Coverage of the nominal 95\% interval that resamples families without refitting the models, in each setting; the dashed line is 0.95. \textbf{c}, Estimated minus actual AUROC if the treated sister were scored, as fate moves from depending on the treated cell's own state (left, the estimator's assumption) to depending only on the state the sisters share (right).}
 \end{figure}
 
 

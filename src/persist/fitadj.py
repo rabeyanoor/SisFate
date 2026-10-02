@@ -168,7 +168,9 @@ def family_permutation_null(X, y, groups, samples, model=None, n_perm: int = 100
     for k in range(n_perm):
         perm = fam.groupby("s")["y"].transform(lambda v: rng.permutation(v.to_numpy()))
         yp = perm.reindex(groups).to_numpy()
-        null[k] = roc_auc_score(y, fit(yp, seed))  # model trained on permuted labels, scored on true ones
+        # the whole procedure is rerun on the permuted data set and scored against its own (permuted) labels,
+        # as in the paper's exact test (scripts/13_robustness.py)
+        null[k] = roc_auc_score(yp, fit(yp, seed))
     return {"auroc": obs, "null_mean": null.mean(), "null_sd": null.std(ddof=1),
             "p": (np.sum(null >= obs) + 1) / (n_perm + 1)}
 

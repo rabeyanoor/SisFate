@@ -2,7 +2,7 @@
 
 The interval reported by `scripts/20_delta_auroc_ci.py` resamples families to re-evaluate scores that were
 fitted once. It therefore describes how much the *evaluation* would move, not how much the whole procedure
-would move, and the simulation study shows it covers the truth only about 52-80% of the time instead of 95%.
+would move, and the simulation study shows it covers the truth only about 52-88% of the time instead of 95%.
 
 Here each replicate resamples families with replacement and then repeats the entire procedure on that
 resample: the control-arm fitness model is refitted, the drug arm's out-of-fold scores are recomputed with
@@ -30,6 +30,8 @@ ap.add_argument("--config")
 ap.add_argument("--cc-modes", nargs="+", default=["keep"])
 ap.add_argument("--n-boot", type=int, default=200)
 ap.add_argument("--n-subsamples", type=int, default=3)
+ap.add_argument("--out", default="delta_auroc_refit_ci.csv",
+                help="output table in results/; rows for the modes run here replace their old rows")
 args = ap.parse_args()
 cfg = load_config(args.config)
 log = get_logger("delta_refit")
@@ -110,5 +112,9 @@ for mode in args.cc_modes:
                  f"{rows[-1]['delta_hi']:+.4f}] p {rows[-1]['p_boot_delta_le_0']:.3f}")
 
 df = pd.DataFrame(rows)
-df.to_csv(R / "delta_auroc_refit_ci.csv", index=False)
+out = R / args.out
+if out.exists():  # several modes can run as separate processes and share one table
+    old = pd.read_csv(out)
+    df = pd.concat([old[~old["cc_mode"].isin(args.cc_modes)], df], ignore_index=True)
+df.to_csv(out, index=False)
 print(df.round(4).to_string(index=False))

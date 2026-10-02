@@ -5,7 +5,6 @@ benchmark reference values of Shen et al. 2026 (Fig. 2c), which are quoted from 
 """
 import argparse
 import io
-import json
 import sys
 from pathlib import Path
 
@@ -250,7 +249,8 @@ fig.tight_layout()
 save(fig, "Fig2_predictability")
 
 # =============================================================== Fig 3: fitness confound
-fig, axes = plt.subplots(1, 3, figsize=(7.4, 3.0), gridspec_kw={"width_ratios": [1.1, 1.3, 1]})
+fig, axes = plt.subplots(2, 2, figsize=(7.2, 5.6), gridspec_kw={"width_ratios": [1, 1.25]})
+axes = axes.ravel()
 ax = axes[0]
 tag(ax, "a")
 C = REAL[(REAL["model"] == "pca_logreg") & REAL["split"].isin(["cross_arm", "within"])]
@@ -281,25 +281,44 @@ ax.set_ylim(0.5, 0.86)
 ax.set_ylabel("AUROC on drug-arm labels")
 ax.legend(frameon=False, loc="upper center", fontsize=5.6, ncol=1)
 
+# c: the refitting-bootstrap intervals quoted in the text (scripts/28), not the narrower evaluation-only ones
 ax = axes[2]
 tag(ax, "c")
-DCI = pd.read_csv(R / "delta_auroc_ci.csv")
+RCI = pd.read_csv(R / "delta_auroc_refit_ci.csv")
 MODE_LABEL = {"keep": "as measured", "regress": "cell cycle removed", "regress_all": "cycle + depth + mito removed"}
 for k, cc in enumerate(["keep", "regress", "regress_all"]):
-    d = DCI[DCI["cc_mode"] == cc].set_index("drug_arm").reindex(ARMS[:3])
+    d = RCI[RCI["cc_mode"] == cc].set_index("drug_arm").reindex(ARMS[:3])
     xk = np.arange(3) + (k - 1) * 0.27
-    ax.bar(xk, d["delta_mean"], 0.25, color=[BLUE, AQUA, VIOLET][k], label=MODE_LABEL[cc])
-    ax.errorbar(xk, d["delta_mean"], yerr=[d["delta_mean"] - d["delta_lo"], d["delta_hi"] - d["delta_mean"]],
+    ax.bar(xk, d["delta"], 0.25, color=[BLUE, AQUA, VIOLET][k], label=MODE_LABEL[cc])
+    ax.errorbar(xk, d["delta"], yerr=[d["delta"] - d["delta_lo"], d["delta_hi"] - d["delta"]],
                 fmt="none", ecolor=INK, lw=0.7, capsize=1.5)
 ax.axhline(0, color=INK2, lw=0.6)
 ax.set_xticks(range(3), ["Carbo", "Olap", "NK"])
-ax.set_ylim(-0.012, 0.05)
-ax.set_ylabel("Drug-specific AUROC gain\n(size-matched, 95% CI)")
-ax.legend(frameon=False, fontsize=5.6, loc="upper left")
+ax.set_ylabel("Drug-specific AUROC gain\n(size-matched, refitting 95% CI)")
+ax.set_ylim(-0.03, 0.075)
+ax.legend(frameon=False, fontsize=5.6, loc="upper center", ncol=1)
+
+# d: fitness -> other drug arms -> own arm, all at the control arm's training size (scripts/33); the two
+# increments are drawn on the same gain scale as c, so their intervals sit on zero rather than on stacked bars
+ax = axes[3]
+tag(ax, "d")
+TL = pd.read_csv(R / "three_level_decomposition.csv")
+TL = TL[TL["cc_mode"] == "keep"].set_index("arm").reindex(ARMS[:3])
+for k, (part, col, lab) in enumerate([("gain_general", AQUA, "other drug arms over fitness (shared)"),
+                                      ("gain_unique", ORANGE, "own arm over other drug arms (unique)")]):
+    xk = np.arange(3) + (k - 0.5) * 0.36
+    ax.bar(xk, TL[part], 0.34, color=col, label=lab)
+    ax.errorbar(xk, TL[part], yerr=[TL[part] - TL[f"{part}_lo"], TL[f"{part}_hi"] - TL[part]],
+                fmt="none", ecolor=INK, lw=0.7, capsize=1.5)
+ax.axhline(0, color=INK2, lw=0.6)
+ax.set_xticks(range(3), ["Carbo", "Olap", "NK"])
+ax.set_ylim(-0.03, 0.075)
+ax.set_ylabel("AUROC increment at equal training size\n(refitting 95% CI)")
+ax.legend(frameon=False, fontsize=5.6, loc="upper center", ncol=1)
 fig.tight_layout()
 save(fig, "Fig3_fitness_confound")
 
-# =============================================================== Fig 4: ceiling
+# =============================================================== Fig 5: ceiling
 fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.6))
 ax = axes[0]
 tag(ax, "a")
@@ -338,7 +357,7 @@ ax.set_ylim(0, 0.2)
 fig.tight_layout()
 save(fig, "Fig5_ceiling")
 
-# =============================================================== Fig 5: biology
+# =============================================================== Fig 4: biology
 fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.3), gridspec_kw={"width_ratios": [1.6, 1]})
 ax = axes[0]
 tag(ax, "a")
@@ -379,7 +398,7 @@ ax.legend(frameon=False, fontsize=5.8)
 fig.tight_layout()
 save(fig, "Fig4_biology")
 
-# =============================================================== Fig 6: external and clinical
+# =============================================================== Fig 7: external and clinical
 fig, axes = plt.subplots(2, 2, figsize=(7.2, 5.6))
 axes = axes.ravel()
 X = pd.read_csv(R / "external_validation.csv")
@@ -444,7 +463,7 @@ ax.set_xlabel("Post-NACT − treatment-naive score (within-patient z)")
 fig.tight_layout()
 save(fig, "Fig7_external_clinical")
 
-# =============================================================== Fig 7: second lineage system (Schaff 2026)
+# =============================================================== Fig 6: second lineage system (Schaff 2026)
 if (R / "schaff_predict.csv").exists():
     SP = pd.read_csv(R / "schaff_predict.csv")
     SA = pd.read_csv(R / "schaff_clone_size_adjusted.csv")
@@ -504,7 +523,7 @@ if (R / "schaff_predict.csv").exists():
     fig.tight_layout()
     save(fig, "Fig6_schaff_multitreatment")
 
-# =============================================================== Fig 8: substitutes for an untreated arm
+# =============================================================== Fig S4: substitutes for an untreated arm
 if (R / "control_free_fitness.csv").exists():
     CF = pd.read_csv(R / "control_free_fitness.csv")
     PROXY = [("shared_other_drug_arms", "Other drug arms", BLUE),
@@ -523,11 +542,11 @@ if (R / "control_free_fitness.csv").exists():
     ax.set_yticks(yy, arms3)
     ax.invert_yaxis()
     ax.set_xlabel("Drug-specific gain over the baseline (AUROC)")
-    ax.legend(frameon=False, fontsize=6, loc="lower right")
+    ax.legend(frameon=False, fontsize=6, loc="upper right")
     fig.tight_layout()
-    save(fig, "Fig8_control_free")
+    save(fig, "FigS4_control_free")
 
-# =============================================================== Fig 9: estimators against a known answer
+# =============================================================== Fig S5: estimators against a known answer
 if (R / "simulation_calibration.csv").exists():
     SIM = pd.read_csv(R / "simulation_calibration.csv")
     fig, axes = plt.subplots(1, 3, figsize=(7.4, 2.6))
@@ -574,7 +593,7 @@ if (R / "simulation_calibration.csv").exists():
         ax.set_ylabel("Ceiling error (estimate $-$ actual)")
         ax.invert_xaxis()
     fig.tight_layout(w_pad=2.5)
-    save(fig, "Fig9_simulation")
+    save(fig, "FigS5_simulation")
 
 # =============================================================== Supplementary: GNN ablation
 G = REAL[(REAL["split"].isin(["within", "rep_holdout"])) & REAL["model"].isin(["pca_logreg", "mlp", "mlp_pretrain",
