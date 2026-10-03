@@ -160,7 +160,7 @@ ax.plot([62.5, 62.5], [2, 48], color=GRID, lw=1)
 box(66, 38, 33, 9, "Q1  How predictable is the sister's fate?\n(grouped CV, replicate and cross-arm tests)", INK2)
 box(66, 26.5, 33, 9, "Q2  How much is generic fitness?\n(control-arm model, residual, size-matched)", INK2)
 box(66, 15, 33, 9, "Q3  What is the ceiling?\n(3,477 pre-treatment sister pairs)", INK2)
-box(66, 3.5, 33, 9, "External: Watermelon (PC9), TNBC (MDA-MB-468),\nTCGA-OV; confounds: depth, cell cycle, CNV", INK2)
+box(66, 3.5, 33, 9, "External: six treatments (WM989), Watermelon (PC9),\nTNBC (MDA-MB-468), TCGA-OV, 11 patients;\nconfounds: depth, cell cycle, CNV", INK2)
 ax.text(1, 1.5, "4 arms × 2 replicates; 37,011 pre-treatment cells,\n32,642 with a lineage label", fontsize=6.2,
         color=INK2, va="center")
 
