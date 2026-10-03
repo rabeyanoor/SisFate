@@ -17,7 +17,7 @@ seven figures, then the supplement (Supplementary Notes 1–3 and Supplementary 
 
 ```bash
 nano new_paper/paper.md                  # 1. edit (or supplementary_information.md)
-python scripts/23_audit_paper.py         # 2. verify: 148 checks, names any number that drifted
+python scripts/23_audit_paper.py         # 2. verify: 150 checks, names any number that drifted
 node scripts/build/build_docx.js              # 3. rebuild new_paper/hi.docx
 uv run --with pypandoc_binary python scripts/build/docx_math.py   #    then make its equations native Word equations
 ```

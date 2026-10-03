@@ -437,6 +437,12 @@ checks += 1
 if not all(RFk.loc[a, "delta_hi"] / (W_MAIN[("pca_logreg", a)] - 0.5) < 0.2 for a in DRUGS3):
     fails.append("upper end of the drug-specific gain is not below a fifth of the above-chance AUROC in every arm")
 
+# --- family structure behind the differential-expression limitation
+LA = pd.read_csv(R / "label_audit.csv")
+nf, nm = LA["n_families"].sum(), LA["n_multi_cell_families"].sum()
+check("families with one labelled cell (%)", 90, round(100 * (1 - nm / nf)), 0)
+check("labelled cells in one-cell families (%)", 81, round(100 * (nf - nm) / (LA["n_pos"] + LA["n_neg"]).sum()), 0)
+
 # --- phrases that must stay in step with the tables
 in_text("32,642 pre-treatment cells", "labelled cell count in text")
 in_text("3,477 pairs of sisters", "sister pair count in text")
