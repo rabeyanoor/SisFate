@@ -1,6 +1,6 @@
 # Overleaf project
 
-Generated from `new_paper/paper.md`. Upload this folder to Overleaf (New Project -> Upload Project,
+Generated from `paper/paper.md`. Upload this folder to Overleaf (New Project -> Upload Project,
 after zipping it) and compile `main.tex` with pdfLaTeX.
 
 Do not edit `main.tex` by hand: it is overwritten by `python scripts/build/build_latex.py`. Edit the

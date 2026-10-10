@@ -43,6 +43,23 @@ All randomness is seeded (`seed: 0` in `configs/default.yaml`, plus explicit `--
 records the hash of the configuration that produced it. Tested with Python 3.12.14, NumPy 2.5.3, scikit-learn 1.9.1,
 Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 
+## Repository layout
+
+```
+configs/default.yaml   every setting and the random seed
+src/persist/           the Python package: data loading, labels, splits, models, metrics, fitness-adjusted
+                       evaluation (fitadj.py), sister ceiling, simulation, design calculator
+scripts/               the analysis, one numbered script per step (00-35), run in order by run_all.sh
+scripts/build/         turns paper/paper.md into Word, LaTeX and the journal submission
+kaggle/                GPU kernels for the Geneformer and scGPT embeddings (run on a free Kaggle T4)
+tests/                 unit tests of the package (pytest)
+data/                  downloaded data, not in git; see data/README.md for every data set and its source
+results/               every result table (CSV) and the paper figures (results/figures/paper/)
+paper/                 the paper text (paper.md) and Supplementary Tables S1-S30
+```
+
+## Scripts
+
 | script | step |
 |---|---|
 | `00_download.sh`, `00b_download_external.sh`, `00c_download_schaff.sh` | GEO downloads (ReSisTrace; Watermelon GSE150949; TNBC GSE228382 + figshare; Schaff GSE279162) |
@@ -62,29 +79,29 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `13_robustness.py` | singleton-only cells, exact family-level permutation p-values, Shen et al. benchmark protocol |
 | `14_figures.py` | publication figures `results/figures/paper/Fig1-7`, `FigS1-5` (PNG + PDF, 300 dpi) and PLOS submission TIFFs in `plos/` (450 dpi, LZW, ≤ 7.5 in wide) |
 | `15_typicality.py` | label-free local-density score vs labels |
-| `16_supplementary_tables.py` | `new_paper/Supplementary_Tables.xlsx` (S1–S30); run with `uv run --with openpyxl` |
+| `16_supplementary_tables.py` | `paper/Supplementary_Tables.xlsx` (S1–S30); run with `uv run --with openpyxl` |
 | `17_sensitivity.py` | main and fitness analyses on Harmony, Pearson-residual and scVI representations; `uv run --with harmonypy --with scvi-tools` |
 | `18_marker_panel.py` | pre-specified proliferation/arrest/senescence/persister marker panel (Fig. S3) |
 | `19_gnn_sweep.py` | one-at-a-time GNN hyperparameter sweep -> `results/gnn_sweep.csv` |
 | `20_delta_auroc_ci.py` | size-matched drug-specific gain (ΔAUROC) over the fitness model, 10 subsamples, paired family bootstrap CI -> `results/delta_auroc_ci.csv` |
 | `21_geneformer.py` | Geneformer V2-104M_CLcancer embeddings: `tokens` (CPU) -> `embed` (GPU; `kaggle/geneformer/`) -> `analyze` |
 | `22_patient_nact.py` | ReSisTrace signatures in 11 HGSOC patients before/after neoadjuvant chemotherapy (GSE165897) -> `results/patient_nact.csv` |
-| `23_audit_paper.py` | re-checks every number quoted in `new_paper/paper.md` against `results/` (156 checks) |
+| `23_audit_paper.py` | re-checks every number quoted in `paper/paper.md` against `results/` (156 checks) |
 | `24_schaff_multitreatment.py` | second lineage system: six treatments in parallel (Schaff et al. 2026, GSE279162); clone size as the fitness proxy, cross-treatment transfer, clone ceiling |
 | `25_simulation.py` | synthetic lineage experiments with a known answer: bias and interval coverage of the drug-specific gain, and when the sister ceiling is valid |
 | `26_design_tool.py` | how many families and control cells a new experiment needs -> `results/design_*.csv` |
 | `27_control_free_fitness.py` | substitutes for an untreated arm, checked against the real one -> `results/control_free_fitness.csv` |
 | `28_delta_refit_bootstrap.py` | slower interval for the drug-specific gain that refits the whole procedure inside each bootstrap replicate |
 | `29_scgpt.py` | scGPT whole-human embeddings: `export` (CPU) -> embed (GPU; `kaggle/scgpt/`) -> `analyze` |
-| `30_model_comparison_chart.py`, `31_summary_charts.py` | plain summary charts in `new_paper/charts/` (not journal figures) |
+| `30_model_comparison_chart.py`, `31_summary_charts.py` | plain summary charts in `paper/charts/` (not journal figures) |
 | `32_export_data_view.py` | the analysed cells as small readable CSV files in `data_view/` |
 | `33_three_level_decomposition.py` | fitness vs general-treatment vs drug-unique signal: untreated-arm, other-drug-arm and own-arm models at equal training size, refitting bootstrap -> `results/three_level_decomposition.csv` |
 | `34_drug_unique_genes.py` | genes and Hallmark sets unique to one drug (vs the other drug arms), with pre-specified pathway tests |
 | `35_published_claims.py` | the pathway and HRD claims of Dai et al. (2024) re-scored in every arm incl. the untreated control, from their own supplementary data |
-| `scripts/build/build_latex.py` | `new_paper/paper.md` -> LaTeX in `results/latex/` (on demand) |
+| `scripts/build/build_latex.py` | `paper/paper.md` -> LaTeX in `results/latex/` (on demand) |
 | `run_rest.sh` | lean version of the heavy runs actually used for the paper |
-| `scripts/build/build_docx.js` | `new_paper/paper.md` + `supplementary_information.md` -> `new_paper/hi.docx` (the whole paper, figures embedded) |
-| `scripts/build/make_genomebiology.py` | Genome Biology submission in `new_paper/genomebiology/`: Vancouver references, data sets and links cited in the reference list, separate Additional file 1; then `GB=1 NOFIG=1 node scripts/build/build_docx.js genomebiology/Manuscript` |
+| `scripts/build/build_docx.js` | `paper/paper.md` + `supplementary_information.md` -> `paper/hi.docx` (the whole paper, figures embedded) |
+| `scripts/build/make_genomebiology.py` | Genome Biology submission in `paper/genomebiology/`: Vancouver references, data sets and links cited in the reference list, separate Additional file 1; the whole submission is built by `scripts/build/build_genomebiology.sh` |
 | `scripts/build/docx_math.py` | turns the equations in `hi.docx` into native Word equations (run after `build_docx.js`; needs `uv run --with pypandoc_binary`) |
 
 Literature: `reference/lit/` holds metadata, abstracts and (24 of 27) full texts; five further full texts (Schaff 2026, Iyer 2025, Oliveira 2025, Kronheim 2026, Soragni 2025) and Shen et al. v2 are PDFs in `read_paper_for_sitation/` fetched by `reference/lit/fetch_lit.py`; claims cited in the paper were checked against them.
@@ -128,7 +145,7 @@ show it is too narrow, so for the numbers you report use the refitting interval 
 * **Subclones:** InferCNV subclone calls are not on GEO, so `12_cnv_subclones.py` infers copy-number profiles with infercnvpy and clusters them (k chosen by silhouette); `within_cluster_auroc` in the model tables is a separate check inside 8 k-means expression-state clusters.
 
 ## Findings
-See `new_paper/paper.md` (or `.docx`) for the full write-up; every number there comes from `results/`.
+See `paper/paper.md` (or `.docx`) for the full write-up; every number there comes from `results/`.
 
 ## Licence
 MIT (see `LICENSE`). Cite via `CITATION.cff`.

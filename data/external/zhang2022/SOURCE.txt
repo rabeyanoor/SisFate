@@ -1,0 +1,1 @@
+Source: Zhang et al. 2022 Sci Adv 8:eabm1831, Table 1 (PMC8865800); the 11 patients with scRNA-seq. CRS = chemotherapy response score; PFI = platinum-free interval (days).

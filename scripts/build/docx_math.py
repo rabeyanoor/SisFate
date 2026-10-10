@@ -18,7 +18,7 @@ import pypandoc
 
 ROOT = Path(__file__).resolve().parents[2]
 name = sys.argv[1] if len(sys.argv) > 1 else "hi"
-docx = ROOT / "new_paper" / f"{name}.docx"
+docx = ROOT / "paper" / f"{name}.docx"
 spec = docx.with_suffix(".math.json")
 math = json.loads(spec.read_text())
 

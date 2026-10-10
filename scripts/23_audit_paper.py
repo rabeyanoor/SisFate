@@ -1,4 +1,4 @@
-"""Check the numbers quoted in new_paper/paper.md against the tables in results/.
+"""Check the numbers quoted in paper/paper.md against the tables in results/.
 
 Each check names the sentence it verifies, recomputes the value from a results file, and compares with a
 tolerance. Anything that does not match is printed and the script exits non-zero, so the paper cannot
@@ -14,7 +14,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 R = ROOT / "results"
-MD = (ROOT / "new_paper" / "paper.md").read_text()
+MD = (ROOT / "paper" / "paper.md").read_text()
 fails, checks = [], 0
 
 

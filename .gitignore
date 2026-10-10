@@ -42,16 +42,20 @@ reference/lit/*
 !reference/lit/bibliography.json
 !reference/lit/fetch_lit.py
 
-# Everything built from new_paper/paper.md
-new_paper/paper.docx
-new_paper/latex/
-new_paper/overleaf_project.zip
-new_paper/figures/
-new_paper
+# Paper: only the text source, the supplementary tables and the guide are tracked; everything built from them
+# (Word, PDF, LaTeX, journal-specific versions, cover letters) stays local
+/paper/*
+!/paper/paper.md
+!/paper/Supplementary_Tables.xlsx
+!/paper/GUIDE.md
 
 # Kaggle upload staging
 kaggle/geneformer/dataset/*.npz
-new_paper/*.math.json
+/paper/*.math.json
 
 # Zenodo dataset upload (processed data, ~530 MB; too large for git)
 zenodo_data/
+
+# Local editor history and personal working copies
+.history/
+/*.docx

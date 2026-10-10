@@ -1,8 +1,8 @@
-// Build a submission-style .docx from a markdown file in new_paper/. Each figure is embedded where its legend
+// Build a submission-style .docx from a markdown file in paper/. Each figure is embedded where its legend
 // sits in the markdown (right after the paragraph that first cites it), image first, legend underneath.
 // Usage: node build_docx.js          the whole paper in one file: paper.md, then supplementary_information.md
-//                                     on a new page -> new_paper/hi.docx
-//        node build_docx.js <name>   a single new_paper/<name>.md -> new_paper/<name>.docx
+//                                     on a new page -> paper/hi.docx
+//        node build_docx.js <name>   a single paper/<name>.md -> paper/<name>.docx
 // Environment: GB=1 Genome Biology layout (double spacing, no page breaks); NOFIG=1 legends only, no images
 // (the journal takes figures as separate files). Web links (https://...) become clickable hyperlinks.
 const fs = require("fs");
@@ -16,7 +16,7 @@ const NOFIG = process.env.NOFIG === "1";
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const NAME = process.argv[2] || "hi";
-const read = (n) => fs.readFileSync(path.join(ROOT, "new_paper", n + ".md"), "utf8");
+const read = (n) => fs.readFileSync(path.join(ROOT, "paper", n + ".md"), "utf8");
 const md = NAME === "hi" ? read("paper") + "\n\n" + read("supplementary_information") : read(NAME);
 const FIG = path.join(ROOT, "results", "figures", "paper");
 const FIGMAP = {
@@ -170,7 +170,7 @@ const doc = new Document({
 });
 
 Packer.toBuffer(doc).then((buf) => {
-  const out = path.join(ROOT, "new_paper", NAME + ".docx");
+  const out = path.join(ROOT, "paper", NAME + ".docx");
   fs.writeFileSync(out, buf);
   fs.writeFileSync(out.replace(/\.docx$/, ".math.json"), JSON.stringify(MATH));
   console.log("wrote", out, buf.length, "bytes,", MATH.length, "equations to convert with docx_math.py");

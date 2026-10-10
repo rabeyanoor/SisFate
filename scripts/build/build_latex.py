@@ -1,4 +1,4 @@
-"""Turn new_paper/paper.md into an Overleaf-ready LaTeX project in results/latex/.
+"""Turn paper/paper.md into an Overleaf-ready LaTeX project in results/latex/.
 
 The markdown is the single source of truth: it is what `scripts/23_audit_paper.py` checks, and both the
 .docx and this .tex are generated from it, so the three cannot drift apart. Figures are copied as PDFs where
@@ -17,7 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 NAME = sys.argv[1] if len(sys.argv) > 1 else "paper"
-MD = (ROOT / "new_paper" / f"{NAME}.md").read_text()
+MD = (ROOT / "paper" / f"{NAME}.md").read_text()
 TEXNAME = "main.tex" if NAME == "paper" else f"{NAME}.tex"
 OUT = ROOT / "results" / "latex"
 FIGDIR = ROOT / "results" / "figures" / "paper"
@@ -149,7 +149,7 @@ for block in [b.strip() for b in MD.split("\n\n") if b.strip()]:
         body.append(inline(line) + "\n")
 
 TEX = r"""\documentclass[11pt,a4paper]{article}
-% Generated from new_paper/paper.md by scripts/build/build_latex.py -- edit the markdown, not this file.
+% Generated from paper/paper.md by scripts/build/build_latex.py -- edit the markdown, not this file.
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -173,7 +173,7 @@ TEX = r"""\documentclass[11pt,a4paper]{article}
 (OUT / TEXNAME).write_text(TEX)
 (OUT / "README.md").write_text(
     "# Overleaf project\n\n"
-    "Generated from `new_paper/paper.md`. Upload this folder to Overleaf (New Project -> Upload Project,\n"
+    "Generated from `paper/paper.md`. Upload this folder to Overleaf (New Project -> Upload Project,\n"
     "after zipping it) and compile `main.tex` with pdfLaTeX.\n\n"
     "Do not edit `main.tex` by hand: it is overwritten by `python scripts/build/build_latex.py`. Edit the\n"
     "markdown, then rerun `scripts/23_audit_paper.py` and the build.\n\n"

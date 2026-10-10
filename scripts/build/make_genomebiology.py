@@ -1,17 +1,17 @@
-"""Build the Genome Biology submission from the master text (new_paper/paper.md, supplementary_information.md).
+"""Build the Genome Biology submission from the master text (paper/paper.md, supplementary_information.md).
 
 Genome Biology (Research article) wants: Vancouver references numbered in square brackets in order of citation;
 web links and public data sets cited in the reference list rather than written in the text; a structured
 'Availability of data and materials' with a software block; figures uploaded separately with titles and
-legends in the manuscript; the supplement as a separate Additional file; double spacing, line and page
+legends in the main text; the supplement as a separate Additional file; double spacing, line and page
 numbers and no page breaks (set by build_docx.js when GB=1).
 
-Outputs (new_paper/genomebiology/): Manuscript.md and Additional_file_1.md.
+Outputs (paper/genomebiology/): Main_text.md and Additional_file_1.md.
 
 Run: python scripts/build/make_genomebiology.py
-     GB=1 NOFIG=1 node scripts/build/build_docx.js genomebiology/Manuscript              (file to submit)
+     GB=1 NOFIG=1 node scripts/build/build_docx.js genomebiology/Main_text               (file to submit)
      GB=1 node scripts/build/build_docx.js genomebiology/Additional_file_1
-     uv run --with pypandoc_binary python scripts/build/docx_math.py genomebiology/Manuscript   (and the other)
+     uv run --with pypandoc_binary python scripts/build/docx_math.py genomebiology/Main_text    (and the other)
 """
 import json
 import re
@@ -20,7 +20,7 @@ from pathlib import Path
 from make_ncomms import AUTH, CITE, MANUAL_AUTHORS, NAME, REFS, SPECIAL_TAIL, key_of
 
 ROOT = Path(__file__).resolve().parents[2]
-NP = ROOT / "new_paper"
+NP = ROOT / "paper"
 OUT = NP / "genomebiology"
 ACCESSED = "Accessed 10 Oct 2026."
 GEO = "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc="
@@ -164,7 +164,7 @@ def sub1(t, a, b, n=1):
     return t.replace(a, b)
 
 
-def manuscript() -> str:
+def main_text() -> str:
     pm = (NP / "paper.md").read_text()
     body = pm[:pm.index("## References")].rstrip()
     extra = pm[pm.index("## Additional files"):]
@@ -231,13 +231,13 @@ def additional_file_1() -> str:
 
 def main():
     OUT.mkdir(exist_ok=True)
-    ms, af = manuscript(), additional_file_1()
-    for name, text in (("Manuscript", ms), ("Additional_file_1", af)):
+    ms, af = main_text(), additional_file_1()
+    for name, text in (("Main_text", ms), ("Additional_file_1", af)):
         left = CITE.findall(re.sub(r"^\d+\. .*$", "", text, flags=re.M)) + re.findall(r"\{\{D:", text)
         assert not left, (name, left[:5])
         (OUT / f"{name}.md").write_text(text)
     n = len(re.findall(r"^\d+\. ", ms.split("## References")[1], flags=re.M))
-    print(f"Manuscript.md: {n} references; Additional_file_1.md written to {OUT}")
+    print(f"Main_text.md: {n} references; Additional_file_1.md written to {OUT}")
 
 
 if __name__ == "__main__":

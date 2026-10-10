@@ -2,7 +2,7 @@
 (fitness) model predict the drug-arm labels. Values are read from results/sensitivity_representations.csv and
 averaged over the three drug arms; the thin bar behind each dot spans the three arms.
 
-Run: python scripts/30_model_comparison_chart.py   -> new_paper/charts/model_comparison.png
+Run: python scripts/30_model_comparison_chart.py   -> paper/charts/model_comparison.png
 """
 from pathlib import Path
 
@@ -68,7 +68,7 @@ ax.scatter([], [], s=64, color=FIT, label="Fitness model (trained only on the un
 ax.legend(loc="upper left", bbox_to_anchor=(0, 1.13), ncol=1, frameon=False, fontsize=8, handletextpad=0.3)
 fig.suptitle("The untreated-arm model predicts drug-arm fates almost as well, in every representation",
              x=0.01, ha="left", fontsize=10.5, fontweight="bold", y=1.03)
-out = ROOT / "new_paper" / "charts" / "model_comparison.png"
+out = ROOT / "paper" / "charts" / "model_comparison.png"
 out.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(out, dpi=300, bbox_inches="tight", facecolor=SURFACE)
 print("wrote", out)

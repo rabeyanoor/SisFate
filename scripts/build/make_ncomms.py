@@ -1,10 +1,10 @@
 """Build the Nature Communications version of the paper from the Genome Biology master.
 
-Inputs (new_paper/): ncomms_draft.md (title, abstract, Introduction, Results, Discussion, written for this
+Inputs (paper/): ncomms_draft.md (title, abstract, Introduction, Results, Discussion, written for this
 journal), ncomms_supp_draft.md (Supplementary Notes and Figures), paper.md (Methods are taken from here, so the
 two versions never disagree), Supplementary_Tables.xlsx.
 
-Outputs (new_paper/): ncomms_paper.md, ncomms_supplementary.md, and ncomms_supplementary_data/ with one
+Outputs (paper/): ncomms_paper.md, ncomms_supplementary.md, and ncomms_supplementary_data/ with one
 Supplementary Data file per table, numbered in order of first citation, plus the legends for the cover letter.
 Nature style: numbered superscript citations in order of first citation (text first, then figure legends),
 "Supplementary Fig. N", numbered display equations, gene symbols in italics.
@@ -18,7 +18,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-NP = ROOT / "new_paper"
+NP = ROOT / "paper"
 AUTH = Path(__file__).with_name("ncomms_authors.json")  # Crossref author lists, fetched once
 
 # key: (in-text surname as written, year, doi, title in sentence case, journal abbreviation, volume, pages)
@@ -259,7 +259,7 @@ We thank the authors of the ReSisTrace, PC9 osimertinib, triple-negative breast 
 
 ## Author contributions
 
-R.N. conceived the study, carried out all analyses and wrote the manuscript. K.J.R. contributed to the biological interpretation of the results. Both authors read and approved the final manuscript.
+R.N. conceived the study, carried out all analyses and wrote the paper. K.J.R. contributed to the biological interpretation of the results. Both authors read and approved the final version.
 
 ## Competing interests
 

@@ -6,7 +6,7 @@ Every value is read from results/; nothing is typed in by hand.
   patients_after_chemo.png       per-patient change of three signatures after neoadjuvant chemotherapy
   sister_ceiling.png             observed AUROC vs AUROC if the treated sister itself were scored
 
-Run: python scripts/31_summary_charts.py   -> new_paper/charts/
+Run: python scripts/31_summary_charts.py   -> paper/charts/
 """
 from pathlib import Path
 
@@ -19,7 +19,7 @@ import pandas as pd  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 R = ROOT / "results"
-OUT = ROOT / "new_paper" / "charts"
+OUT = ROOT / "paper" / "charts"
 OUT.mkdir(parents=True, exist_ok=True)
 SURFACE, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 BLUE, ORANGE = "#2a78d6", "#eb6834"  # categorical slots 1 and 2 (validated)

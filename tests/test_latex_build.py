@@ -10,8 +10,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 
 
-@pytest.mark.skipif(not (ROOT / "new_paper" / "supplementary_information.md").exists(),
-                    reason="manuscript sources are not part of the public repository")
+@pytest.mark.skipif(not (ROOT / "paper" / "supplementary_information.md").exists(),
+                    reason="the supplementary text source is not part of the public repository")
 def test_latex_builds_and_validates():
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build" / "build_latex.py")], check=True, cwd=ROOT)
     # the supplement (with Figs. S1-S3) is built into the same folder
@@ -31,7 +31,7 @@ def test_latex_builds_and_validates():
     assert t.rstrip().endswith(r"\end{document}")
     # every legend in the paper must have produced an \includegraphics, or a figure is silently
     # missing from the built paper, which is how Fig. 9 went absent from the LaTeX for several commits
-    md = (ROOT / "new_paper" / "paper.md").read_text()
+    md = (ROOT / "paper" / "paper.md").read_text()
     legends = re.findall(r"^\*\*(Supplementary )?Fig\. (\d+)", md, re.M)
     included = len(re.findall(r"\\includegraphics", t))
     assert included == len(legends), f"{len(legends)} legends but {included} figures included"

@@ -83,7 +83,7 @@ done
 # ---- summaries, figures, tables, paper
 for cc in keep regress regress_all; do $PY scripts/11_summarize.py --cc-mode $cc; done
 $PY scripts/14_figures.py                   # results/figures/paper/*.png|pdf and plos/*.tif
-$PY scripts/30_model_comparison_chart.py && $PY scripts/31_summary_charts.py   # plain charts in new_paper/charts/
+$PY scripts/30_model_comparison_chart.py && $PY scripts/31_summary_charts.py   # plain charts in paper/charts/
 uv run --with openpyxl python scripts/16_supplementary_tables.py
 $PY scripts/23_audit_paper.py           # fails if any quoted number disagrees with results/
 (cd scripts/build && npm install --silent && node build_docx.js)
