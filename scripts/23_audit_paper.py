@@ -108,6 +108,16 @@ check("delta CI NK regress_all", [-0.010, 0.016], [da.loc["NK", "delta_lo"], da.
 check("delta seed sd range (keep)", [0.003, 0.004],
       [round(dk["delta_seed_sd"].min(), 3), round(dk["delta_seed_sd"].max(), 3)], 0.0006)
 
+# --- model comparison ranges quoted in Results and Table 1 (latest run per seed, mean over seeds)
+_RR = pd.read_csv(R / "results.csv")
+_RR = _RR[(_RR["split"] == "within") & (_RR["cc_mode"] == "keep") & (~_RR["shuffled"]) & (_RR["fold"] == "oof")]
+_RR = _RR.sort_values("timestamp").groupby(["model", "features", "test", "seed"]).tail(1)
+_MR = _RR.groupby(["model", "test"])["auroc"].mean()
+for _m, _q, _tol in [("pca_catboost", [0.70, 0.73], 0.005), ("hvg_logreg", [0.63, 0.66], 0.005),
+                     ("mlp", [0.700, 0.738], 0.0006), ("mlp_pretrain", [0.708, 0.742], 0.0006),
+                     ("persist_gnn", [0.696, 0.734], 0.0006)]:
+    check(f"{_m} range over arms", _q, [_MR[_m].min(), _MR[_m].max()], _tol)
+
 # --- alternative representations, including the foundation model
 RP = pd.read_csv(R / "sensitivity_representations.csv")
 GF = RP[RP["representation"].str.startswith("geneformer")]

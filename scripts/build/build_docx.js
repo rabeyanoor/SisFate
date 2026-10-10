@@ -9,7 +9,7 @@ const fs = require("fs");
 const path = require("path");
 const {
   Document, Packer, Paragraph, TextRun, HeadingLevel, ImageRun, AlignmentType, Footer, PageNumber,
-  LineNumberRestartFormat, PageBreak, ExternalHyperlink,
+  LineNumberRestartFormat, PageBreak, ExternalHyperlink, Table, TableRow, TableCell, WidthType,
 } = require("docx");
 const GB = process.env.GB === "1";
 const NOFIG = process.env.NOFIG === "1";
@@ -103,6 +103,20 @@ for (const block of blocks) {
   }
   if (line.startsWith("### ")) {
     children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: runs(line.slice(4)) }));
+    continue;
+  }
+  if (block.startsWith("|")) {  // a markdown table -> a Word table object (the journal does not accept tables as images)
+    const rows = block.split("\n").filter((r) => !/^\|\s*-/.test(r))
+      .map((r) => r.replace(/^\||\|$/g, "").split("|").map((c) => c.trim()));
+    children.push(new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      rows: rows.map((cells, i) => new TableRow({
+        tableHeader: i === 0,
+        children: cells.map((c) => new TableCell({
+          children: [new Paragraph({ spacing: { after: 40 }, children: runs(c, { size: 18, bold: i === 0 }) })],
+        })),
+      })),
+    }));
     continue;
   }
   if (line.startsWith("$$") && line.endsWith("$$")) {  // a displayed equation

@@ -143,6 +143,22 @@ def legends(md: str, supp=False) -> str:
     return md
 
 
+SUP = str.maketrans("⁻⁰¹²³⁴⁵⁶⁷⁸⁹", "−0123456789")
+
+
+def superscripts(md: str) -> str:
+    """10⁻²⁵ (Unicode superscript characters, which many fonts lack) -> 10^−25^ (a real superscript)."""
+    return re.sub(r"10([⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+)", lambda m: "10^" + m.group(1).translate(SUP) + "^", md)
+
+
+def name_files(md: str) -> str:
+    """The journal wants supplementary material referred to by file name: 'Additional file 2: Table S19'."""
+    md = re.sub(r"(?<!: )\b(Tables? S\d)", r"Additional file 2: \1", md)
+    md = re.sub(r"(?<!: )\b(Figs?\. S\d)", r"Additional file 1: \1", md)
+    md = re.sub(r"(?<!: )\b(Supplementary Notes? \d)", r"Additional file 1: \1", md)
+    return md
+
+
 def sub1(t, a, b, n=1):
     assert t.count(a) == n, (a, t.count(a))
     return t.replace(a, b)
@@ -163,17 +179,22 @@ def manuscript() -> str:
     body = sub1(body, "with infercnvpy (https://github.com/icbi-lab/infercnvpy; window", "with infercnvpy {{D:infercnvpy}} (window")
     body = sub1(body, "Preranked GSEA (Subramanian et al., 2005; GSEApy, Fang et al., 2023)",
                 "Preranked GSEA (Subramanian et al., 2005) with GSEApy (Fang et al., 2023)")
+    body = superscripts(name_files(body))
     a0 = body.index("**Availability of data and materials.**")
     a1 = body.index("**Competing interests.**")
     body = body[:a0] + AVAILABILITY + "\n\n" + body[a1:]
     assert "http" not in re.sub(r"\*\*Project home page:\*\* \S+", "", body), "URL left in the text"
-    extra = extra.replace(" (at the end of this document).", ".")
-    extra = sub1(extra, "**Additional file 1.**", "**Additional file 1** (.docx).")
-    extra = sub1(extra, "**Additional file 2.**", "**Additional file 2** (.xlsx).")
+    extra = ADDITIONAL_FILES
     conv = Vancouver()
     body = number(legends(body), conv)
     return body + "\n\n## References\n\n" + ref_list(conv) + "\n\n" + extra.strip() + "\n"
 
+
+ADDITIONAL_FILES = """## Additional files
+
+**Additional file 1** (.docx). **Supplementary Notes and Figures.** Supplementary Note 1 (graph model and hyperparameter sweep), Supplementary Note 2 (pre-specified marker panel and the insulin-like growth factor axis) and Supplementary Note 3 (inferred copy-number subclones), followed by Supplementary Figures S1–S5 with their legends.
+
+**Additional file 2** (.xlsx). **Supplementary Tables S1–S30.** All result tables underlying the figures and text, one table per sheet, including full differential expression and gene-set enrichment results. The first sheet lists every table with a short description."""
 
 AVAILABILITY = """**Availability of data and materials.** All data sets analysed during the current study are publicly available: the ReSisTrace data in the Gene Expression Omnibus (GEO) repository, GSE223003 {{D:resistrace}}; the PC9 osimertinib (Watermelon) lineage data, GSE150949 {{D:watermelon}}; the triple-negative breast cancer lineage data, GSE228382 {{D:tnbc}}, with per-cell lineage annotations on figshare {{D:figshare}}; the second lineage system, GSE279162 {{D:schaff}}; the patient cohort, GSE165897 {{D:patients}}; and TCGA-OV through UCSC Xena {{D:xena}}. All result tables underlying the figures and text, including full differential expression and gene-set enrichment results, are included in this published article (Additional file 2, Tables S1–S30). The code that regenerates every result, figure and table from the public data is available on GitHub {{D:repo}}.
 
@@ -203,6 +224,7 @@ def additional_file_1() -> str:
               "# Additional file 1\n\nSupplementary Notes 1–3 and Supplementary Figures S1–S5 for:")
     sm = sm.replace("\n\n## Supplementary Notes", "\n\nRabeya Noor and Khairum Jahan Roza\n\n## Supplementary Notes", 1)
     conv = Vancouver()
+    sm = superscripts(re.sub(r"(?<!: )\b(Tables? S\d)", r"Additional file 2: \1", sm))
     sm = number(legends(sm, supp=True), conv)
     return sm + "\n\n## References\n\n" + ref_list(conv) + "\n"
 
