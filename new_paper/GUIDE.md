@@ -1,5 +1,10 @@
 # Working on this paper
 
+**To submit to Genome Biology, use `new_paper/genomebiology/`:** `Manuscript.docx` (main file, no images,
+double-spaced, numbered references), `figures/Fig1–7.pdf` (upload separately), `Additional_file_1.docx`
+(Supplementary Notes and Figs. S1–S5), `Additional_file_2.xlsx` (Tables S1–S30) and `Cover_letter.docx`.
+Rebuild with `python scripts/build/make_genomebiology.py` after editing `paper.md` (see the script's docstring).
+
 **The paper to read and submit is `hi.docx`.** It holds the whole paper in one file: the main text with its
 seven figures, then the supplement (Supplementary Notes 1–3 and Supplementary Figs. S1–S5) on a new page.
 

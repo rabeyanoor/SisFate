@@ -357,12 +357,12 @@ if (R / "design_resistrace.csv").exists():
 
 DRUGS3 = ["Carboplatin", "Olaparib", "NK"]
 
-# --- abstract length (Genome Biology: at most 350 words)
+# --- abstract length (Genome Biology: at most 250 words)
 _ab = MD[MD.index("## Abstract") + len("## Abstract"):MD.index("**Keywords")]
 _n_words = len(re.findall(r"\S+", _ab))
 checks += 1
-if _n_words > 350:
-    fails.append(f"abstract has {_n_words} words, more than 350")
+if _n_words > 250:
+    fails.append(f"abstract has {_n_words} words, more than 250")
 
 # --- fitness / general treatment / drug-unique (scripts/33)
 TL = pd.read_csv(R / "three_level_decomposition.csv")

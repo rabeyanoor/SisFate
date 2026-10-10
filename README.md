@@ -58,6 +58,7 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `scripts/build/build_latex.py` | `new_paper/paper.md` -> LaTeX in `results/latex/` (on demand) |
 | `run_rest.sh` | lean version of the heavy runs actually used for the paper |
 | `scripts/build/build_docx.js` | `new_paper/paper.md` + `supplementary_information.md` -> `new_paper/hi.docx` (the whole paper, figures embedded) |
+| `scripts/build/make_genomebiology.py` | Genome Biology submission in `new_paper/genomebiology/`: Vancouver references, data sets and links cited in the reference list, separate Additional file 1; then `GB=1 NOFIG=1 node scripts/build/build_docx.js genomebiology/Manuscript` |
 | `scripts/build/docx_math.py` | turns the equations in `hi.docx` into native Word equations (run after `build_docx.js`; needs `uv run --with pypandoc_binary`) |
 
 Literature: `reference/lit/` holds metadata, abstracts and (24 of 27) full texts; five further full texts (Schaff 2026, Iyer 2025, Oliveira 2025, Kronheim 2026, Soragni 2025) and Shen et al. v2 are PDFs in `read_paper_for_sitation/` fetched by `reference/lit/fetch_lit.py`; claims cited in the paper were checked against them.

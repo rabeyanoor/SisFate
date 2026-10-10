@@ -3,12 +3,16 @@
 // Usage: node build_docx.js          the whole paper in one file: paper.md, then supplementary_information.md
 //                                     on a new page -> new_paper/hi.docx
 //        node build_docx.js <name>   a single new_paper/<name>.md -> new_paper/<name>.docx
+// Environment: GB=1 Genome Biology layout (double spacing, no page breaks); NOFIG=1 legends only, no images
+// (the journal takes figures as separate files). Web links (https://...) become clickable hyperlinks.
 const fs = require("fs");
 const path = require("path");
 const {
   Document, Packer, Paragraph, TextRun, HeadingLevel, ImageRun, AlignmentType, Footer, PageNumber,
-  LineNumberRestartFormat, PageBreak,
+  LineNumberRestartFormat, PageBreak, ExternalHyperlink,
 } = require("docx");
+const GB = process.env.GB === "1";
+const NOFIG = process.env.NOFIG === "1";
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const NAME = process.argv[2] || "hi";
@@ -36,13 +40,38 @@ function mathRun(tex, display, base) {
   return new TextRun({ text: `@@MATH${MATH.length - 1}@@`, ...base });
 }
 
+// a web link, without trailing punctuation (a closing parenthesis is kept only when the link opened one)
+const URL_RE = /https?:\/\/[^\s<>]+/g;
+function trimUrl(u) {
+  while (/[.,;:]$/.test(u) || (u.endsWith(")") && (u.match(/\(/g) || []).length < (u.match(/\)/g) || []).length)) u = u.slice(0, -1);
+  return u;
+}
+function link(url, base) {
+  return new ExternalHyperlink({ link: url, children: [new TextRun({ text: url, ...base, color: "0563C1", underline: {} })] });
+}
+// plain text with its web links made clickable
+function textRuns(text, base) {
+  const out = [];
+  let last = 0, m;
+  URL_RE.lastIndex = 0;
+  while ((m = URL_RE.exec(text)) !== null) {
+    const u = trimUrl(m[0]);
+    if (m.index > last) out.push(new TextRun({ text: text.slice(last, m.index), ...base }));
+    out.push(link(u, base));
+    last = m.index + u.length;
+    URL_RE.lastIndex = last;
+  }
+  if (last < text.length) out.push(new TextRun({ text: text.slice(last), ...base }));
+  return out;
+}
+
 // inline markdown: $math$, **bold**, *italic*, `code`, ^superscript^ (numbered citations)
 function runs(text, base = {}) {
   const out = [];
   const re = /(\$[^$]+\$|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\^[^\s^]+\^)/g;
   let last = 0, m;
   while ((m = re.exec(text)) !== null) {
-    if (m.index > last) out.push(new TextRun({ text: text.slice(last, m.index), ...base }));
+    if (m.index > last) out.push(...textRuns(text.slice(last, m.index), base));
     const t = m[0];
     if (t.startsWith("$")) out.push(mathRun(t.slice(1, -1), false, base));
     else if (t.startsWith("**")) out.push(new TextRun({ text: t.slice(2, -2), bold: true, ...base }));
@@ -51,7 +80,7 @@ function runs(text, base = {}) {
     else out.push(new TextRun({ text: t.slice(1, -1), font: "Consolas", ...base }));
     last = m.index + t.length;
   }
-  if (last < text.length) out.push(new TextRun({ text: text.slice(last), ...base }));
+  if (last < text.length) out.push(...textRuns(text.slice(last), base));
   return out;
 }
 
@@ -61,14 +90,14 @@ let inRefs = false;
 for (const block of blocks) {
   const line = block.replace(/\n/g, " ");
   if (line.startsWith("# ")) {
-    if (children.length) children.push(new Paragraph({ children: [new PageBreak()] }));  // supplement starts a new page
+    if (children.length && !GB) children.push(new Paragraph({ children: [new PageBreak()] }));  // supplement starts a new page
     children.push(new Paragraph({ heading: HeadingLevel.TITLE, alignment: AlignmentType.LEFT, children: runs(line.slice(2)) }));
     continue;
   }
   if (line.startsWith("## ")) {
     const h = line.slice(3);
     inRefs = h === "References";
-    if (inRefs) children.push(new Paragraph({ children: [new PageBreak()] }));
+    if (inRefs && !GB) children.push(new Paragraph({ children: [new PageBreak()] }));
     children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: runs(h) }));
     continue;
   }
@@ -81,10 +110,11 @@ for (const block of blocks) {
       children: [mathRun(line.slice(2, -2).trim(), true, {})] }));
     continue;
   }
-  const fm = line.match(/^\*\*(Supplementary )?Fig\. (\d+) \|/);
+  // "**Fig. 1 | Title.**" (master), "**Fig. 1** **Title.**" or "**Fig. S1** ..." (Genome Biology)
+  const fm = line.match(/^\*\*(Supplementary )?Fig\. (S?)(\d+)(?: \||\*\*)/);
   if (fm) {  // a legend: the figure goes above it, and the legend is set smaller underneath
-    const key = fm[1] ? "S" + fm[2] : fm[2];
-    if (FIGMAP[key] && fs.existsSync(path.join(FIG, FIGMAP[key]))) {
+    const key = (fm[1] || fm[2]) ? "S" + fm[3] : fm[3];
+    if (!NOFIG && FIGMAP[key] && fs.existsSync(path.join(FIG, FIGMAP[key]))) {
       const img = pngSize(path.join(FIG, FIGMAP[key]));
       const width = 620; // px at 96 dpi, ~6.5 in
       children.push(new Paragraph({
@@ -92,11 +122,11 @@ for (const block of blocks) {
         children: [new ImageRun({ type: "png", data: img.data, transformation: { width, height: Math.round(width * img.h / img.w) } })],
       }));
     }
-    children.push(new Paragraph({ spacing: { after: 280, line: 276 }, alignment: AlignmentType.JUSTIFIED, children: runs(line, { size: 19 }) }));
+    children.push(new Paragraph({ spacing: { after: 280, line: GB ? 480 : 276 }, alignment: AlignmentType.JUSTIFIED, children: runs(line, { size: GB ? 22 : 19 }) }));
     continue;
   }
   children.push(new Paragraph({
-    spacing: { after: 160, line: inRefs ? 276 : 360 },
+    spacing: { after: 160, line: GB ? 480 : (inRefs ? 276 : 360) },
     alignment: inRefs ? AlignmentType.LEFT : AlignmentType.JUSTIFIED,
     children: runs(line, inRefs ? { size: 20 } : {}),
   }));
