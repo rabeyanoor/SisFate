@@ -59,3 +59,17 @@ zenodo_data/
 # Local editor history and personal working copies
 .history/
 /*.docx
+
+# Not part of the research code: paper-building tools, slide charts, literature fetcher, superseded runners.
+# They stay on the author's machine.
+scripts/build/
+scripts/30_model_comparison_chart.py
+scripts/31_summary_charts.py
+scripts/32_export_data_view.py
+scripts/run_long.sh
+scripts/run_rest.sh
+tests/test_latex_build.py
+results/latex/
+reference/
+/paper/
+data_view/

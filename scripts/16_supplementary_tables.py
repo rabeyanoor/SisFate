@@ -1,4 +1,4 @@
-"""Collect result tables into paper/Supplementary_Tables.xlsx (one sheet per table).
+"""Collect result tables into results/Supplementary_Tables.xlsx (one sheet per table).
 
 Run: uv run --with openpyxl python scripts/16_supplementary_tables.py
 """
@@ -9,7 +9,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 RES = ROOT / "results"
-OUT = ROOT / "paper"
+OUT = ROOT / "results"
 OUT.mkdir(parents=True, exist_ok=True)
 
 

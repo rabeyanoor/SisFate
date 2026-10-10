@@ -1,7 +1,7 @@
 [project]
 name = "persist"
 version = "0.1.0"
-description = "PERSIST-GNN: lineage-supervised prediction of pre-existing drug-tolerant cell states (ReSisTrace)"
+description = "Fitness-adjusted evaluation of pre-treatment cell fate prediction in sister-cell lineage-tracing data"
 requires-python = ">=3.11,<3.13"
 dependencies = [
     "numpy>=1.26",

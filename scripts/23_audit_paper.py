@@ -14,7 +14,11 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 R = ROOT / "results"
-MD = (ROOT / "paper" / "paper.md").read_text()
+_PAPER = ROOT / "paper" / "paper.md"
+if not _PAPER.exists():
+    sys.exit("paper/paper.md not found: the audit compares the text of the paper with results/, and the text is "
+             "added to the repository on publication.")
+MD = _PAPER.read_text()
 fails, checks = [], 0
 
 
