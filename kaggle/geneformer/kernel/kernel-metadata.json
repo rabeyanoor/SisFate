@@ -1,3 +1,0 @@
-{"id": "rabeya100x/resistrace-geneformer-embed", "title": "resistrace-geneformer-embed", "code_file": "geneformer_embed.py",
- "language": "python", "kernel_type": "script", "is_private": true, "enable_gpu": true, "enable_internet": true,
- "dataset_sources": ["rabeya100x/resistrace-geneformer-tokens"], "competition_sources": [], "kernel_sources": []}

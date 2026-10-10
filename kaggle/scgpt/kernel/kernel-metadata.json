@@ -1,3 +1,0 @@
-{"id": "rabeya100x/resistrace-scgpt-embed", "title": "resistrace-scgpt-embed", "code_file": "scgpt_embed.py",
- "language": "python", "kernel_type": "script", "is_private": true, "enable_gpu": true, "enable_internet": true,
- "dataset_sources": ["rabeya100x/resistrace-scgpt-counts"], "competition_sources": [], "kernel_sources": []}
