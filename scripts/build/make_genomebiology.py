@@ -59,7 +59,7 @@ def v_authors(key) -> str:
     if key in VANCOUVER_MANUAL:
         return VANCOUVER_MANUAL[key]
     a = json.loads(AUTH.read_text())[REFS[key][0]]["authors"]
-    names = [f"{fam} {''.join(p[0] for p in re.split(r'[\s.\-]+', giv) if p)}" for fam, giv in a]
+    names = [fam + " " + "".join(p[0] for p in re.split(r"[\s.\-]+", giv) if p) for fam, giv in a]
     return ", ".join(names[:6]) + (", et al" if len(names) > 6 else "")
 
 
