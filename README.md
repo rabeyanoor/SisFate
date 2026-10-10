@@ -21,6 +21,35 @@ cohort.
 - In a second lineage system with six treatments, clone size before treatment predicts better than expression.
 - The evaluation is packaged as `persist.fitadj` for any lineage-tracing design with an untreated arm.
 
+<p align="center">
+  <img src="results/figures/paper/Fig1_design_data.png" width="820" alt="Study design and data">
+</p>
+
+*Study design. **a**, In ReSisTrace, barcoded cells divide once; one sister is sequenced before treatment and the
+other is treated with carboplatin, olaparib or NK cells, or left untreated (control). The sequenced cell is labelled
+by its sister's fate. **b**, Fraction of labelled cells that are pre-resistant in each sample. **c**, UMIs per cell.*
+
+<p align="center">
+  <img src="results/figures/paper/Fig3_fitness_confound.png" width="820" alt="Most of the signal is shared with the untreated control">
+</p>
+
+*Most of the signal is shared with the untreated arm. **a**, AUROC of models trained on one arm and tested on
+another. **b**, Drug-arm model, fitness model (trained on untreated cells) and the drug score after removing the
+fitness score. **c**, Drug-specific gain over the fitness model at equal training size, with 95% intervals that
+refit the models. **d**, The gain split into a part shared with the other treatments and a part unique to the drug.*
+
+## Quick start (two minutes, no download)
+
+`data/example/resistrace_pca.npz` (7 MB) holds the 50 principal components, labels, families and sister pairs of
+all 32,642 labelled ReSisTrace cells. The notebook [`notebooks/quickstart.ipynb`](notebooks/quickstart.ipynb)
+reruns the main model, the fitness model and the sister ceiling on it and reproduces the paper's numbers.
+
+```bash
+git clone https://github.com/rabeyanoor/SisFate.git && cd SisFate
+uv sync --frozen --python 3.12
+uv run --with jupyter jupyter lab notebooks/quickstart.ipynb
+```
+
 ## Repository layout
 
 ```
@@ -28,9 +57,11 @@ configs/default.yaml   every setting and the random seed
 src/persist/           Python package: data loading, labels, splits, models, metrics, the fitness-adjusted
                        evaluation (fitadj.py), sister ceiling, simulation and design calculator
 scripts/               the analysis, one numbered script per step (00-35); run_all.sh runs them in order
+notebooks/             quickstart.ipynb: the main analysis on the example data, with outputs
 kaggle/                GPU kernels for the Geneformer and scGPT embeddings (run on a free Kaggle T4)
 tests/                 unit tests of the package (pytest, run on every push)
-data/                  downloaded data, not in git; data/README.md lists every data set and its source
+data/                  data/example/ (7 MB example data, in git); downloaded data are not in git, and
+                       data/README.md lists every data set and its source
 results/               result tables (CSV), paper figures (results/figures/paper/) and Supplementary Tables
 ```
 
@@ -70,6 +101,7 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | script | step |
 |---|---|
 | `00_download.sh`, `00b_download_external.sh`, `00c_download_schaff.sh` | GEO downloads (ReSisTrace; Watermelon GSE150949; TNBC GSE228382 + figshare; Schaff GSE279162) |
+| `export_example_data.py` | the small example data in `data/example/` from the processed ReSisTrace object |
 | `export_seurat.R` | TNBC Seurat object -> plain files (R from `tools/renv`, installed with micromamba) |
 | `01_build_anndata.py` | dense GEO TSVs -> sparse per-sample `.h5ad` (streamed) |
 | `02_preprocess.py` | gene-union alignment, normalise, cell-cycle scores, HVGs, per-sample scaling, PCA (`keep` and `regress` cell-cycle modes) |

@@ -11,7 +11,9 @@ tools/
 .DS_Store
 
 # Data: public and re-downloadable with scripts/00*_download*.sh
-data/
+data/*
+!data/README.md
+!data/example/
 !data/external/
 data/external/*
 !data/external/zhang2022/
@@ -23,6 +25,7 @@ data/external/zhang2022/*
 *.h5ad
 *.npy
 *.npz
+!data/example/*.npz
 *.zip
 results/preds/
 results/figures/paper/plos/
@@ -35,6 +38,7 @@ results/figures/*.pdf
 
 # Kaggle upload staging
 kaggle/geneformer/dataset/*.npz
+!data/example/*.npz
 
 # Zenodo dataset upload (processed data, ~530 MB; too large for git)
 zenodo_data/

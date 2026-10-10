@@ -14,6 +14,11 @@ set, because they come from different cell lines, barcoding protocols and labels
 | Ovarian cancer patients before and after chemotherapy (Zhang et al. 2022) | GEO [GSE165897](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165897) | 8,806 malignant cells from 11 patients; clinical table from the paper (`external/zhang2022/`) | Do the signatures rise after treatment? |
 | TCGA-OV | [UCSC Xena](https://xenabrowser.net/datapages/?cohort=TCGA%20Ovarian%20Cancer%20(OV)) | RNA-seq and curated survival of 303 primary tumours | Do the signatures predict survival? |
 
+**Example data in the repository.** `example/resistrace_pca.npz` (7 MB) contains, for the 32,642 labelled
+ReSisTrace cells, the 50 principal components, fate labels, lineage families, samples, arms, technical covariates
+and the 3,477 pre-treatment sister pairs. It is made by `scripts/export_example_data.py` and used by
+`notebooks/quickstart.ipynb` and `tests/test_example_data.py`.
+
 Folders created by the scripts: `raw/` (downloads), `processed/` (AnnData objects, principal components,
 foundation-model embeddings), `external/` (the four external data sets), `ref/` (TCGA files).
 
