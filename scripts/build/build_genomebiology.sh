@@ -16,11 +16,14 @@ mkdir -p $G/figures
 for f in Fig1_design_data Fig2_predictability Fig3_fitness_confound Fig4_biology Fig5_ceiling \
          Fig6_schaff_multitreatment Fig7_external_clinical; do cp results/figures/paper/$f.pdf $G/figures/; done
 cp new_paper/Supplementary_Tables.xlsx $G/Additional_file_2.xlsx
+(cd scripts/build && node build_docx.js cover_letter >/dev/null)
+cp new_paper/cover_letter.docx $G/Cover_letter.docx
 rm -f $G/*.math.json
 if command -v soffice >/dev/null; then
-  (cd $G && rm -f *.pdf && soffice --headless --convert-to pdf Manuscript_with_figures.docx Additional_file_1.docx >/dev/null 2>&1)
+  (cd $G && rm -f *.pdf && soffice --headless --convert-to pdf Manuscript_with_figures.docx Additional_file_1.docx Cover_letter.docx >/dev/null 2>&1)
   mkdir -p new_paper/pdf
   cp $G/Manuscript_with_figures.pdf new_paper/pdf/SisFate_GenomeBiology_paper.pdf
   cp $G/Additional_file_1.pdf new_paper/pdf/SisFate_GenomeBiology_Additional_file_1.pdf
+  cp $G/Cover_letter.pdf new_paper/pdf/CoverLetter_GenomeBiology.pdf
 fi
 echo "Genome Biology submission built in $G"
