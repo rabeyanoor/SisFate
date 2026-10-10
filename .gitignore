@@ -4,7 +4,6 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 tools/
-scripts/build/node_modules/
 
 # Local editor and tooling state
 .vscode/
@@ -34,42 +33,11 @@ logs/
 results/figures/*.png
 results/figures/*.pdf
 
-# Reference material: copyrighted full texts and superseded drafts.
-# The bibliography and the fetcher that rebuilds it are kept.
-reference/*
-!reference/lit/
-reference/lit/*
-!reference/lit/bibliography.json
-!reference/lit/fetch_lit.py
-
-# Paper: only the text source, the supplementary tables and the guide are tracked; everything built from them
-# (Word, PDF, LaTeX, journal-specific versions, cover letters) stays local
-/paper/*
-!/paper/paper.md
-!/paper/Supplementary_Tables.xlsx
-!/paper/GUIDE.md
-
 # Kaggle upload staging
 kaggle/geneformer/dataset/*.npz
-/paper/*.math.json
 
 # Zenodo dataset upload (processed data, ~530 MB; too large for git)
 zenodo_data/
 
-# Local editor history and personal working copies
+# Local editor state
 .history/
-/*.docx
-
-# Not part of the research code: paper-building tools, slide charts, literature fetcher, superseded runners.
-# They stay on the author's machine.
-scripts/build/
-scripts/30_model_comparison_chart.py
-scripts/31_summary_charts.py
-scripts/32_export_data_view.py
-scripts/run_long.sh
-scripts/run_rest.sh
-tests/test_latex_build.py
-results/latex/
-reference/
-/paper/
-data_view/

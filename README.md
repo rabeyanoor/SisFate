@@ -52,8 +52,6 @@ uv run --with pytest pytest -q
 
 **3. Inspect the saved results (no computation).** `results/` holds every result table (CSV), the paper figures
 (`results/figures/paper/`) and Supplementary Tables S1–S30 (`results/Supplementary_Tables.xlsx`).
-`scripts/23_audit_paper.py` checks every number quoted in the paper against these tables once the paper text is
-in `paper/paper.md`.
 
 **4. Rerun everything from the public data (about a day on an 8-core laptop with 14 GB RAM).** Downloads the
 data from GEO and figshare and regenerates every result, figure and supplementary table; approximate times are
@@ -95,7 +93,6 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `20_delta_auroc_ci.py` | size-matched drug-specific gain (ΔAUROC) over the fitness model, 10 subsamples, paired family bootstrap CI -> `results/delta_auroc_ci.csv` |
 | `21_geneformer.py` | Geneformer V2-104M_CLcancer embeddings: `tokens` (CPU) -> `embed` (GPU; `kaggle/geneformer/`) -> `analyze` |
 | `22_patient_nact.py` | ReSisTrace signatures in 11 HGSOC patients before/after neoadjuvant chemotherapy (GSE165897) -> `results/patient_nact.csv` |
-| `23_audit_paper.py` | re-checks every number quoted in `paper/paper.md` against `results/` (over 150 checks; needs the paper text) |
 | `24_schaff_multitreatment.py` | second lineage system: six treatments in parallel (Schaff et al. 2026, GSE279162); clone size as the fitness proxy, cross-treatment transfer, clone ceiling |
 | `25_simulation.py` | synthetic lineage experiments with a known answer: bias and interval coverage of the drug-specific gain, and when the sister ceiling is valid |
 | `26_design_tool.py` | how many families and control cells a new experiment needs -> `results/design_*.csv` |

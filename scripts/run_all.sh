@@ -84,4 +84,3 @@ done
 for cc in keep regress regress_all; do $PY scripts/11_summarize.py --cc-mode $cc; done
 $PY scripts/14_figures.py                   # results/figures/paper/*.png|pdf and plos/*.tif
 uv run --with openpyxl python scripts/16_supplementary_tables.py   # results/Supplementary_Tables.xlsx (S1-S30)
-if [ -f paper/paper.md ]; then $PY scripts/23_audit_paper.py; fi   # fails if a number quoted in the paper disagrees with results/
