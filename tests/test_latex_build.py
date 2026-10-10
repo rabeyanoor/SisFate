@@ -5,9 +5,13 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@pytest.mark.skipif(not (ROOT / "new_paper" / "supplementary_information.md").exists(),
+                    reason="manuscript sources are not part of the public repository")
 def test_latex_builds_and_validates():
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build" / "build_latex.py")], check=True, cwd=ROOT)
     # the supplement (with Figs. S1-S3) is built into the same folder

@@ -36,10 +36,10 @@ function mathRun(tex, display, base) {
   return new TextRun({ text: `@@MATH${MATH.length - 1}@@`, ...base });
 }
 
-// inline markdown: $math$, **bold**, *italic*, `code`
+// inline markdown: $math$, **bold**, *italic*, `code`, ^superscript^ (numbered citations)
 function runs(text, base = {}) {
   const out = [];
-  const re = /(\$[^$]+\$|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
+  const re = /(\$[^$]+\$|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\^[^\s^]+\^)/g;
   let last = 0, m;
   while ((m = re.exec(text)) !== null) {
     if (m.index > last) out.push(new TextRun({ text: text.slice(last, m.index), ...base }));
@@ -47,6 +47,7 @@ function runs(text, base = {}) {
     if (t.startsWith("$")) out.push(mathRun(t.slice(1, -1), false, base));
     else if (t.startsWith("**")) out.push(new TextRun({ text: t.slice(2, -2), bold: true, ...base }));
     else if (t.startsWith("*")) out.push(new TextRun({ text: t.slice(1, -1), italics: true, ...base }));
+    else if (t.startsWith("^")) out.push(new TextRun({ text: t.slice(1, -1), superScript: true, ...base }));
     else out.push(new TextRun({ text: t.slice(1, -1), font: "Consolas", ...base }));
     last = m.index + t.length;
   }
@@ -102,8 +103,8 @@ for (const block of blocks) {
 }
 
 const doc = new Document({
-  creator: "SisFate",
-  title: "Sister-cell fate prediction",
+  creator: "Rabeya Noor",
+  title: "Growth fitness, not drug tolerance, explains most pre-treatment prediction of cancer cell fate",
   styles: {
     default: { document: { run: { font: "Arial", size: 22 } } },
     paragraphStyles: [

@@ -367,6 +367,9 @@ if _n_words > 350:
 # --- fitness / general treatment / drug-unique (scripts/33)
 TL = pd.read_csv(R / "three_level_decomposition.csv")
 TL = TL[TL["cc_mode"] == "keep"].set_index("arm")
+check("three-model total-gain intervals", [0.007, 0.051, 0.001, 0.049, -0.007, 0.042],
+      [TL.loc["Olaparib", "gain_total_lo"], TL.loc["Olaparib", "gain_total_hi"], TL.loc["NK", "gain_total_lo"],
+       TL.loc["NK", "gain_total_hi"], TL.loc["Carboplatin", "gain_total_lo"], TL.loc["Carboplatin", "gain_total_hi"]], 0.0006)
 check("general-treatment gains", [0.004, 0.006, 0.006], [round(TL.loc[a, "gain_general"], 3) for a in DRUGS3], 0.0006)
 check("drug-unique gains", [0.012, 0.020, 0.012], [round(TL.loc[a, "gain_unique"], 3) for a in DRUGS3], 0.0006)
 sh = TL["gain_general"] / TL["gain_total"]

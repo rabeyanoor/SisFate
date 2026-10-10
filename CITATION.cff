@@ -4,6 +4,9 @@ title: "SisFate: pre-treatment prediction of sister-cell fate in ReSisTrace line
 authors:
   - family-names: Noor
     given-names: Rabeya
+    affiliation: "Department of Computer Science and Engineering, Daffodil International University"
+    email: rabeyanoor.dev@gmail.com
+repository-code: "https://github.com/rabeyanoor/SisFate"
 license: MIT
 version: 1.0.0
 date-released: 2026-09-27

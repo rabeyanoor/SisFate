@@ -71,7 +71,7 @@ when journals usually want each figure as a separate file as well. Panels are dr
 ## Before submitting
 
 - Read it end to end, out loud. You defend every sentence in review.
-- Write a cover letter: what the paper shows, why it fits that journal, and the AI-use statement ICMJE asks
+- Write a cover letter: what the paper shows, why it fits that journal, and the LLM-use statement ICMJE asks
   for at submission.
 - The format follows Genome Biology. Check its live guidelines once more when you submit; Nature-family
   formats are much shorter and would need cutting.

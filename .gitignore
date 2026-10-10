@@ -52,3 +52,6 @@ new_paper
 # Kaggle upload staging
 kaggle/geneformer/dataset/*.npz
 new_paper/*.math.json
+
+# Zenodo dataset upload (processed data, ~530 MB; too large for git)
+zenodo_data/

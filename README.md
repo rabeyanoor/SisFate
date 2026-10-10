@@ -1,5 +1,10 @@
 # PERSIST: lineage-supervised prediction of pre-existing drug-tolerant states
 
+[![tests](https://github.com/rabeyanoor/SisFate/actions/workflows/tests.yml/badge.svg)](https://github.com/rabeyanoor/SisFate/actions/workflows/tests.yml)
+
+Code for: Noor R, Roza KJ. *Growth fitness, not drug tolerance, explains most pre-treatment prediction of cancer
+cell fate* (submitted). The reusable evaluation is `persist.fitadj` (see `tests/test_fitadj.py` for usage).
+
 Can a cell's **pre-treatment** transcriptome predict whether its **sister** survives treatment?
 Data: ReSisTrace (Dai et al., *Nat Commun* 15:1158, 2024; GEO **GSE223003**), Kuramochi HGSOC cells, arms
 Carboplatin / Olaparib / NK / **Control**, two replicates each.
@@ -38,7 +43,7 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `20_delta_auroc_ci.py` | size-matched drug-specific gain (ΔAUROC) over the fitness model, 10 subsamples, paired family bootstrap CI -> `results/delta_auroc_ci.csv` |
 | `21_geneformer.py` | Geneformer V2-104M_CLcancer embeddings: `tokens` (CPU) -> `embed` (GPU; `kaggle/geneformer/`) -> `analyze` |
 | `22_patient_nact.py` | ReSisTrace signatures in 11 HGSOC patients before/after neoadjuvant chemotherapy (GSE165897) -> `results/patient_nact.csv` |
-| `23_audit_paper.py` | re-checks every number quoted in `new_paper/paper.md` against `results/` (150 checks) |
+| `23_audit_paper.py` | re-checks every number quoted in `new_paper/paper.md` against `results/` (151 checks) |
 | `24_schaff_multitreatment.py` | second lineage system: six treatments in parallel (Schaff et al. 2026, GSE279162); clone size as the fitness proxy, cross-treatment transfer, clone ceiling |
 | `25_simulation.py` | synthetic lineage experiments with a known answer: bias and interval coverage of the drug-specific gain, and when the sister ceiling is valid |
 | `26_design_tool.py` | how many families and control cells a new experiment needs -> `results/design_*.csv` |

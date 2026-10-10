@@ -3,9 +3,8 @@ state the two share. This checks the consequence: when that assumption holds the
 it fails the estimate errs upward, so the reported ceiling is an upper bound and the sister cost is not
 understated."""
 import numpy as np
-from sklearn.metrics import roc_auc_score
 
-from persist.fitadj import sister_ceiling, sister_concordance
+from persist.fitadj import sister_ceiling
 from persist.simulate import ground_truth
 
 

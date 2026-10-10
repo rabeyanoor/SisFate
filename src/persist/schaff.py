@@ -14,7 +14,7 @@ treatments.
 
 Barcode assignment. The authors assign lineages with a Bayesian posterior after merging correlated barcodes.
 We use a simpler and more transparent rule, and report how results move with its thresholds: near-duplicate
-barcodes (Pearson r >= `merge_r` over cells, which arise from sequencing errors) are merged, and a cell is
+barcodes (cosine similarity >= `merge_r` over cells, which arise from sequencing errors) are merged, and a cell is
 assigned the barcode holding at least `min_umi` UMIs and more than `min_frac` of its barcode UMIs; otherwise
 it is unassigned, so a cell split evenly between two barcodes is dropped rather than guessed. Clone counts therefore differ from the published ones.
 """

@@ -87,13 +87,15 @@ def esc(t: str) -> str:
 
 
 def inline(t: str) -> str:
-    """**bold**, *italic*, `code` -> LaTeX, after escaping. Math spans pass through verbatim."""
+    """^superscript^, **bold**, *italic*, `code` -> LaTeX, after escaping. Math spans pass through verbatim."""
     t, spans = protect_math(t)
     out, last = [], 0
-    for m in re.finditer(r"(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)", t):
+    for m in re.finditer(r"(\^[^\s^]+\^|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)", t):
         out.append(esc(t[last:m.start()]))
         tok = m.group(0)
-        if tok.startswith("**"):
+        if tok.startswith("^"):
+            out.append(r"\textsuperscript{" + esc(tok[1:-1]) + "}")
+        elif tok.startswith("**"):
             out.append(r"\textbf{" + esc(tok[2:-2]) + "}")
         elif tok.startswith("*"):
             out.append(r"\emph{" + esc(tok[1:-1]) + "}")
