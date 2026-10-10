@@ -9,14 +9,40 @@ Can a cell's **pre-treatment** transcriptome predict whether its **sister** surv
 Data: ReSisTrace (Dai et al., *Nat Commun* 15:1158, 2024; GEO **GSE223003**), Kuramochi HGSOC cells, arms
 Carboplatin / Olaparib / NK / **Control**, two replicates each.
 
-## Setup and running
+## How to reproduce
+
+You need Linux or macOS, [uv](https://docs.astral.sh/uv/) and about 10 GB of free disk. Everything runs on a CPU.
+
+**1. Install (about 2 minutes).** The exact package versions are locked in `uv.lock` (also exported as `requirements.lock.txt`).
 ```bash
-uv sync --python 3.12          # CPU torch; no GPU needed, peak RAM ~2.5 GB (exact versions: uv.lock / requirements.lock.txt)
-./scripts/run_all.sh           # reproduces every number, figure and supplementary table; or run the numbered scripts one by one
+git clone https://github.com/rabeyanoor/SisFate.git && cd SisFate
+uv sync --frozen --python 3.12
 ```
+
+**2. Check the code (about 2 minutes, no data needed).** Runs the unit tests of the package, including the
+synthetic checks of the estimators.
+```bash
+uv run --with pytest pytest -q
+```
+
+**3. Check the paper against the saved results (seconds).** `results/` is part of the repository, so every number
+quoted in the paper can be checked without rerunning anything.
+```bash
+uv run python scripts/23_audit_paper.py      # over 150 checks; names any number that does not match results/
+```
+
+**4. Rerun everything from the public data (about a day on an 8-core laptop with 14 GB RAM).** Downloads the
+data from GEO and figshare and regenerates every result, figure and supplementary table; approximate times are
+given per step inside the script. The Geneformer and scGPT forward passes ran on a free Kaggle T4 GPU
+(`kaggle/`); the script says where to put their output, or how to run them on a CPU instead.
+```bash
+./scripts/run_all.sh
+```
+
 All randomness is seeded (`seed: 0` in `configs/default.yaml`, plus explicit `--seeds`); each row of `results/results.csv`
 records the hash of the configuration that produced it. Tested with Python 3.12.14, NumPy 2.5.3, scikit-learn 1.9.1,
 Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
+
 | script | step |
 |---|---|
 | `00_download.sh`, `00b_download_external.sh`, `00c_download_schaff.sh` | GEO downloads (ReSisTrace; Watermelon GSE150949; TNBC GSE228382 + figshare; Schaff GSE279162) |
@@ -43,7 +69,7 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `20_delta_auroc_ci.py` | size-matched drug-specific gain (ΔAUROC) over the fitness model, 10 subsamples, paired family bootstrap CI -> `results/delta_auroc_ci.csv` |
 | `21_geneformer.py` | Geneformer V2-104M_CLcancer embeddings: `tokens` (CPU) -> `embed` (GPU; `kaggle/geneformer/`) -> `analyze` |
 | `22_patient_nact.py` | ReSisTrace signatures in 11 HGSOC patients before/after neoadjuvant chemotherapy (GSE165897) -> `results/patient_nact.csv` |
-| `23_audit_paper.py` | re-checks every number quoted in `new_paper/paper.md` against `results/` (151 checks) |
+| `23_audit_paper.py` | re-checks every number quoted in `new_paper/paper.md` against `results/` (156 checks) |
 | `24_schaff_multitreatment.py` | second lineage system: six treatments in parallel (Schaff et al. 2026, GSE279162); clone size as the fitness proxy, cross-treatment transfer, clone ceiling |
 | `25_simulation.py` | synthetic lineage experiments with a known answer: bias and interval coverage of the drug-specific gain, and when the sister ceiling is valid |
 | `26_design_tool.py` | how many families and control cells a new experiment needs -> `results/design_*.csv` |
