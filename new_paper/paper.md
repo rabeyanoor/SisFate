@@ -4,7 +4,7 @@ Rabeya Noor^1*^ and Khairum Jahan Roza^2^
 
 ^1^Department of Computer Science and Engineering, Daffodil International University, Daffodil Smart City, Birulia, Savar, Dhaka 1216, Bangladesh
 
-^2^[MEDICAL COLLEGE NAME], Dhaka, Bangladesh
+^2^Kumudini Women's Medical College, Mirzapur, Tangail, Bangladesh
 
 ^*^**Correspondence:** rabeyanoor.dev@gmail.com
 
