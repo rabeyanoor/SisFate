@@ -62,7 +62,9 @@ kaggle/                GPU kernels for the Geneformer and scGPT embeddings (run 
 tests/                 unit tests of the package (pytest, run on every push)
 data/                  data/example/ (7 MB example data, in git); downloaded data are not in git, and
                        data/README.md lists every data set and its source
-results/               result tables (CSV), paper figures (results/figures/paper/) and Supplementary Tables
+results/               result tables (CSV), all paper figures as PDF and PNG (results/figures/paper/,
+                       with a README) and Supplementary Tables S1-S30
+logs/                  the original run logs, with a README saying which script made each one
 ```
 
 ## How to reproduce

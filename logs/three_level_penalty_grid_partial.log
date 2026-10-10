@@ -1,0 +1,9 @@
+20:04:02 INFO three_level | keep s_t=0.25 s_d=0.25: mean full AUROC 0.7299 | Carboplatin 0.722/0.751/0.749, Olaparib 0.714/0.747/0.747, NK 0.694/0.721/0.719
+20:05:17 INFO three_level | keep s_t=0.25 s_d=0.5: mean full AUROC 0.7291 | Carboplatin 0.722/0.744/0.748, Olaparib 0.713/0.739/0.747, NK 0.693/0.714/0.719
+20:06:22 INFO three_level | keep s_t=0.25 s_d=1.0: mean full AUROC 0.7288 | Carboplatin 0.721/0.731/0.748, Olaparib 0.712/0.723/0.746, NK 0.692/0.701/0.718
+20:07:42 INFO three_level | keep s_t=0.25 s_d=2.0: mean full AUROC 0.7286 | Carboplatin 0.721/0.724/0.748, Olaparib 0.712/0.715/0.746, NK 0.692/0.694/0.718
+20:09:06 INFO three_level | keep s_t=0.5 s_d=0.25: mean full AUROC 0.7293 | Carboplatin 0.721/0.751/0.749, Olaparib 0.712/0.748/0.747, NK 0.692/0.723/0.719
+20:10:24 INFO three_level | keep s_t=0.5 s_d=0.5: mean full AUROC 0.7289 | Carboplatin 0.721/0.751/0.748, Olaparib 0.712/0.747/0.746, NK 0.692/0.721/0.719
+20:11:42 INFO three_level | keep s_t=0.5 s_d=1.0: mean full AUROC 0.7287 | Carboplatin 0.721/0.744/0.748, Olaparib 0.712/0.738/0.746, NK 0.692/0.713/0.718
+20:12:43 INFO three_level | keep s_t=0.5 s_d=2.0: mean full AUROC 0.7285 | Carboplatin 0.720/0.731/0.748, Olaparib 0.712/0.723/0.746, NK 0.692/0.701/0.718
+20:14:05 INFO three_level | keep s_t=1.0 s_d=0.25: mean full AUROC 0.7292 | Carboplatin 0.720/0.751/0.749, Olaparib 0.712/0.748/0.747, NK 0.692/0.723/0.719

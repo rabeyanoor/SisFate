@@ -1,0 +1,31 @@
+20:24:45 INFO delta_refit |   keep Carboplatin: 25/200, running CI [-0.0066, +0.0395]
+20:32:47 INFO delta_refit |   keep Carboplatin: 50/200, running CI [-0.0075, +0.0371]
+20:44:25 INFO delta_refit |   keep Carboplatin: 75/200, running CI [-0.0084, +0.0363]
+20:54:34 INFO delta_refit |   keep Carboplatin: 100/200, running CI [-0.0092, +0.0340]
+21:01:59 INFO delta_refit |   keep Carboplatin: 125/200, running CI [-0.0097, +0.0317]
+21:11:00 INFO delta_refit |   keep Carboplatin: 150/200, running CI [-0.0086, +0.0326]
+21:21:10 INFO delta_refit |   keep Carboplatin: 175/200, running CI [-0.0081, +0.0341]
+21:29:32 INFO delta_refit |   keep Carboplatin: 200/200, running CI [-0.0082, +0.0350]
+21:29:32 INFO delta_refit | keep Carboplatin: Δ +0.0174 95% CI [-0.0002, +0.0431] p 0.194
+21:38:09 INFO delta_refit |   keep Olaparib: 25/200, running CI [-0.0031, +0.0482]
+21:47:25 INFO delta_refit |   keep Olaparib: 50/200, running CI [-0.0017, +0.0477]
+21:52:28 INFO delta_refit |   keep Olaparib: 75/200, running CI [-0.0016, +0.0482]
+21:57:19 INFO delta_refit |   keep Olaparib: 100/200, running CI [-0.0008, +0.0483]
+22:02:12 INFO delta_refit |   keep Olaparib: 125/200, running CI [-0.0013, +0.0481]
+22:07:05 INFO delta_refit |   keep Olaparib: 150/200, running CI [-0.0017, +0.0493]
+22:11:58 INFO delta_refit |   keep Olaparib: 175/200, running CI [-0.0020, +0.0483]
+22:16:54 INFO delta_refit |   keep Olaparib: 200/200, running CI [-0.0015, +0.0481]
+22:16:54 INFO delta_refit | keep Olaparib: Δ +0.0221 95% CI [-0.0040, +0.0456] p 0.035
+22:22:45 INFO delta_refit |   keep NK: 25/200, running CI [-0.0084, +0.0400]
+22:30:14 INFO delta_refit |   keep NK: 50/200, running CI [-0.0105, +0.0399]
+22:36:52 INFO delta_refit |   keep NK: 75/200, running CI [-0.0093, +0.0407]
+22:44:30 INFO delta_refit |   keep NK: 100/200, running CI [-0.0100, +0.0408]
+22:51:12 INFO delta_refit |   keep NK: 125/200, running CI [-0.0107, +0.0402]
+23:00:00 INFO delta_refit |   keep NK: 150/200, running CI [-0.0146, +0.0393]
+23:07:33 INFO delta_refit |   keep NK: 175/200, running CI [-0.0139, +0.0387]
+23:12:55 INFO delta_refit |   keep NK: 200/200, running CI [-0.0145, +0.0384]
+23:12:55 INFO delta_refit | keep NK: Δ +0.0142 95% CI [-0.0100, +0.0428] p 0.199
+cc_mode    drug_arm  n_boot  delta  delta_lo_percentile  delta_hi_percentile  delta_lo  delta_hi  boot_mean  boot_sd  p_boot_delta_le_0
+   keep Carboplatin     200 0.0174              -0.0082               0.0350   -0.0002    0.0431     0.0105   0.0115             0.1940
+   keep    Olaparib     200 0.0221              -0.0015               0.0481   -0.0040    0.0456     0.0236   0.0132             0.0348
+   keep          NK     200 0.0142              -0.0145               0.0384   -0.0100    0.0428     0.0106   0.0124             0.1990

@@ -1,0 +1,91 @@
+Installed 117 packages in 1.01s
+10:04:53 INFO sensitivity | baseline Carboplatin: drug=0.747 fitness=0.725 control=0.708 spec_matched=0.016
+10:05:06 INFO sensitivity | baseline Olaparib: drug=0.744 fitness=0.713 control=0.708 spec_matched=0.028
+10:05:22 INFO sensitivity | baseline NK: drug=0.723 fitness=0.697 control=0.708 spec_matched=0.016
+2026-09-27 10:05:22,520 - harmonypy - INFO - Running Harmony
+10:05:22 INFO harmonypy | Running Harmony
+2026-09-27 10:05:22,521 - harmonypy - INFO -   Parameters:
+10:05:22 INFO harmonypy |   Parameters:
+2026-09-27 10:05:22,521 - harmonypy - INFO -     max_iter_harmony: 10
+10:05:22 INFO harmonypy |     max_iter_harmony: 10
+2026-09-27 10:05:22,521 - harmonypy - INFO -     max_iter_kmeans: 4
+10:05:22 INFO harmonypy |     max_iter_kmeans: 4
+2026-09-27 10:05:22,521 - harmonypy - INFO -     epsilon_cluster: 0.001
+10:05:22 INFO harmonypy |     epsilon_cluster: 0.001
+2026-09-27 10:05:22,522 - harmonypy - INFO -     epsilon_harmony: 0.01
+10:05:22 INFO harmonypy |     epsilon_harmony: 0.01
+2026-09-27 10:05:22,522 - harmonypy - INFO -     nclust: 100
+10:05:22 INFO harmonypy |     nclust: 100
+2026-09-27 10:05:22,522 - harmonypy - INFO -     block_size: 0.05
+10:05:22 INFO harmonypy |     block_size: 0.05
+2026-09-27 10:05:22,522 - harmonypy - INFO -     lamb: dynamic (alpha=0.2)
+10:05:22 INFO harmonypy |     lamb: dynamic (alpha=0.2)
+2026-09-27 10:05:22,527 - harmonypy - INFO -     theta: [2. 2. 2. 2. 2. 2. 2. 2.]
+10:05:22 INFO harmonypy |     theta: [2. 2. 2. 2. 2. 2. 2. 2.]
+2026-09-27 10:05:22,528 - harmonypy - INFO -     sigma: [0.1 0.1 0.1 0.1 0.1]...
+10:05:22 INFO harmonypy |     sigma: [0.1 0.1 0.1 0.1 0.1]...
+2026-09-27 10:05:22,528 - harmonypy - INFO -     verbose: True
+10:05:22 INFO harmonypy |     verbose: True
+2026-09-27 10:05:22,529 - harmonypy - INFO -     random_state: 0
+10:05:22 INFO harmonypy |     random_state: 0
+2026-09-27 10:05:22,529 - harmonypy - INFO -   Data: 50 PCs × 37011 cells
+10:05:22 INFO harmonypy |   Data: 50 PCs × 37011 cells
+2026-09-27 10:05:22,529 - harmonypy - INFO -   Batch variables: ['sample']
+10:05:22 INFO harmonypy |   Batch variables: ['sample']
+2026-09-27 10:05:22,657 - harmonypy - INFO - Computing initial centroids...
+10:05:22 INFO harmonypy | Computing initial centroids...
+2026-09-27 10:05:28,392 - harmonypy - INFO - Initialization complete.
+10:05:28 INFO harmonypy | Initialization complete.
+2026-09-27 10:05:28,394 - harmonypy - INFO - Iteration 1 of 10
+10:05:28 INFO harmonypy | Iteration 1 of 10
+2026-09-27 10:05:31,943 - harmonypy - INFO - Converged after 1 iteration
+10:05:31 INFO harmonypy | Converged after 1 iteration
+10:05:47 INFO sensitivity | harmony Carboplatin: drug=0.746 fitness=0.722 control=0.709 spec_matched=0.019
+10:06:03 INFO sensitivity | harmony Olaparib: drug=0.743 fitness=0.708 control=0.709 spec_matched=0.032
+10:06:22 INFO sensitivity | harmony NK: drug=0.723 fitness=0.694 control=0.709 spec_matched=0.018
+<env>/lib/python3.12/site-packages/scanpy/experimental/pp/_normalization.py:66: RuntimeWarning: invalid value encountered in divide
+  residuals = diff / np.sqrt(mu + mu**2 / theta)
+<env>/lib/python3.12/site-packages/scanpy/experimental/pp/_normalization.py:66: RuntimeWarning: invalid value encountered in divide
+  residuals = diff / np.sqrt(mu + mu**2 / theta)
+<env>/lib/python3.12/site-packages/scanpy/experimental/pp/_normalization.py:66: RuntimeWarning: invalid value encountered in divide
+  residuals = diff / np.sqrt(mu + mu**2 / theta)
+<env>/lib/python3.12/site-packages/scanpy/experimental/pp/_normalization.py:66: RuntimeWarning: invalid value encountered in divide
+  residuals = diff / np.sqrt(mu + mu**2 / theta)
+<env>/lib/python3.12/site-packages/scanpy/experimental/pp/_normalization.py:66: RuntimeWarning: invalid value encountered in divide
+  residuals = diff / np.sqrt(mu + mu**2 / theta)
+<env>/lib/python3.12/site-packages/scanpy/experimental/pp/_normalization.py:66: RuntimeWarning: invalid value encountered in divide
+  residuals = diff / np.sqrt(mu + mu**2 / theta)
+10:07:07 INFO sensitivity | pearson Carboplatin: drug=0.727 fitness=0.706 control=0.695 spec_matched=0.013
+10:07:29 INFO sensitivity | pearson Olaparib: drug=0.723 fitness=0.690 control=0.695 spec_matched=0.031
+10:07:48 INFO sensitivity | pearson NK: drug=0.704 fitness=0.667 control=0.695 spec_matched=0.023
+<env>/lib/python3.12/site-packages/pyro/ops/stats.py:527: SyntaxWarning: invalid escape sequence '\g'
+  we have :math:`ES^{*}(P,Q) \ge ES^{*}(Q,Q)` with equality holding if and only if :math:`P=Q`, i.e.
+INFO: Seed set to 0
+10:08:22 INFO lightning.fabric.utilities.seed | Seed set to 0
+INFO: GPU available: False, used: False
+10:08:23 INFO lightning.pytorch.utilities.rank_zero | GPU available: False, used: False
+INFO: TPU available: False, using: 0 TPU cores
+10:08:23 INFO lightning.pytorch.utilities.rank_zero | TPU available: False, using: 0 TPU cores
+INFO: 💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+10:08:23 INFO lightning.pytorch.utilities.rank_zero | 💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+<env>/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+<env>/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=7` in the `DataLoader` to improve performance.
+<env>/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=7` in the `DataLoader` to improve performance.
+INFO: `Trainer.fit` stopped: `max_epochs=100` reached.
+10:57:24 INFO lightning.pytorch.utilities.rank_zero | `Trainer.fit` stopped: `max_epochs=100` reached.
+10:57:39 INFO sensitivity | scvi Carboplatin: drug=0.743 fitness=0.718 control=0.710 spec_matched=0.020
+10:57:57 INFO sensitivity | scvi Olaparib: drug=0.733 fitness=0.700 control=0.710 spec_matched=0.030
+10:58:12 INFO sensitivity | scvi NK: drug=0.724 fitness=0.696 control=0.710 spec_matched=0.022
+representation    drug_arm  auroc_drug_model_on_drug  auroc_fitness_model_on_drug  auroc_control_model_on_control  specificity_index_size_matched  auroc_drug_residual_on_drug
+      baseline Carboplatin                     0.747                        0.725                           0.708                           0.016                        0.603
+      baseline    Olaparib                     0.744                        0.713                           0.708                           0.028                        0.633
+      baseline          NK                     0.723                        0.697                           0.708                           0.016                        0.612
+       harmony Carboplatin                     0.746                        0.722                           0.709                           0.019                        0.601
+       harmony    Olaparib                     0.743                        0.708                           0.709                           0.032                        0.629
+       harmony          NK                     0.723                        0.694                           0.709                           0.018                        0.611
+       pearson Carboplatin                     0.727                        0.706                           0.695                           0.013                        0.628
+       pearson    Olaparib                     0.723                        0.690                           0.695                           0.031                        0.634
+       pearson          NK                     0.704                        0.667                           0.695                           0.023                        0.605
+          scvi Carboplatin                     0.743                        0.718                           0.710                           0.020                        0.606
+          scvi    Olaparib                     0.733                        0.700                           0.710                           0.030                        0.614
+          scvi          NK                     0.724                        0.696                           0.710                           0.022                        0.602

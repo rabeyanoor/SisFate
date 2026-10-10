@@ -1,0 +1,8 @@
+20:23:47 INFO three_level | keep NK: fitness 0.6966, other drug arms 0.7026, own arm 0.7141 (n_cap 4183)
+20:52:38 INFO three_level |   keep NK: 50/200
+21:08:33 INFO three_level |   keep NK: 100/200
+21:28:23 INFO three_level |   keep NK: 150/200
+21:49:05 INFO three_level |   keep NK: 200/200
+21:49:05 INFO three_level | keep NK: general +0.0060 [-0.0168, +0.0300], unique +0.0115 [-0.0020, +0.0350], total +0.0175
+cc_mode arm  n_cap  n_boot  auroc_fitness  auroc_other_drug_arms  auroc_own_arm  gain_general  gain_general_lo  gain_general_hi  gain_general_p_le_0  gain_unique  gain_unique_lo  gain_unique_hi  gain_unique_p_le_0  gain_total  gain_total_lo  gain_total_hi  gain_total_p_le_0  share_of_total_from_general
+   keep  NK   4183     200         0.6966                 0.7026         0.7141         0.006          -0.0168             0.03               0.3085       0.0115          -0.002           0.035              0.3532      0.0175         0.0014         0.0485              0.194                       0.3419

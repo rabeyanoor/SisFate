@@ -1,0 +1,41 @@
+[{"stream_name":"stdout","time":5.372248252,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 831.7/831.7 kB 10.3 MB/s eta 0:00:00\n"}
+,{"stream_name":"stderr","time":15.415093259,"data":"/kaggle/working/scgptmini/model/model.py:21: UserWarning: flash_attn is not installed\n"}
+,{"stream_name":"stderr","time":15.415215311,"data":"  warnings.warn(\"flash_attn is not installed\")\n"}
+,{"stream_name":"stderr","time":16.109731536,"data":"Retrieving folder contents\n"}
+,{"stream_name":"stdout","time":16.719090427,"data":"Processing file 1hh2zGKyWAx3DyovD30GStZ3QlzmSqdk1 args.json\n"}
+,{"stream_name":"stdout","time":16.719121687,"data":"Processing file 14AebJfGOUF047Eg40hk57HCtrb0fyDTm best_model.pt\n"}
+,{"stream_name":"stdout","time":16.719128903,"data":"Processing file 1H3E_MJ-Dl36AQV6jLbna2EdvgPaqvqcC vocab.json\n"}
+,{"stream_name":"stderr","time":16.719092447,"data":"Retrieving folder contents completed\n"}
+,{"stream_name":"stderr","time":16.719145092,"data":"Building directory structure\n"}
+,{"stream_name":"stderr","time":16.719188389,"data":"Building directory structure completed\n"}
+,{"stream_name":"stderr","time":18.261131902,"data":"Downloading...\n"}
+,{"stream_name":"stderr","time":18.261164274,"data":"From: https://drive.google.com/uc?id=1hh2zGKyWAx3DyovD30GStZ3QlzmSqdk1\n"}
+,{"stream_name":"stderr","time":18.261193748,"data":"To: /kaggle/working/scGPT_human/args.json\n"}
+,{"stream_name":"stderr","time":18.264682328,"data":"\r  0%|          | 0.00/1.30k [00:00\u003c?, ?B/s]\r100%|██████████| 1.30k/1.30k [00:00\u003c00:00, 4.11MB/s]\n"}
+,{"stream_name":"stderr","time":19.789540247,"data":"Downloading...\n"}
+,{"stream_name":"stderr","time":19.789571063,"data":"From (original): https://drive.google.com/uc?id=14AebJfGOUF047Eg40hk57HCtrb0fyDTm\n"}
+,{"stream_name":"stderr","time":19.789577282,"data":"From (redirected): https://drive.google.com/uc?id=14AebJfGOUF047Eg40hk57HCtrb0fyDTm\u0026confirm=t\u0026uuid=e2bb693a-3392-4f06-b71c-0970088cd44e\n"}
+,{"stream_name":"stderr","time":19.78958344,"data":"To: /kaggle/working/scGPT_human/best_model.pt\n"}
+,{"stream_name":"stderr","time":21.290293237,"data":"\r  0%|          | 0.00/205M [00:00\u003c?, ?B/s]\r  3%|▎         | 6.82M/205M [00:00\u003c00:03, 61.9MB/s]\r 14%|█▎        | 27.8M/205M [00:00\u003c00:01, 145MB/s] \r 21%|██        | 43.0M/205M [00:00\u003c00:01, 145MB/s]\r 30%|██▉       | 61.3M/205M [00:00\u003c00:00, 158MB/s]\r 38%|███▊      | 77.6M/205M [00:00\u003c00:00, 154MB/s]\r 47%|████▋     | 95.9M/205M [00:00\u003c00:00, 163MB/s]\r 57%|█████▋    | 117M/205M [00:00\u003c00:00, 179MB/s] \r 66%|██████▋   | 136M/205M [00:00\u003c00:00, 181MB/s]\r 75%|███████▌  | 155M/205M [00:00\u003c00:00, 179MB/s]\r 84%|████████▍ | 173M/205M [00:01\u003c00:00, 163MB/s]\r 92%|█████████▏| 190M/205M [00:01\u003c00:00, 143MB/s]\r100%|█████████▉| 205M/205M [00:01\u003c00:00, 101MB/s]\r100%|██████████| 205M/205M [00:01\u003c00:00, 137MB/s]\n"}
+,{"stream_name":"stderr","time":22.749276561,"data":"Downloading...\n"}
+,{"stream_name":"stderr","time":22.74932878,"data":"From: https://drive.google.com/uc?id=1H3E_MJ-Dl36AQV6jLbna2EdvgPaqvqcC\n"}
+,{"stream_name":"stderr","time":22.749336699,"data":"To: /kaggle/working/scGPT_human/vocab.json\n"}
+,{"stream_name":"stderr","time":22.760352393,"data":"\r  0%|          | 0.00/1.32M [00:00\u003c?, ?B/s]\r100%|██████████| 1.32M/1.32M [00:00\u003c00:00, 124MB/s]\n"}
+,{"stream_name":"stderr","time":22.76092428,"data":"Download completed\n"}
+,{"stream_name":"stdout","time":22.761185467,"data":"checkpoint files: ['args.json', 'best_model.pt', 'vocab.json']\n"}
+,{"stream_name":"stdout","time":23.804961428,"data":"loaded 162/172 tensors; not loaded: ['cls_decoder._decoder.0.weight', 'cls_decoder._decoder.0.bias', 'cls_decoder._decoder.2.weight', 'cls_decoder._decoder.2.bias', 'cls_decoder._decoder.3.weight', 'cls_decoder._decoder.3.bias', 'cls_decoder._decoder.5.weight', 'cls_decoder._decoder.5.bias', 'cls_decoder.out_layer.weight', 'cls_decoder.out_layer.bias']\n"}
+,{"stream_name":"stdout","time":29.73612578,"data":"37011 cells; 4682/5005 genes in the scGPT vocabulary\n"}
+,{"stream_name":"stdout","time":33.941689572,"data":"64/37011 cells, 4s\n"}
+,{"stream_name":"stdout","time":99.827653676,"data":"6464/37011 cells, 70s\n"}
+,{"stream_name":"stdout","time":173.497337004,"data":"12864/37011 cells, 144s\n"}
+,{"stream_name":"stdout","time":246.395590271,"data":"19264/37011 cells, 217s\n"}
+,{"stream_name":"stdout","time":318.743934692,"data":"25664/37011 cells, 289s\n"}
+,{"stream_name":"stdout","time":391.363627909,"data":"32064/37011 cells, 362s\n"}
+,{"stream_name":"stdout","time":447.89615317,"data":"done in 418s -\u003e emb_scgpt_human.npy (37011, 512)\n"}
+,{"stream_name":"stderr","time":452.949106236,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":452.949144823,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":453.325438693,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":453.325477498,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":454.073951568,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":455.647922375,"data":"[NbConvertApp] Writing 310226 bytes to __results__.html\n"}
+]

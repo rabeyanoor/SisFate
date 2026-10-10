@@ -1,0 +1,67 @@
+22:47:13 INFO baselines | 40 splits x 1 models x 1 seeds x (1+1) label sets
+22:47:16 INFO baselines | pca_logreg_tuned         within:Carboplatin->Carboplatin:f0       done
+22:47:21 INFO baselines | pca_logreg_tuned         within:Carboplatin->Carboplatin:f1       done
+22:47:26 INFO baselines | pca_logreg_tuned         within:Carboplatin->Carboplatin:f2       done
+22:47:30 INFO baselines | pca_logreg_tuned         within:Carboplatin->Carboplatin:f3       done
+22:47:34 INFO baselines | pca_logreg_tuned         within:Carboplatin->Carboplatin:f4       done
+22:47:37 INFO baselines | pca_logreg_tuned         within:Olaparib->Olaparib:f0             done
+22:47:41 INFO baselines | pca_logreg_tuned         within:Olaparib->Olaparib:f1             done
+22:47:44 INFO baselines | pca_logreg_tuned         within:Olaparib->Olaparib:f2             done
+22:47:48 INFO baselines | pca_logreg_tuned         within:Olaparib->Olaparib:f3             done
+22:47:52 INFO baselines | pca_logreg_tuned         within:Olaparib->Olaparib:f4             done
+22:47:57 INFO baselines | pca_logreg_tuned         within:NK->NK:f0                         done
+22:48:01 INFO baselines | pca_logreg_tuned         within:NK->NK:f1                         done
+22:48:05 INFO baselines | pca_logreg_tuned         within:NK->NK:f2                         done
+22:48:08 INFO baselines | pca_logreg_tuned         within:NK->NK:f3                         done
+22:48:11 INFO baselines | pca_logreg_tuned         within:NK->NK:f4                         done
+22:48:14 INFO baselines | pca_logreg_tuned         within:Control->Control:f0               done
+22:48:16 INFO baselines | pca_logreg_tuned         within:Control->Control:f1               done
+22:48:18 INFO baselines | pca_logreg_tuned         within:Control->Control:f2               done
+22:48:21 INFO baselines | pca_logreg_tuned         within:Control->Control:f3               done
+22:48:23 INFO baselines | pca_logreg_tuned         within:Control->Control:f4               done
+22:48:28 INFO baselines | pca_logreg_tuned         rep_holdout:Carboplatin_1->Carboplatin_2:f0 done
+22:48:33 INFO baselines | pca_logreg_tuned         rep_holdout:Carboplatin_2->Carboplatin_1:f0 done
+22:48:38 INFO baselines | pca_logreg_tuned         rep_holdout:Olaparib_1->Olaparib_2:f0    done
+22:48:43 INFO baselines | pca_logreg_tuned         rep_holdout:Olaparib_2->Olaparib_1:f0    done
+22:48:49 INFO baselines | pca_logreg_tuned         rep_holdout:NK_1->NK_2:f0                done
+22:48:54 INFO baselines | pca_logreg_tuned         rep_holdout:NK_2->NK_1:f0                done
+22:48:58 INFO baselines | pca_logreg_tuned         rep_holdout:Control_1->Control_2:f0      done
+22:49:01 INFO baselines | pca_logreg_tuned         rep_holdout:Control_2->Control_1:f0      done
+22:49:09 INFO baselines | pca_logreg_tuned         cross_arm:Carboplatin->Olaparib:f0       done
+22:49:17 INFO baselines | pca_logreg_tuned         cross_arm:Carboplatin->NK:f0             done
+22:49:24 INFO baselines | pca_logreg_tuned         cross_arm:Carboplatin->Control:f0        done
+22:49:32 INFO baselines | pca_logreg_tuned         cross_arm:Olaparib->Carboplatin:f0       done
+22:49:40 INFO baselines | pca_logreg_tuned         cross_arm:Olaparib->NK:f0                done
+22:49:47 INFO baselines | pca_logreg_tuned         cross_arm:Olaparib->Control:f0           done
+22:49:55 INFO baselines | pca_logreg_tuned         cross_arm:NK->Carboplatin:f0             done
+22:50:03 INFO baselines | pca_logreg_tuned         cross_arm:NK->Olaparib:f0                done
+22:50:09 INFO baselines | pca_logreg_tuned         cross_arm:NK->Control:f0                 done
+22:50:16 INFO baselines | pca_logreg_tuned         cross_arm:Control->Carboplatin:f0        done
+22:50:23 INFO baselines | pca_logreg_tuned         cross_arm:Control->Olaparib:f0           done
+22:50:30 INFO baselines | pca_logreg_tuned         cross_arm:Control->NK:f0                 done
+                                                          auroc  auprc  prevalence  within_cluster_auroc  auroc_shuffled  auprc_shuffled
+model            split       train         test                                                                                         
+pca_logreg_tuned cross_arm   Carboplatin   Control        0.692  0.260       0.148                 0.688           0.521           0.146
+                                           NK             0.668  0.148       0.083                 0.666           0.481           0.076
+                                           Olaparib       0.717  0.195       0.096                 0.684           0.554           0.103
+                             Control       Carboplatin    0.702  0.157       0.082                 0.681           0.496           0.077
+                                           NK             0.663  0.135       0.083                 0.655           0.470           0.075
+                                           Olaparib       0.699  0.173       0.096                 0.677           0.428           0.078
+                             NK            Carboplatin    0.702  0.165       0.082                 0.673           0.507           0.078
+                                           Control        0.692  0.251       0.148                 0.687           0.477           0.133
+                                           Olaparib       0.713  0.193       0.096                 0.689           0.512           0.093
+                             Olaparib      Carboplatin    0.718  0.177       0.082                 0.682           0.508           0.077
+                                           Control        0.688  0.264       0.148                 0.688           0.469           0.131
+                                           NK             0.671  0.156       0.083                 0.661           0.514           0.083
+                 rep_holdout Carboplatin_1 Carboplatin_2  0.716  0.176       0.086                 0.691           0.543           0.091
+                             Carboplatin_2 Carboplatin_1  0.709  0.166       0.078                 0.683           0.552           0.086
+                             Control_1     Control_2      0.693  0.241       0.149                 0.679           0.510           0.144
+                             Control_2     Control_1      0.681  0.253       0.147                 0.670           0.547           0.165
+                             NK_1          NK_2           0.655  0.134       0.082                 0.643           0.491           0.079
+                             NK_2          NK_1           0.673  0.154       0.085                 0.657           0.506           0.086
+                             Olaparib_1    Olaparib_2     0.740  0.188       0.080                 0.696           0.449           0.068
+                             Olaparib_2    Olaparib_1     0.719  0.225       0.112                 0.690           0.498           0.105
+                 within      Carboplatin   Carboplatin    0.720  0.177       0.082                 0.687           0.533           0.084
+                             Control       Control        0.704  0.252       0.148                 0.690           0.529           0.156
+                             NK            NK             0.672  0.144       0.083                 0.656           0.516           0.085
+                             Olaparib      Olaparib       0.727  0.205       0.096                 0.689           0.479           0.087

@@ -1,0 +1,182 @@
+03:40:56 INFO ceiling | 3477 pre-treatment sister pairs from 2939 families
+03:40:56 INFO ceiling | mean ICC over top-10 PCs: sisters=0.747 random=-0.000
+ pca_dims  icc_max_cv  icc_max_cv_sd  icc_max_insample  null_icc_max_cv
+       10       0.930          0.016             0.934           -0.030
+       20       0.923          0.020             0.936            0.004
+       50       0.922          0.021             0.941           -0.004
+        arm  prevalence  rho  pi  auroc_ceiling cc_mode
+Carboplatin       0.082 0.93 0.0          0.976    keep
+Carboplatin       0.082 0.93 0.1          0.929    keep
+Carboplatin       0.082 0.93 0.2          0.881    keep
+   Olaparib       0.096 0.93 0.0          0.975    keep
+   Olaparib       0.096 0.93 0.1          0.927    keep
+   Olaparib       0.096 0.93 0.2          0.880    keep
+         NK       0.083 0.93 0.0          0.976    keep
+         NK       0.083 0.93 0.1          0.928    keep
+         NK       0.083 0.93 0.2          0.881    keep
+    Control       0.148 0.93 0.0          0.969    keep
+    Control       0.148 0.93 0.1          0.922    keep
+    Control       0.148 0.93 0.2          0.875    keep
+                                    n_pairs  auroc_own_score  auroc_sister_score  score_icc
+model                  arm                                                                 
+cov_logreg             Carboplatin   1016.0            0.581               0.633      0.375
+                       Control        350.0            0.597               0.588      0.525
+                       NK            1057.0            0.601               0.570      0.384
+                       Olaparib      1054.0            0.517               0.580      0.382
+hvg_catboost           Carboplatin   1016.0            0.687               0.698      0.568
+                       Control        350.0            0.648               0.661      0.652
+                       NK            1057.0            0.646               0.579      0.456
+                       Olaparib      1054.0            0.687               0.687      0.585
+hvg_logreg             Carboplatin   1016.0            0.653               0.607      0.364
+                       Control        350.0            0.570               0.622      0.476
+                       NK            1057.0            0.582               0.553      0.180
+                       Olaparib      1054.0            0.559               0.596      0.258
+mlp                    Carboplatin   1016.0            0.693               0.735      0.749
+                       Control        350.0            0.651               0.657      0.839
+                       NK            1057.0            0.680               0.605      0.660
+                       Olaparib      1054.0            0.704               0.692      0.746
+mlp_pretrain           Carboplatin   1016.0            0.684               0.750      0.749
+                       Control        350.0            0.634               0.632      0.855
+                       NK            1057.0            0.668               0.602      0.689
+                       Olaparib      1054.0            0.719               0.725      0.778
+pca_logreg             Carboplatin   1016.0            0.672               0.734      0.715
+                       Control        350.0            0.666               0.678      0.805
+                       NK            1057.0            0.671               0.622      0.634
+                       Olaparib      1054.0            0.726               0.702      0.705
+pca_logreg_pooled      Carboplatin   1016.0            0.685               0.736      0.675
+                       Control        350.0            0.654               0.660      0.841
+                       NK            1057.0            0.685               0.617      0.658
+                       Olaparib      1054.0            0.729               0.708      0.692
+pca_smooth_logreg      Carboplatin   1016.0            0.680               0.738      0.738
+                       Control        350.0            0.648               0.663      0.839
+                       NK            1057.0            0.667               0.625      0.657
+                       Olaparib      1054.0            0.721               0.706      0.730
+persist_gnn            Carboplatin   1016.0            0.698               0.752      0.795
+                       Control        350.0            0.672               0.667      0.865
+                       NK            1057.0            0.658               0.587      0.712
+                       Olaparib      1054.0            0.724               0.708      0.774
+persist_gnn_nopretrain Carboplatin   1016.0            0.696               0.752      0.761
+                       Control        350.0            0.638               0.658      0.843
+                       NK            1057.0            0.647               0.595      0.698
+                       Olaparib      1054.0            0.704               0.692      0.745
+                 model         arm  pi  auroc_oof  rho_obs  rho_fate  saturated  auroc_if_sister_seen  sister_cost
+            cov_logreg Carboplatin 0.0      0.613    0.203     0.540      False                 0.798        0.185
+            cov_logreg Carboplatin 0.1      0.613    0.225     0.600      False                 0.796        0.183
+            cov_logreg Carboplatin 0.2      0.613    0.253     0.675      False                 0.793        0.180
+            cov_logreg     Control 0.0      0.589    0.176     0.335      False                 0.671        0.082
+            cov_logreg     Control 0.1      0.589    0.195     0.371      False                 0.671        0.082
+            cov_logreg     Control 0.2      0.589    0.219     0.417      False                 0.671        0.082
+            cov_logreg          NK 0.0      0.651    0.271     0.705      False                 0.880        0.229
+            cov_logreg          NK 0.1      0.651    0.301     0.783      False                 0.875        0.224
+            cov_logreg          NK 0.2      0.651    0.339     0.882      False                 0.866        0.216
+            cov_logreg    Olaparib 0.0      0.596    0.177     0.464      False                 0.752        0.156
+            cov_logreg    Olaparib 0.1      0.596    0.196     0.515      False                 0.751        0.155
+            cov_logreg    Olaparib 0.2      0.596    0.221     0.579      False                 0.750        0.153
+          hvg_catboost Carboplatin 0.0      0.730    0.413     0.727      False                 0.891        0.161
+          hvg_catboost Carboplatin 0.1      0.730    0.460     0.810      False                 0.886        0.156
+          hvg_catboost Carboplatin 0.2      0.730    0.520     0.915      False                 0.877        0.147
+          hvg_catboost     Control 0.0      0.698    0.388     0.595      False                 0.804        0.106
+          hvg_catboost     Control 0.1      0.698    0.430     0.660      False                 0.804        0.106
+          hvg_catboost     Control 0.2      0.698    0.484     0.742      False                 0.803        0.105
+          hvg_catboost          NK 0.0      0.697    0.355     0.779      False                 0.914        0.217
+          hvg_catboost          NK 0.1      0.697    0.395     0.867      False                 0.907        0.209
+          hvg_catboost          NK 0.2      0.697    0.445     0.978      False                 0.894        0.197
+          hvg_catboost    Olaparib 0.0      0.722    0.407     0.696      False                 0.871        0.149
+          hvg_catboost    Olaparib 0.1      0.722    0.453     0.775      False                 0.867        0.146
+          hvg_catboost    Olaparib 0.2      0.722    0.511     0.874      False                 0.862        0.140
+            hvg_logreg Carboplatin 0.0      0.645    0.260     0.713      False                 0.885        0.239
+            hvg_logreg Carboplatin 0.1      0.645    0.289     0.793      False                 0.879        0.234
+            hvg_logreg Carboplatin 0.2      0.645    0.325     0.892      False                 0.870        0.225
+            hvg_logreg     Control 0.0      0.630    0.256     0.538      False                 0.776        0.145
+            hvg_logreg     Control 0.1      0.630    0.284     0.597      False                 0.775        0.145
+            hvg_logreg     Control 0.2      0.630    0.319     0.671      False                 0.774        0.144
+            hvg_logreg          NK 0.0      0.626    0.226     1.000       True                 1.000        0.374
+            hvg_logreg          NK 0.1      0.626    0.251     1.000       True                 0.950        0.324
+            hvg_logreg          NK 0.2      0.626    0.282     1.000       True                 0.900        0.274
+            hvg_logreg    Olaparib 0.0      0.661    0.296     1.000       True                 1.000        0.339
+            hvg_logreg    Olaparib 0.1      0.661    0.328     1.000       True                 0.950        0.289
+            hvg_logreg    Olaparib 0.2      0.661    0.370     1.000       True                 0.900        0.239
+                   mlp Carboplatin 0.0      0.743    0.438     0.584      False                 0.820        0.077
+                   mlp Carboplatin 0.1      0.743    0.488     0.651      False                 0.819        0.076
+                   mlp Carboplatin 0.2      0.743    0.552     0.736      False                 0.816        0.073
+                   mlp     Control 0.0      0.705    0.401     0.479      False                 0.745        0.040
+                   mlp     Control 0.1      0.705    0.446     0.531      False                 0.745        0.040
+                   mlp     Control 0.2      0.705    0.501     0.598      False                 0.745        0.039
+                   mlp          NK 0.0      0.720    0.396     0.599      False                 0.828        0.108
+                   mlp          NK 0.1      0.720    0.441     0.667      False                 0.825        0.106
+                   mlp          NK 0.2      0.720    0.498     0.753      False                 0.822        0.102
+                   mlp    Olaparib 0.0      0.729    0.422     0.565      False                 0.805        0.076
+                   mlp    Olaparib 0.1      0.729    0.470     0.629      False                 0.804        0.075
+                   mlp    Olaparib 0.2      0.729    0.530     0.710      False                 0.802        0.073
+          mlp_pretrain Carboplatin 0.0      0.743    0.437     0.584      False                 0.820        0.077
+          mlp_pretrain Carboplatin 0.1      0.743    0.488     0.651      False                 0.819        0.076
+          mlp_pretrain Carboplatin 0.2      0.743    0.552     0.736      False                 0.816        0.073
+          mlp_pretrain     Control 0.0      0.704    0.398     0.466      False                 0.738        0.035
+          mlp_pretrain     Control 0.1      0.704    0.442     0.517      False                 0.738        0.035
+          mlp_pretrain     Control 0.2      0.704    0.497     0.581      False                 0.738        0.035
+          mlp_pretrain          NK 0.0      0.716    0.390     0.566      False                 0.811        0.094
+          mlp_pretrain          NK 0.1      0.716    0.434     0.630      False                 0.809        0.093
+          mlp_pretrain          NK 0.2      0.716    0.490     0.712      False                 0.807        0.090
+          mlp_pretrain    Olaparib 0.0      0.737    0.436     0.561      False                 0.803        0.065
+          mlp_pretrain    Olaparib 0.1      0.737    0.486     0.624      False                 0.802        0.065
+          mlp_pretrain    Olaparib 0.2      0.737    0.549     0.705      False                 0.800        0.063
+            pca_logreg Carboplatin 0.0      0.747    0.446     0.624      False                 0.841        0.093
+            pca_logreg Carboplatin 0.1      0.747    0.497     0.695      False                 0.838        0.091
+            pca_logreg Carboplatin 0.2      0.747    0.562     0.787      False                 0.835        0.087
+            pca_logreg     Control 0.0      0.708    0.407     0.505      False                 0.759        0.051
+            pca_logreg     Control 0.1      0.708    0.452     0.561      False                 0.758        0.050
+            pca_logreg     Control 0.2      0.708    0.508     0.631      False                 0.758        0.050
+            pca_logreg          NK 0.0      0.723    0.403     0.635      False                 0.846        0.122
+            pca_logreg          NK 0.1      0.723    0.448     0.707      False                 0.843        0.119
+            pca_logreg          NK 0.2      0.723    0.506     0.798      False                 0.838        0.115
+            pca_logreg    Olaparib 0.0      0.744    0.448     0.636      False                 0.841        0.098
+            pca_logreg    Olaparib 0.1      0.744    0.499     0.708      False                 0.839        0.096
+            pca_logreg    Olaparib 0.2      0.744    0.564     0.800      False                 0.836        0.092
+     pca_logreg_pooled Carboplatin 0.0      0.748    0.446     0.661      False                 0.859        0.112
+     pca_logreg_pooled Carboplatin 0.1      0.748    0.497     0.737      False                 0.856        0.109
+     pca_logreg_pooled Carboplatin 0.2      0.748    0.563     0.834      False                 0.851        0.103
+     pca_logreg_pooled     Control 0.0      0.712    0.414     0.492      False                 0.752        0.040
+     pca_logreg_pooled     Control 0.1      0.712    0.459     0.547      False                 0.752        0.040
+     pca_logreg_pooled     Control 0.2      0.712    0.517     0.615      False                 0.752        0.040
+     pca_logreg_pooled          NK 0.0      0.724    0.403     0.612      False                 0.834        0.111
+     pca_logreg_pooled          NK 0.1      0.724    0.449     0.682      False                 0.832        0.108
+     pca_logreg_pooled          NK 0.2      0.724    0.507     0.770      False                 0.828        0.105
+     pca_logreg_pooled    Olaparib 0.0      0.746    0.453     0.655      False                 0.851        0.104
+     pca_logreg_pooled    Olaparib 0.1      0.746    0.505     0.729      False                 0.848        0.102
+     pca_logreg_pooled    Olaparib 0.2      0.746    0.571     0.824      False                 0.844        0.098
+     pca_smooth_logreg Carboplatin 0.0      0.752    0.454     0.615      False                 0.836        0.084
+     pca_smooth_logreg Carboplatin 0.1      0.752    0.506     0.686      False                 0.834        0.082
+     pca_smooth_logreg Carboplatin 0.2      0.752    0.573     0.776      False                 0.831        0.079
+     pca_smooth_logreg     Control 0.0      0.708    0.407     0.485      False                 0.748        0.040
+     pca_smooth_logreg     Control 0.1      0.708    0.452     0.539      False                 0.748        0.040
+     pca_smooth_logreg     Control 0.2      0.708    0.509     0.606      False                 0.748        0.040
+     pca_smooth_logreg          NK 0.0      0.720    0.396     0.602      False                 0.829        0.109
+     pca_smooth_logreg          NK 0.1      0.720    0.441     0.671      False                 0.827        0.107
+     pca_smooth_logreg          NK 0.2      0.720    0.498     0.757      False                 0.824        0.104
+     pca_smooth_logreg    Olaparib 0.0      0.742    0.446     0.611      False                 0.829        0.086
+     pca_smooth_logreg    Olaparib 0.1      0.742    0.497     0.681      False                 0.827        0.085
+     pca_smooth_logreg    Olaparib 0.2      0.742    0.561     0.769      False                 0.824        0.082
+           persist_gnn Carboplatin 0.0      0.733    0.419     0.527      False                 0.791        0.058
+           persist_gnn Carboplatin 0.1      0.733    0.467     0.587      False                 0.790        0.057
+           persist_gnn Carboplatin 0.2      0.733    0.528     0.664      False                 0.788        0.055
+           persist_gnn     Control 0.0      0.696    0.383     0.443      False                 0.727        0.031
+           persist_gnn     Control 0.1      0.696    0.425     0.492      False                 0.727        0.031
+           persist_gnn     Control 0.2      0.696    0.478     0.553      False                 0.727        0.031
+           persist_gnn          NK 0.0      0.698    0.356     0.500      False                 0.776        0.078
+           persist_gnn          NK 0.1      0.698    0.396     0.556      False                 0.775        0.077
+           persist_gnn          NK 0.2      0.698    0.446     0.627      False                 0.773        0.076
+           persist_gnn    Olaparib 0.0      0.737    0.436     0.564      False                 0.805        0.067
+           persist_gnn    Olaparib 0.1      0.737    0.486     0.628      False                 0.804        0.066
+           persist_gnn    Olaparib 0.2      0.737    0.549     0.709      False                 0.802        0.065
+persist_gnn_nopretrain Carboplatin 0.0      0.736    0.425     0.559      False                 0.807        0.071
+persist_gnn_nopretrain Carboplatin 0.1      0.736    0.474     0.623      False                 0.806        0.070
+persist_gnn_nopretrain Carboplatin 0.2      0.736    0.536     0.704      False                 0.804        0.068
+persist_gnn_nopretrain     Control 0.0      0.695    0.382     0.453      False                 0.732        0.037
+persist_gnn_nopretrain     Control 0.1      0.695    0.424     0.503      False                 0.732        0.037
+persist_gnn_nopretrain     Control 0.2      0.695    0.477     0.566      False                 0.732        0.036
+persist_gnn_nopretrain          NK 0.0      0.705    0.370     0.529      False                 0.791        0.086
+persist_gnn_nopretrain          NK 0.1      0.705    0.411     0.589      False                 0.790        0.085
+persist_gnn_nopretrain          NK 0.2      0.705    0.464     0.665      False                 0.788        0.083
+persist_gnn_nopretrain    Olaparib 0.0      0.730    0.423     0.567      False                 0.806        0.076
+persist_gnn_nopretrain    Olaparib 0.1      0.730    0.470     0.632      False                 0.805        0.075
+persist_gnn_nopretrain    Olaparib 0.2      0.730    0.531     0.713      False                 0.803        0.073

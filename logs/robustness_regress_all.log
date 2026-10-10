@@ -1,0 +1,19 @@
+03:48:30 INFO robustness | Carboplatin: all=0.723 singletons=0.729 null=0.501±0.016
+03:51:45 INFO robustness | Olaparib: all=0.727 singletons=0.733 null=0.501±0.015
+03:55:17 INFO robustness | NK: all=0.680 singletons=0.687 null=0.500±0.015
+03:56:57 INFO robustness | Control: all=0.704 singletons=0.717 null=0.500±0.019
+                       check         arm     n  auroc  perm_null_mean  perm_null_sd  perm_p  draw     cc_mode
+                   all_cells Carboplatin  8942 0.7235          0.5008        0.0164  0.0099   NaN regress_all
+             singletons_only Carboplatin  7142 0.7289             NaN           NaN     NaN   NaN regress_all
+                   all_cells    Olaparib  9394 0.7270          0.5011        0.0146  0.0099   NaN regress_all
+             singletons_only    Olaparib  7501 0.7332             NaN           NaN     NaN   NaN regress_all
+                   all_cells          NK 10123 0.6803          0.5000        0.0152  0.0099   NaN regress_all
+             singletons_only          NK  8234 0.6866             NaN           NaN     NaN   NaN regress_all
+                   all_cells     Control  4183 0.7042          0.4999        0.0192  0.0099   NaN regress_all
+             singletons_only     Control  3621 0.7171             NaN           NaN     NaN   NaN regress_all
+benchmark_protocol_ungrouped    Olaparib  1808 0.7467             NaN           NaN     NaN   0.0 regress_all
+  benchmark_protocol_grouped    Olaparib  1808 0.7383             NaN           NaN     NaN   0.0 regress_all
+benchmark_protocol_ungrouped    Olaparib  1808 0.7175             NaN           NaN     NaN   1.0 regress_all
+  benchmark_protocol_grouped    Olaparib  1808 0.7131             NaN           NaN     NaN   1.0 regress_all
+benchmark_protocol_ungrouped    Olaparib  1808 0.7297             NaN           NaN     NaN   2.0 regress_all
+  benchmark_protocol_grouped    Olaparib  1808 0.7192             NaN           NaN     NaN   2.0 regress_all

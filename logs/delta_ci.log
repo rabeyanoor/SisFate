@@ -1,0 +1,19 @@
+13:15:50 INFO delta_ci | keep Carboplatin: drug 0.739 fitness 0.725 Δ 0.0137 (seed s.d. 0.0040) 95% CI [0.0013, 0.0263] p 0.0180
+13:21:26 INFO delta_ci | keep Olaparib: drug 0.738 fitness 0.713 Δ 0.0247 (seed s.d. 0.0033) 95% CI [0.0119, 0.0385] p 0.0010
+13:27:28 INFO delta_ci | keep NK: drug 0.713 fitness 0.697 Δ 0.0167 (seed s.d. 0.0040) 95% CI [0.0032, 0.0310] p 0.0090
+13:31:48 INFO delta_ci | regress Carboplatin: drug 0.739 fitness 0.725 Δ 0.0141 (seed s.d. 0.0044) 95% CI [0.0018, 0.0269] p 0.0150
+13:36:37 INFO delta_ci | regress Olaparib: drug 0.737 fitness 0.711 Δ 0.0252 (seed s.d. 0.0033) 95% CI [0.0127, 0.0386] p 0.0010
+13:42:30 INFO delta_ci | regress NK: drug 0.713 fitness 0.700 Δ 0.0138 (seed s.d. 0.0046) 95% CI [0.0007, 0.0271] p 0.0170
+13:48:27 INFO delta_ci | regress_all Carboplatin: drug 0.714 fitness 0.703 Δ 0.0118 (seed s.d. 0.0048) 95% CI [-0.0007, 0.0249] p 0.0350
+13:52:03 INFO delta_ci | regress_all Olaparib: drug 0.720 fitness 0.699 Δ 0.0214 (seed s.d. 0.0031) 95% CI [0.0081, 0.0345] p 0.0020
+13:55:57 INFO delta_ci | regress_all NK: drug 0.667 fitness 0.664 Δ 0.0031 (seed s.d. 0.0062) 95% CI [-0.0096, 0.0164] p 0.3377
+    cc_mode    drug_arm  n_seeds  n_boot  n_train_cap  n_families  auroc_drug_size_matched  auroc_fitness  delta_mean  delta_seed_sd  delta_seed_min  delta_seed_max  delta_lo  delta_hi  p_boot_delta_le_0
+       keep Carboplatin       10    1000         4183        8004                   0.7389         0.7252      0.0137         0.0040          0.0097          0.0228    0.0013    0.0263             0.0180
+       keep    Olaparib       10    1000         4183        8412                   0.7377         0.7130      0.0247         0.0033          0.0210          0.0295    0.0119    0.0385             0.0010
+       keep          NK       10    1000         4183        9142                   0.7133         0.6966      0.0167         0.0040          0.0105          0.0205    0.0032    0.0310             0.0090
+    regress Carboplatin       10    1000         4183        8004                   0.7394         0.7253      0.0141         0.0044          0.0080          0.0230    0.0018    0.0269             0.0150
+    regress    Olaparib       10    1000         4183        8412                   0.7366         0.7114      0.0252         0.0033          0.0207          0.0309    0.0127    0.0386             0.0010
+    regress          NK       10    1000         4183        9142                   0.7134         0.6996      0.0138         0.0046          0.0065          0.0208    0.0007    0.0271             0.0170
+regress_all Carboplatin       10    1000         4183        8004                   0.7144         0.7026      0.0118         0.0048          0.0045          0.0216   -0.0007    0.0249             0.0350
+regress_all    Olaparib       10    1000         4183        8412                   0.7204         0.6991      0.0214         0.0031          0.0169          0.0263    0.0081    0.0345             0.0020
+regress_all          NK       10    1000         4183        9142                   0.6671         0.6639      0.0031         0.0062         -0.0067          0.0115   -0.0096    0.0164             0.3377

@@ -1,0 +1,13 @@
+13:07:25 INFO httpx | HTTP Request: HEAD https://huggingface.co/ctheodoris/Geneformer/resolve/main/geneformer/token_dictionary_gc104M.pkl "HTTP/1.1 302 Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+13:07:25 WARNING huggingface_hub.utils._http | Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+13:07:26 INFO httpx | HTTP Request: HEAD https://huggingface.co/ctheodoris/Geneformer/resolve/main/geneformer/gene_median_dictionary_gc104M.pkl "HTTP/1.1 302 Found"
+13:07:55 INFO geneformer | Carboplatin_1_pre: 5057 cells, 16307 genes in vocabulary, median 4096 tokens
+13:08:21 INFO geneformer | Carboplatin_2_pre: 4882 cells, 16435 genes in vocabulary, median 4096 tokens
+13:08:39 INFO geneformer | Control_1_pre: 2738 cells, 16019 genes in vocabulary, median 4096 tokens
+13:08:50 INFO geneformer | Control_2_pre: 2001 cells, 16080 genes in vocabulary, median 4096 tokens
+13:09:10 INFO geneformer | NK_1_pre: 4929 cells, 16418 genes in vocabulary, median 4096 tokens
+13:09:37 INFO geneformer | NK_2_pre: 6947 cells, 16517 genes in vocabulary, median 4096 tokens
+13:09:53 INFO geneformer | Olaparib_1_pre: 5239 cells, 16425 genes in vocabulary, median 4096 tokens
+13:10:14 INFO geneformer | Olaparib_2_pre: 5218 cells, 16487 genes in vocabulary, median 4096 tokens
+13:15:50 INFO geneformer | wrote data/processed/geneformer/tokens_V2-104M_CLcancer.npz (37011 cells)

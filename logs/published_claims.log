@@ -1,0 +1,75 @@
+23:19:58 WARNING published_claims | GO term not found: translational initiation
+23:19:58 INFO published_claims | HRD TCGA: 100 up, 100 down genes
+23:19:58 INFO published_claims | HRD COV362: 100 up, 100 down genes
+2026-10-02 23:19:58,943 [WARNING] Duplicated values found in preranked stats: 0.96% of genes
+The order of those genes will be arbitrary, which may produce unexpected results.
+23:20:08 INFO published_claims | published_log2FC Carboplatin: done
+23:20:17 INFO published_claims | published_minus_control Carboplatin: done
+2026-10-02 23:20:17,446 [WARNING] Duplicated values found in preranked stats: 0.69% of genes
+The order of those genes will be arbitrary, which may produce unexpected results.
+23:20:27 INFO published_claims | published_log2FC Olaparib: done
+23:20:33 INFO published_claims | published_minus_control Olaparib: done
+2026-10-02 23:20:33,157 [WARNING] Duplicated values found in preranked stats: 0.71% of genes
+The order of those genes will be arbitrary, which may produce unexpected results.
+23:20:40 INFO published_claims | published_log2FC NK: done
+23:20:47 INFO published_claims | published_minus_control NK: done
+23:20:57 INFO published_claims | published_log2FC Control: done
+2026-10-02 23:20:57,566 [WARNING] Duplicated values found in preranked stats: 1.22% of genes
+The order of those genes will be arbitrary, which may produce unexpected results.
+23:20:58 INFO published_claims | our_z Carboplatin: done
+2026-10-02 23:20:58,570 [WARNING] Duplicated values found in preranked stats: 0.12% of genes
+The order of those genes will be arbitrary, which may produce unexpected results.
+23:21:00 INFO published_claims | our_z_minus_control Carboplatin: done
+2026-10-02 23:21:00,038 [WARNING] Duplicated values found in preranked stats: 0.94% of genes
+The order of those genes will be arbitrary, which may produce unexpected results.
+23:21:01 INFO published_claims | our_z Olaparib: done
+2026-10-02 23:21:01,263 [WARNING] Duplicated values found in preranked stats: 0.06% of genes
+The order of those genes will be arbitrary, which may produce unexpected results.
+23:21:02 INFO published_claims | our_z_minus_control Olaparib: done
+2026-10-02 23:21:02,067 [WARNING] Duplicated values found in preranked stats: 0.96% of genes
+The order of those genes will be arbitrary, which may produce unexpected results.
+23:21:02 INFO published_claims | our_z NK: done
+2026-10-02 23:21:03,000 [WARNING] Duplicated values found in preranked stats: 0.02% of genes
+The order of those genes will be arbitrary, which may produce unexpected results.
+23:21:03 INFO published_claims | our_z_minus_control NK: done
+2026-10-02 23:21:03,927 [WARNING] Duplicated values found in preranked stats: 1.58% of genes
+The order of those genes will be arbitrary, which may produce unexpected results.
+23:21:04 INFO published_claims | our_z Control: done
+arm                                                                                          Carboplatin  Olaparib    NK  Control
+source                  gene_set                                                                                                 
+our_z                   HRD_COV362_connectivity                                                    -1.67     -1.70 -2.18    -1.61
+                        HRD_COV362_down                                                             1.99      1.84  2.49     1.78
+                        HRD_COV362_up                                                              -1.34     -1.55 -1.87    -1.43
+                        HRD_TCGA_connectivity                                                       0.89      0.62  0.00     1.14
+                        HRD_TCGA_down                                                              -0.77     -0.51 -0.83    -1.27
+                        HRD_TCGA_up                                                                 1.00      0.73 -0.85     1.00
+                        ribosome biogenesis                                                         1.49      1.03  1.06     1.61
+our_z_minus_control     HRD_COV362_connectivity                                                    -1.30     -1.33 -1.94      NaN
+                        HRD_COV362_down                                                             1.52      1.11  1.84      NaN
+                        HRD_COV362_up                                                              -1.09     -1.55 -2.05      NaN
+                        HRD_TCGA_connectivity                                                       0.00     -1.15 -1.15      NaN
+                        HRD_TCGA_down                                                               1.24      1.24  0.96      NaN
+                        HRD_TCGA_up                                                                 0.90     -1.05 -1.35      NaN
+                        ribosome biogenesis                                                         0.91     -0.99 -1.05      NaN
+published_log2FC        HRD_COV362_connectivity                                                    -1.54     -1.57 -1.76    -1.52
+                        HRD_COV362_down                                                             1.59      1.51  1.72     1.41
+                        HRD_COV362_up                                                              -1.48     -1.63 -1.81    -1.64
+                        HRD_TCGA_connectivity                                                       0.86      0.00  0.00     0.00
+                        HRD_TCGA_down                                                              -0.94     -0.90 -1.07    -1.07
+                        HRD_TCGA_up                                                                 0.78     -0.79 -0.83    -0.68
+                        PERK-mediated unfolded protein response                                    -1.40     -1.37 -1.28    -0.99
+                        cytoplasmic translation                                                     2.24      2.25  1.95     1.76
+                        nuclear-transcribed mRNA catabolic process, nonsense-mediated decay         2.10      2.13  1.92     1.68
+                        protein targeting to ER                                                     2.09      2.12  1.75     1.64
+                        ribosome biogenesis                                                         2.14      1.91  1.88     2.13
+published_minus_control HRD_COV362_connectivity                                                    -1.41     -1.47 -1.73      NaN
+                        HRD_COV362_down                                                             1.64      1.37  1.75      NaN
+                        HRD_COV362_up                                                              -1.17     -1.56 -1.71      NaN
+                        HRD_TCGA_connectivity                                                       0.00     -0.86  0.00      NaN
+                        HRD_TCGA_down                                                               0.63      0.82 -0.74      NaN
+                        HRD_TCGA_up                                                                 1.01     -0.89 -0.94      NaN
+                        PERK-mediated unfolded protein response                                    -1.52     -1.53 -1.56      NaN
+                        cytoplasmic translation                                                     2.28      2.15  1.54      NaN
+                        nuclear-transcribed mRNA catabolic process, nonsense-mediated decay         2.17      2.03  1.62      NaN
+                        protein targeting to ER                                                     2.20      2.07  1.51      NaN
+                        ribosome biogenesis                                                         1.51      1.20 -1.04      NaN

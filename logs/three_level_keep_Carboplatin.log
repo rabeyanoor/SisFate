@@ -1,0 +1,8 @@
+20:23:37 INFO three_level | keep Carboplatin: fitness 0.7252, other drug arms 0.7293, own arm 0.7416 (n_cap 4183)
+20:49:34 INFO three_level |   keep Carboplatin: 50/200
+21:08:53 INFO three_level |   keep Carboplatin: 100/200
+21:26:25 INFO three_level |   keep Carboplatin: 150/200
+21:46:39 INFO three_level |   keep Carboplatin: 200/200
+21:46:39 INFO three_level | keep Carboplatin: general +0.0042 [-0.0223, +0.0377], unique +0.0123 [-0.0121, +0.0294], total +0.0165
+cc_mode         arm  n_cap  n_boot  auroc_fitness  auroc_other_drug_arms  auroc_own_arm  gain_general  gain_general_lo  gain_general_hi  gain_general_p_le_0  gain_unique  gain_unique_lo  gain_unique_hi  gain_unique_p_le_0  gain_total  gain_total_lo  gain_total_hi  gain_total_p_le_0  share_of_total_from_general
+   keep Carboplatin   4183     200         0.7252                 0.7293         0.7416        0.0042          -0.0223           0.0377               0.5373       0.0123         -0.0121          0.0294              0.1095      0.0165         -0.007         0.0418             0.1692                       0.2532

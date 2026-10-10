@@ -1,0 +1,20 @@
+03:57:07 INFO tcga | specific_Carboplatin: 22/25 up and 26/31 down genes found
+           signature endpoint   n  events  HR_per_sd     lo     hi      p
+specific_Carboplatin       OS 303     183     1.0662 0.9151 1.2423 0.4113
+specific_Carboplatin      PFI 303     210     0.9222 0.8128 1.0462 0.2083
+03:57:10 INFO tcga | specific_Olaparib: 47/50 up and 41/50 down genes found
+        signature endpoint   n  events  HR_per_sd     lo     hi      p
+specific_Olaparib       OS 303     183     1.2004 1.0335 1.3942 0.0168
+specific_Olaparib      PFI 303     210     1.0232 0.9020 1.1608 0.7211
+03:57:12 INFO tcga | specific_NK: 12/16 up and 44/50 down genes found
+  signature endpoint   n  events  HR_per_sd     lo     hi      p
+specific_NK       OS 303     183     1.1023 0.9514 1.2772 0.1947
+specific_NK      PFI 303     210     1.0051 0.8807 1.1471 0.9397
+03:57:14 INFO tcga | all_Carboplatin: 45/50 up and 45/50 down genes found
+      signature endpoint   n  events  HR_per_sd     lo     hi      p
+all_Carboplatin       OS 303     183     0.9569 0.8314 1.1013 0.5389
+all_Carboplatin      PFI 303     210     0.9331 0.8168 1.0661 0.3086
+03:57:17 INFO tcga | fitness_Control: 45/50 up and 44/50 down genes found
+      signature endpoint   n  events  HR_per_sd     lo    hi      p
+fitness_Control       OS 303     183     0.9189 0.7935 1.064 0.2580
+fitness_Control      PFI 303     210     0.9742 0.8481 1.119 0.7114

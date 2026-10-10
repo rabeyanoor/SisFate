@@ -1,0 +1,8 @@
+20:23:40 INFO three_level | keep Olaparib: fitness 0.7130, other drug arms 0.7186, own arm 0.7390 (n_cap 4183)
+20:49:31 INFO three_level |   keep Olaparib: 50/200
+21:07:43 INFO three_level |   keep Olaparib: 100/200
+21:26:33 INFO three_level |   keep Olaparib: 150/200
+21:46:59 INFO three_level |   keep Olaparib: 200/200
+21:46:59 INFO three_level | keep Olaparib: general +0.0057 [-0.0209, +0.0263], unique +0.0203 [+0.0034, +0.0422], total +0.0260
+cc_mode      arm  n_cap  n_boot  auroc_fitness  auroc_other_drug_arms  auroc_own_arm  gain_general  gain_general_lo  gain_general_hi  gain_general_p_le_0  gain_unique  gain_unique_lo  gain_unique_hi  gain_unique_p_le_0  gain_total  gain_total_lo  gain_total_hi  gain_total_p_le_0  share_of_total_from_general
+   keep Olaparib   4183     200          0.713                 0.7186          0.739        0.0057          -0.0209           0.0263               0.2985       0.0203          0.0034          0.0422              0.0547       0.026         0.0066          0.051             0.0249                       0.2184

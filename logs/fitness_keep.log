@@ -1,0 +1,24 @@
+22:00:39 INFO fitness | Carboplatin: drug=0.747 fitness=0.725 residual=0.603 LRT p=3.5e-26
+22:00:43 INFO fitness | Olaparib: drug=0.744 fitness=0.713 residual=0.633 LRT p=2.1e-36
+22:00:47 INFO fitness | NK: drug=0.723 fitness=0.697 residual=0.612 LRT p=4.8e-29
+                                               0           1           2
+drug_arm                             Carboplatin    Olaparib          NK
+n_drug                                      8942        9394       10123
+prev_drug                               0.082196    0.096232    0.083473
+n_control                                   4183        4183        4183
+prev_control                            0.147741    0.147741    0.147741
+auroc_drug_model_on_drug                0.747394    0.743626    0.723447
+auroc_fitness_model_on_drug             0.725171    0.712957    0.696629
+auroc_control_model_on_control          0.707971    0.707971    0.707971
+auroc_drug_model_on_control             0.700376    0.696096     0.69226
+specificity_index                       0.022223    0.030668    0.026818
+auroc_drug_model_size_matched           0.738757    0.740346    0.715607
+auroc_fitness_model_same_cells          0.722363     0.71274    0.699267
+specificity_index_size_matched          0.016394    0.027606     0.01634
+auroc_drug_residual_on_drug              0.60272    0.633311    0.611986
+auroc_drug_within_fitness_quintiles     0.642971    0.653492     0.65534
+corr_drug_vs_fitness_score              0.821058    0.800612    0.806956
+lrt_stat                               112.01907  158.767523  125.124937
+lrt_p                                        0.0         0.0         0.0
+features                                     pca         pca         pca
+cc_mode                                     keep        keep        keep

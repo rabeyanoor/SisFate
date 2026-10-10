@@ -1,0 +1,31 @@
+21:14:53 INFO delta_refit |   regress Carboplatin: 25/200, running CI [-0.0059, +0.0414]
+21:21:50 INFO delta_refit |   regress Carboplatin: 50/200, running CI [-0.0078, +0.0381]
+21:31:55 INFO delta_refit |   regress Carboplatin: 75/200, running CI [-0.0087, +0.0352]
+21:40:39 INFO delta_refit |   regress Carboplatin: 100/200, running CI [-0.0091, +0.0330]
+21:48:24 INFO delta_refit |   regress Carboplatin: 125/200, running CI [-0.0095, +0.0322]
+21:53:08 INFO delta_refit |   regress Carboplatin: 150/200, running CI [-0.0088, +0.0329]
+21:57:49 INFO delta_refit |   regress Carboplatin: 175/200, running CI [-0.0085, +0.0339]
+22:02:36 INFO delta_refit |   regress Carboplatin: 200/200, running CI [-0.0085, +0.0345]
+22:02:36 INFO delta_refit | regress Carboplatin: Δ +0.0179 95% CI [+0.0012, +0.0442] p 0.184
+22:07:52 INFO delta_refit |   regress Olaparib: 25/200, running CI [+0.0003, +0.0470]
+22:12:45 INFO delta_refit |   regress Olaparib: 50/200, running CI [+0.0027, +0.0467]
+22:17:43 INFO delta_refit |   regress Olaparib: 75/200, running CI [+0.0026, +0.0470]
+22:22:52 INFO delta_refit |   regress Olaparib: 100/200, running CI [+0.0028, +0.0480]
+22:29:53 INFO delta_refit |   regress Olaparib: 125/200, running CI [+0.0022, +0.0472]
+22:35:38 INFO delta_refit |   regress Olaparib: 150/200, running CI [+0.0021, +0.0491]
+22:42:36 INFO delta_refit |   regress Olaparib: 175/200, running CI [+0.0020, +0.0487]
+22:49:24 INFO delta_refit |   regress Olaparib: 200/200, running CI [+0.0020, +0.0487]
+22:49:24 INFO delta_refit | regress Olaparib: Δ +0.0246 95% CI [+0.0004, +0.0471] p 0.020
+22:58:24 INFO delta_refit |   regress NK: 25/200, running CI [-0.0100, +0.0376]
+23:05:49 INFO delta_refit |   regress NK: 50/200, running CI [-0.0101, +0.0372]
+23:11:40 INFO delta_refit |   regress NK: 75/200, running CI [-0.0106, +0.0375]
+23:18:46 INFO delta_refit |   regress NK: 100/200, running CI [-0.0118, +0.0371]
+23:29:09 INFO delta_refit |   regress NK: 125/200, running CI [-0.0119, +0.0364]
+23:34:31 INFO delta_refit |   regress NK: 150/200, running CI [-0.0163, +0.0370]
+23:39:17 INFO delta_refit |   regress NK: 175/200, running CI [-0.0150, +0.0358]
+23:43:54 INFO delta_refit |   regress NK: 200/200, running CI [-0.0159, +0.0338]
+23:43:54 INFO delta_refit | regress NK: Δ +0.0115 95% CI [-0.0108, +0.0390] p 0.259
+cc_mode    drug_arm  n_boot  delta  delta_lo_percentile  delta_hi_percentile  delta_lo  delta_hi  boot_mean  boot_sd  p_boot_delta_le_0
+regress Carboplatin     200 0.0179              -0.0085               0.0345    0.0012    0.0442     0.0103   0.0116             0.1841
+regress    Olaparib     200 0.0246               0.0020               0.0487    0.0004    0.0471     0.0245   0.0130             0.0199
+regress          NK     200 0.0115              -0.0159               0.0338   -0.0108    0.0390     0.0077   0.0121             0.2587

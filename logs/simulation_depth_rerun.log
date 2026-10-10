@@ -1,0 +1,1 @@
+10:20:47 INFO simulation | depth_confound=0.0: truth Δ 0.0216, estimate 0.0240 (bias +0.0024), coverage 0.72 | ceiling est 0.857 vs empirical 0.862 (bias -0.005), concordance est 0.666

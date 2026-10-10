@@ -1,0 +1,62 @@
+15:52:29 INFO schaff | Naive1: 2356 cells, 60045 lineage UMIs
+15:52:35 INFO schaff | Naive2: 3186 cells, 88562 lineage UMIs
+15:52:43 INFO schaff | Naive3: 4508 cells, 104816 lineage UMIs
+15:52:54 INFO schaff | Dabrafenib: 9910 cells, 438883 lineage UMIs
+15:53:07 INFO schaff | Trametinib: 16882 cells, 346170 lineage UMIs
+15:53:18 INFO schaff | CoCl2: 7766 cells, 347251 lineage UMIs
+15:53:30 INFO schaff | Acid: 12634 cells, 447097 lineage UMIs
+15:53:41 INFO schaff | Cisplatin: 11049 cells, 132400 lineage UMIs
+15:53:47 INFO schaff | Doxorubicin: 9126 cells, 92862 lineage UMIs
+15:54:16 INFO schaff | 37068 of 77417 cells assigned a lineage (1695 lineages after merging)
+15:54:28 INFO schaff | untreated cells with a lineage: 7165, lineages: 1359, median clone size 13
+15:54:28 INFO schaff |   Dabrafenib: 0.377 of untreated cells are in a surviving lineage
+15:54:28 INFO schaff |   Trametinib: 0.306 of untreated cells are in a surviving lineage
+15:54:28 INFO schaff |   CoCl2: 0.566 of untreated cells are in a surviving lineage
+15:54:28 INFO schaff |   Acid: 0.783 of untreated cells are in a surviving lineage
+15:54:28 INFO schaff |   Cisplatin: 0.464 of untreated cells are in a surviving lineage
+15:54:28 INFO schaff |   Doxorubicin: 0.505 of untreated cells are in a surviving lineage
+15:55:19 INFO schaff | Dabrafenib: expression 0.593, clone size 0.698, both 0.734, density 0.507, residual 0.594
+15:55:56 INFO schaff | Trametinib: expression 0.572, clone size 0.684, both 0.717, density 0.483, residual 0.583
+15:56:31 INFO schaff | CoCl2: expression 0.605, clone size 0.778, both 0.782, density 0.558, residual 0.542
+15:57:09 INFO schaff | Acid: expression 0.660, clone size 0.902, both 0.901, density 0.647, residual 0.506
+15:57:46 INFO schaff | Cisplatin: expression 0.541, clone size 0.798, both 0.793, density 0.579, residual 0.444
+15:58:22 INFO schaff | Doxorubicin: expression 0.558, clone size 0.824, both 0.816, density 0.568, residual 0.450
+15:58:22 INFO schaff | 3154 untreated same-lineage pairs from 6646 cells in multi-cell clones
+15:58:29 INFO schaff | Dabrafenib: clone concordance 0.208, AUROC if treated cell seen 0.950, cost 0.357
+15:58:35 INFO schaff | Trametinib: clone concordance 0.203, AUROC if treated cell seen 0.872, cost 0.300
+15:58:42 INFO schaff | CoCl2: clone concordance 0.191, AUROC if treated cell seen 0.950, cost 0.345
+15:58:48 INFO schaff | Acid: clone concordance 0.197, AUROC if treated cell seen 0.950, cost 0.290
+15:58:54 INFO schaff | Cisplatin: clone concordance 0.189, AUROC if treated cell seen 0.725, cost 0.184
+15:59:01 INFO schaff | Doxorubicin: clone concordance 0.165, AUROC if treated cell seen 0.884, cost 0.325
+  treatment                 model  n_test  prevalence  auroc  auroc_lo  auroc_hi
+ Dabrafenib            expression    7165       0.377  0.593     0.557     0.625
+ Dabrafenib            clone_size    7165       0.377  0.698     0.619     0.758
+ Dabrafenib expression+clone_size    7165       0.377  0.734     0.671     0.779
+ Dabrafenib    density_label_free    7165       0.377  0.507     0.481     0.536
+ Trametinib            expression    7165       0.306  0.572     0.535     0.612
+ Trametinib            clone_size    7165       0.306  0.684     0.594     0.744
+ Trametinib expression+clone_size    7165       0.306  0.717     0.651     0.766
+ Trametinib    density_label_free    7165       0.306  0.483     0.455     0.509
+      CoCl2            expression    7165       0.566  0.605     0.582     0.629
+      CoCl2            clone_size    7165       0.566  0.778     0.706     0.836
+      CoCl2 expression+clone_size    7165       0.566  0.782     0.717     0.838
+      CoCl2    density_label_free    7165       0.566  0.558     0.528     0.583
+       Acid            expression    7165       0.783  0.660     0.639     0.682
+       Acid            clone_size    7165       0.783  0.902     0.882     0.924
+       Acid expression+clone_size    7165       0.783  0.901     0.881     0.922
+       Acid    density_label_free    7165       0.783  0.647     0.627     0.671
+  Cisplatin            expression    7165       0.464  0.541     0.514     0.565
+  Cisplatin            clone_size    7165       0.464  0.798     0.736     0.848
+  Cisplatin expression+clone_size    7165       0.464  0.793     0.730     0.843
+  Cisplatin    density_label_free    7165       0.464  0.579     0.553     0.605
+Doxorubicin            expression    7165       0.505  0.558     0.537     0.581
+Doxorubicin            clone_size    7165       0.505  0.824     0.775     0.871
+Doxorubicin expression+clone_size    7165       0.505  0.816     0.769     0.862
+Doxorubicin    density_label_free    7165       0.505  0.568     0.545     0.595
+  treatment  auroc_expression  auroc_clone_size  auroc_expression_residual_on_clone_size  spearman_expr_vs_clone  lrt_stat  lrt_p
+ Dabrafenib            0.5931            0.6982                                   0.5944                  0.0077  231.1900 0.0000
+ Trametinib            0.5721            0.6845                                   0.5826                 -0.0385  124.1591 0.0000
+      CoCl2            0.6048            0.7776                                   0.5424                  0.1602   87.7004 0.0000
+       Acid            0.6597            0.9022                                   0.5059                  0.2664   39.9274 0.0000
+  Cisplatin            0.5407            0.7984                                   0.4440                  0.1716    0.5501 0.4583
+Doxorubicin            0.5584            0.8245                                   0.4499                  0.1994    2.0431 0.1529

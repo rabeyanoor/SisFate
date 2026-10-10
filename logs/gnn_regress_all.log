@@ -1,0 +1,53 @@
+03:29:36 INFO gnn | 20 splits x 2 models x 1 seeds x (1+0) label sets
+03:29:38 INFO gnn | mlp                      within:Carboplatin->Carboplatin:f0       done
+03:29:40 INFO gnn | mlp                      within:Carboplatin->Carboplatin:f1       done
+03:29:43 INFO gnn | mlp                      within:Carboplatin->Carboplatin:f2       done
+03:29:47 INFO gnn | mlp                      within:Carboplatin->Carboplatin:f3       done
+03:29:50 INFO gnn | mlp                      within:Carboplatin->Carboplatin:f4       done
+03:29:52 INFO gnn | mlp                      within:Olaparib->Olaparib:f0             done
+03:29:57 INFO gnn | mlp                      within:Olaparib->Olaparib:f1             done
+03:29:59 INFO gnn | mlp                      within:Olaparib->Olaparib:f2             done
+03:30:00 INFO gnn | mlp                      within:Olaparib->Olaparib:f3             done
+03:30:04 INFO gnn | mlp                      within:Olaparib->Olaparib:f4             done
+03:30:07 INFO gnn | mlp                      within:NK->NK:f0                         done
+03:30:09 INFO gnn | mlp                      within:NK->NK:f1                         done
+03:30:13 INFO gnn | mlp                      within:NK->NK:f2                         done
+03:30:16 INFO gnn | mlp                      within:NK->NK:f3                         done
+03:30:18 INFO gnn | mlp                      within:NK->NK:f4                         done
+03:30:19 INFO gnn | mlp                      within:Control->Control:f0               done
+03:30:20 INFO gnn | mlp                      within:Control->Control:f1               done
+03:30:21 INFO gnn | mlp                      within:Control->Control:f2               done
+03:30:21 INFO gnn | mlp                      within:Control->Control:f3               done
+03:30:23 INFO gnn | mlp                      within:Control->Control:f4               done
+src/persist/models/gnn.py:67: UserWarning: Sparse CSR tensor support is in beta state. If you miss a functionality in the sparse tensor support, please submit a feature request to https://github.com/pytorch/pytorch/issues. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/SparseCsrTensorImpl.cpp:49.)
+  return coo.to_sparse_csr()  # CSR spmm is markedly faster on CPU
+03:30:56 INFO gnn | persist_gnn              within:Carboplatin->Carboplatin:f0       done
+03:31:24 INFO gnn | persist_gnn              within:Carboplatin->Carboplatin:f1       done
+03:31:54 INFO gnn | persist_gnn              within:Carboplatin->Carboplatin:f2       done
+03:32:27 INFO gnn | persist_gnn              within:Carboplatin->Carboplatin:f3       done
+03:33:01 INFO gnn | persist_gnn              within:Carboplatin->Carboplatin:f4       done
+03:33:34 INFO gnn | persist_gnn              within:Olaparib->Olaparib:f0             done
+03:34:03 INFO gnn | persist_gnn              within:Olaparib->Olaparib:f1             done
+03:34:32 INFO gnn | persist_gnn              within:Olaparib->Olaparib:f2             done
+03:34:58 INFO gnn | persist_gnn              within:Olaparib->Olaparib:f3             done
+03:35:28 INFO gnn | persist_gnn              within:Olaparib->Olaparib:f4             done
+03:36:01 INFO gnn | persist_gnn              within:NK->NK:f0                         done
+03:36:28 INFO gnn | persist_gnn              within:NK->NK:f1                         done
+03:37:01 INFO gnn | persist_gnn              within:NK->NK:f2                         done
+03:37:29 INFO gnn | persist_gnn              within:NK->NK:f3                         done
+03:37:57 INFO gnn | persist_gnn              within:NK->NK:f4                         done
+03:38:25 INFO gnn | persist_gnn              within:Control->Control:f0               done
+03:38:52 INFO gnn | persist_gnn              within:Control->Control:f1               done
+03:39:20 INFO gnn | persist_gnn              within:Control->Control:f2               done
+03:39:49 INFO gnn | persist_gnn              within:Control->Control:f3               done
+03:40:16 INFO gnn | persist_gnn              within:Control->Control:f4               done
+                                            auroc  auprc  prevalence  within_cluster_auroc  auroc_shuffled  auprc_shuffled
+model       split  train       test                                                                                       
+mlp         within Carboplatin Carboplatin  0.723  0.178       0.082                 0.687             NaN             NaN
+                   Control     Control      0.697  0.262       0.148                 0.680             NaN             NaN
+                   NK          NK           0.685  0.156       0.083                 0.671             NaN             NaN
+                   Olaparib    Olaparib     0.722  0.203       0.096                 0.681             NaN             NaN
+persist_gnn within Carboplatin Carboplatin  0.721  0.189       0.082                 0.684             NaN             NaN
+                   Control     Control      0.689  0.260       0.148                 0.662             NaN             NaN
+                   NK          NK           0.664  0.148       0.083                 0.644             NaN             NaN
+                   Olaparib    Olaparib     0.716  0.193       0.096                 0.665             NaN             NaN
