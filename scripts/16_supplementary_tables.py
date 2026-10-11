@@ -225,6 +225,13 @@ _optional = {
         "from their published fold changes (Supplementary Data 2 and 4 of that study) and from our z-scores; "
         "preranked GSEA NES and nominal p, and HRD connectivity (NES_up - NES_down) / 2.",
     ),
+    "S31_inductive_preprocessing": (
+        ["inductive_preprocessing.csv"],
+        "AUROC with the label-free preprocessing fitted on all pre-treatment cells (global, main analysis), with "
+        "the PCA fitted on training cells only (pca_train), and with gene selection, per-sample scaling and PCA "
+        "all fitted on training cells only (inductive); within-arm five-fold cross-validation (same folds) and "
+        "the fitness model (control arm -> each drug arm).",
+    ),
 }
 for name, (files, desc) in _optional.items():
     frames = []

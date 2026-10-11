@@ -70,6 +70,7 @@ $PY scripts/10_external_validation.py
 $PY scripts/22_patient_nact.py                # patients before/after chemotherapy (GSE165897)
 $PY scripts/34_drug_unique_genes.py           # genes unique to one drug (needs 08)
 uv run --with openpyxl python scripts/35_published_claims.py   # Dai et al. 2024 claims vs the untreated arm
+$PY scripts/36_inductive_preprocessing.py   # preprocessing fitted on training cells only (Table S31)
 ./scripts/00c_download_schaff.sh              # second lineage system, six treatments
 $PY scripts/24_schaff_multitreatment.py
 $PY scripts/24_schaff_multitreatment.py --merge-r 0.70 --tag _r70                # barcode threshold sensitivity
@@ -83,4 +84,4 @@ done
 # ---- summaries, figures and supplementary tables
 for cc in keep regress regress_all; do $PY scripts/11_summarize.py --cc-mode $cc; done
 $PY scripts/14_figures.py                   # results/figures/paper/*.png|pdf and plos/*.tif
-uv run --with openpyxl python scripts/16_supplementary_tables.py   # results/Supplementary_Tables.xlsx (S1-S30)
+uv run --with openpyxl python scripts/16_supplementary_tables.py   # results/Supplementary_Tables.xlsx (S1-S31)

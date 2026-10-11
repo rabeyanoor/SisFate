@@ -18,7 +18,7 @@ the configuration that produced it.
 | `summary_keep.log`, `summary_regress.log`, `summary_regress_all.log` | `11_summarize.py` | summary tables |
 | `robustness_regress_all.log` | `13_robustness.py` | permutation tests and benchmark protocol |
 | `fig_final.log` | `14_figures.py` | figures |
-| `tab_final.log` | `16_supplementary_tables.py` | Supplementary Tables S1–S30 |
+| `tab_final.log` | `16_supplementary_tables.py` | Supplementary Tables S1–S31 |
 | `sensitivity.log` | `17_sensitivity.py` | Harmony, Pearson-residual and scVI representations |
 | `delta_ci.log` | `20_delta_auroc_ci.py` | size-matched drug-specific gain with the evaluation-only interval |
 | `geneformer_tokens.log` | `21_geneformer.py tokens` | Geneformer input tokens |
@@ -29,4 +29,5 @@ the configuration that produced it.
 | `scgpt_kaggle.log` | `kaggle/scgpt/kernel/scgpt_embed.py` | scGPT forward pass on a Kaggle T4 GPU |
 | `three_level_keep_Carboplatin.log`, `three_level_keep_NK.log`, `three_level_keep_Olaparib.log` | `33_three_level_decomposition.py` | fitness, general-treatment and drug-unique parts |
 | `published_claims.log` | `35_published_claims.py` | the original study's pathway and HRD findings, re-scored |
+| `inductive_preprocessing.log` | `36_inductive_preprocessing.py` | preprocessing fitted on training cells only, against the main pipeline |
 | `three_level_multitask_abandoned.log`, `three_level_penalty_grid_partial.log` | `33_three_level_decomposition.py` (earlier version) | the multi-task model described in Methods and not used, because its penalties rather than the data set the split |

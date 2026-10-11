@@ -4,7 +4,7 @@
 ![Python 3.12](https://img.shields.io/badge/python-3.12-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-Code for **Noor R, Roza KJ. Growth fitness, not drug tolerance, explains most pre-treatment prediction of cancer
+Code for **Noor R, Roza KJ. Growth fitness, more than drug tolerance, explains most pre-treatment prediction of cancer
 cell fate** (submitted).
 
 Can a cancer cell's transcriptome *before* treatment predict whether its sister survives the drug, and how much of
@@ -65,7 +65,7 @@ tests/                 unit tests of the package (pytest, run on every push)
 data/                  data/example/ (7 MB example data, in git); downloaded data are not in git, and
                        data/README.md lists every data set and its source
 results/               result tables (CSV), all paper figures as PDF and PNG (results/figures/paper/,
-                       with a README) and Supplementary Tables S1-S30
+                       with a README) and Supplementary Tables S1-S31
 logs/                  the original run logs, with a README saying which script made each one
 ```
 
@@ -86,7 +86,7 @@ uv run --with pytest pytest -q
 ```
 
 **3. Inspect the saved results (no computation).** `results/` holds every result table (CSV), the paper figures
-(`results/figures/paper/`) and Supplementary Tables S1–S30 (`results/Supplementary_Tables.xlsx`).
+(`results/figures/paper/`) and Supplementary Tables S1–S31 (`results/Supplementary_Tables.xlsx`).
 
 **4. Rerun everything from the public data (about a day on an 8-core laptop with 14 GB RAM).** Downloads the
 data from GEO and figshare and regenerates every result, figure and supplementary table; approximate times are
@@ -122,7 +122,7 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `13_robustness.py` | singleton-only cells, exact family-level permutation p-values, Shen et al. benchmark protocol |
 | `14_figures.py` | publication figures `results/figures/paper/Fig1-7`, `FigS1-5` (PNG + PDF, 300 dpi) |
 | `15_typicality.py` | label-free local-density score vs labels |
-| `16_supplementary_tables.py` | `results/Supplementary_Tables.xlsx` (Tables S1–S30); run with `uv run --with openpyxl` |
+| `16_supplementary_tables.py` | `results/Supplementary_Tables.xlsx` (Tables S1–S31); run with `uv run --with openpyxl` |
 | `17_sensitivity.py` | main and fitness analyses on Harmony, Pearson-residual and scVI representations; `uv run --with harmonypy --with scvi-tools` |
 | `18_marker_panel.py` | pre-specified proliferation/arrest/senescence/persister marker panel (Fig. S3) |
 | `19_gnn_sweep.py` | one-at-a-time GNN hyperparameter sweep -> `results/gnn_sweep.csv` |
@@ -138,6 +138,7 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `33_three_level_decomposition.py` | fitness vs general-treatment vs drug-unique signal: untreated-arm, other-drug-arm and own-arm models at equal training size, refitting bootstrap -> `results/three_level_decomposition.csv` |
 | `34_drug_unique_genes.py` | genes and Hallmark sets unique to one drug (vs the other drug arms), with pre-specified pathway tests |
 | `35_published_claims.py` | the pathway and HRD claims of Dai et al. (2024) re-scored in every arm incl. the untreated control, from their own supplementary data |
+| `36_inductive_preprocessing.py` | gene selection, scaling and PCA refitted on the training cells of each fold only; AUROC compared with the main pipeline (Table S31) |
 
 Every metric row is appended to `results/results.csv` with the hash of the configuration that produced it.
 
