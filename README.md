@@ -4,8 +4,8 @@
 ![Python 3.12](https://img.shields.io/badge/python-3.12-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-Code for **Noor R, Roza KJ. Growth fitness, more than drug tolerance, explains most pre-treatment prediction of cancer
-cell fate** (submitted).
+Code for **Noor R, Roza KJ. Untreated controls reveal that pre-treatment prediction of cancer cell fate mostly
+reflects growth fitness** (submitted).
 
 Can a cancer cell's transcriptome *before* treatment predict whether its sister survives the drug, and how much of
 that prediction is about the drug rather than general growth fitness? The study uses the ReSisTrace sister-cell
