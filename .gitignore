@@ -28,7 +28,6 @@ data/external/zhang2022/*
 !data/example/*.npz
 *.zip
 results/preds/
-results/figures/paper/plos/
 
 # Intermediate figures from scripts/11_summarize.py; the paper figures are in
 # results/figures/paper/ and are built by scripts/14_figures.py

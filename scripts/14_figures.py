@@ -4,7 +4,6 @@ Every number drawn here is read from a results table; nothing is typed in by han
 benchmark reference values of Shen et al. 2026 (Fig. 2c), which are quoted from that paper's text.
 """
 import argparse
-import io
 import sys
 from pathlib import Path
 
@@ -14,7 +13,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
-from PIL import Image  # noqa: E402
 from matplotlib.patches import Ellipse, FancyBboxPatch, Rectangle  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -50,25 +48,11 @@ OUT = R / "figures" / "paper"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-PLOS = OUT / "plos"  # submission files: RGB TIFF, LZW, 450 dpi, width <= 7.5 in (19.05 cm), named as PLOS asks
-PLOS.mkdir(exist_ok=True)
-MAX_W_IN = 7.5
-
-
 def save(fig, name):
     for ext in ("png", "pdf"):
         fig.savefig(OUT / f"{name}.{ext}", dpi=300, bbox_inches="tight")
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=450, bbox_inches="tight")
-    im = Image.open(buf).convert("RGB")
-    w_in = im.width / 450
-    if w_in > MAX_W_IN:  # shrink to the maximum width; text stays >= 6.5 pt at the sizes used here
-        im = im.resize((int(MAX_W_IN * 450), int(im.height * MAX_W_IN / w_in)), Image.LANCZOS)
-    num = name.split("_")[0]
-    plos = f"S{num[4:]}_Fig.tif" if num.startswith("FigS") else f"{num}.tif"
-    im.save(PLOS / plos, compression="tiff_lzw", dpi=(450, 450))
     plt.close(fig)
-    print(f"wrote {name} ({w_in:.2f} in wide -> {plos} {im.width}x{im.height}px)")
+    print(f"wrote {name}")
 
 
 def tag(ax, letter):

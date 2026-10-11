@@ -38,6 +38,8 @@ another. **b**, Drug-arm model, fitness model (trained on untreated cells) and t
 fitness score. **c**, Drug-specific gain over the fitness model at equal training size, with 95% intervals that
 refit the models. **d**, The gain split into a part shared with the other treatments and a part unique to the drug.*
 
+All 12 figures of the paper (7 main, 5 supplementary) are shown in the [figure gallery](results/figures/paper/README.md).
+
 ## Quick start (two minutes, no download)
 
 `data/example/resistrace_pca.npz` (7 MB) holds the 50 principal components, labels, families and sister pairs of
@@ -118,7 +120,7 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `11_summarize.py` | `results/summary_<cc>.md`, `results/figures/` |
 | `12_cnv_subclones.py` | infercnvpy copy-number clusters; published subclone enrichment check; subclone confound tests |
 | `13_robustness.py` | singleton-only cells, exact family-level permutation p-values, Shen et al. benchmark protocol |
-| `14_figures.py` | publication figures `results/figures/paper/Fig1-7`, `FigS1-5` (PNG + PDF, 300 dpi) and PLOS submission TIFFs in `plos/` (450 dpi, LZW, ≤ 7.5 in wide) |
+| `14_figures.py` | publication figures `results/figures/paper/Fig1-7`, `FigS1-5` (PNG + PDF, 300 dpi) |
 | `15_typicality.py` | label-free local-density score vs labels |
 | `16_supplementary_tables.py` | `results/Supplementary_Tables.xlsx` (Tables S1–S30); run with `uv run --with openpyxl` |
 | `17_sensitivity.py` | main and fitness analyses on Harmony, Pearson-residual and scVI representations; `uv run --with harmonypy --with scvi-tools` |
