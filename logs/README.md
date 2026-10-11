@@ -22,9 +22,9 @@ the configuration that produced it.
 | `sensitivity.log` | `17_sensitivity.py` | Harmony, Pearson-residual and scVI representations |
 | `delta_ci.log` | `20_delta_auroc_ci.py` | size-matched drug-specific gain with the evaluation-only interval |
 | `geneformer_tokens.log` | `21_geneformer.py tokens` | Geneformer input tokens |
-| `patient_nact_recheck.log` | `22_patient_nact.py` | patients before and after chemotherapy |
+| `patient_nact.log` | `22_patient_nact.py` | patients before and after chemotherapy |
 | `schaff.log`, `schaff_sensitivity.log` | `24_schaff_multitreatment.py` | second lineage system and barcode-threshold sensitivity |
-| `simulation.log`, `sim_depth_rerun.log`, `simulation_depth_rerun.log` | `25_simulation.py` | synthetic experiments, including the depth-confound settings |
+| `simulation.log`, `simulation_depth.log` | `25_simulation.py` | synthetic experiments, including the depth-confound settings |
 | `refit200_keep.log`, `refit200_regress.log`, `refit200_regress_all.log` | `28_delta_refit_bootstrap.py` | refitting bootstrap, 200 replicates (the intervals quoted in the paper) |
 | `scgpt_kaggle.log` | `kaggle/scgpt/kernel/scgpt_embed.py` | scGPT forward pass on a Kaggle T4 GPU |
 | `three_level_keep_Carboplatin.log`, `three_level_keep_NK.log`, `three_level_keep_Olaparib.log` | `33_three_level_decomposition.py` | fitness, general-treatment and drug-unique parts |
