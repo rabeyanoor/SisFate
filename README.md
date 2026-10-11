@@ -3,6 +3,7 @@
 [![tests](https://github.com/rabeyanoor/SisFate/actions/workflows/tests.yml/badge.svg)](https://github.com/rabeyanoor/SisFate/actions/workflows/tests.yml)
 ![Python 3.12](https://img.shields.io/badge/python-3.12-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23301160.svg)](https://doi.org/10.5281/zenodo.23301160)
 
 Code for **Noor R, Roza KJ. Untreated controls reveal that pre-treatment prediction of cancer cell fate mostly
 reflects growth fitness** (submitted).
