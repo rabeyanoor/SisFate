@@ -1,4 +1,5 @@
-"""Collect result tables into results/Supplementary_Tables.xlsx (one sheet per table).
+"""Collect result tables into results/Supplementary_Tables.xlsx (one sheet per table),
+and write each table as a CSV in results/supplementary_tables/ so that GitHub shows it.
 
 Run: uv run --with openpyxl python scripts/16_supplementary_tables.py
 """
@@ -253,5 +254,11 @@ with pd.ExcelWriter(path) as xw:
     for name, (df, _) in tables.items():
         df = df.drop(columns=[c for c in df.columns if c.startswith("Unnamed")], errors="ignore")
         df.to_excel(xw, sheet_name=name[:31], index=False)
+CSV = OUT / "supplementary_tables"
+CSV.mkdir(exist_ok=True)
+for name, (df, _) in tables.items():
+    df = df.drop(columns=[c for c in df.columns if c.startswith("Unnamed")], errors="ignore")
+    df.to_csv(CSV / f"{name}.csv", index=False)
+index.to_csv(CSV / "index.csv", index=False)
 print(path)
 print(index.to_string())

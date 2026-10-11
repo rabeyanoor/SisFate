@@ -1,0 +1,8 @@
+design,train,test,global,inductive,pca_train,inductive_minus_global,pca_train_minus_global
+fitness_model,Control,Carboplatin,0.7252,0.7203,0.7244,-0.0049,-0.0008
+fitness_model,Control,NK,0.6966,0.6911,0.6953,-0.0055,-0.0013
+fitness_model,Control,Olaparib,0.713,0.7098,0.7059,-0.0032,-0.0071
+within_arm,Carboplatin,Carboplatin,0.7474,0.7417,0.7461,-0.0057,-0.0013
+within_arm,Control,Control,0.708,0.7155,0.7082,0.0075,0.0002
+within_arm,NK,NK,0.7234,0.722,0.7242,-0.0014,0.0008
+within_arm,Olaparib,Olaparib,0.7436,0.7432,0.7386,-0.0004,-0.005

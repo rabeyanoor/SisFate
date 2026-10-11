@@ -1,0 +1,127 @@
+source,arm,gene_set,NES,NOM p-val,FDR q-val
+published_log2FC,Carboplatin,cytoplasmic translation,2.241564800357702,0.0,0.0
+published_log2FC,Carboplatin,ribosome biogenesis,2.135042207558201,0.0,0.0
+published_log2FC,Carboplatin,"nuclear-transcribed mRNA catabolic process, nonsense-mediated decay",2.1038551726422194,0.0,0.0
+published_log2FC,Carboplatin,protein targeting to ER,2.0882363780321387,0.0,0.0
+published_log2FC,Carboplatin,HRD_COV362_down,1.5931435263511455,0.0,0.0046829268292682
+published_log2FC,Carboplatin,HRD_COV362_up,-1.483968492021368,0.0011074197120708,0.0015047021943573
+published_log2FC,Carboplatin,PERK-mediated unfolded protein response,-1.4008784711177025,0.0204678362573099,0.0157993730407523
+published_log2FC,Carboplatin,HRD_TCGA_down,-0.9404806956774144,0.6067796610169491,0.6189341692789969
+published_log2FC,Carboplatin,HRD_TCGA_up,0.7769996702441923,0.9891304347826086,0.9248780487804878
+published_log2FC,Carboplatin,HRD_TCGA_connectivity,0.8587401829608035,,
+published_log2FC,Carboplatin,HRD_COV362_connectivity,-1.538556009186257,,
+published_minus_control,Carboplatin,cytoplasmic translation,2.284308355665894,0.0,0.0
+published_minus_control,Carboplatin,protein targeting to ER,2.1978204402661965,0.0,0.0
+published_minus_control,Carboplatin,"nuclear-transcribed mRNA catabolic process, nonsense-mediated decay",2.172014729487334,0.0,0.0
+published_minus_control,Carboplatin,HRD_COV362_down,1.6442945716085182,0.0,0.0008227550540667
+published_minus_control,Carboplatin,PERK-mediated unfolded protein response,-1.5151580845182997,0.0132013201320132,0.0098937872835734
+published_minus_control,Carboplatin,ribosome biogenesis,1.506444603851222,0.0,0.0164551010813352
+published_minus_control,Carboplatin,HRD_COV362_up,-1.1674471171753067,0.1771501925545571,0.1906009020806052
+published_minus_control,Carboplatin,HRD_TCGA_up,1.0073942162974128,0.4337899543378995,0.4821344616831218
+published_minus_control,Carboplatin,HRD_TCGA_down,0.6255290334782746,1.0,0.9873060648801129
+published_minus_control,Carboplatin,HRD_TCGA_connectivity,0.0,,
+published_minus_control,Carboplatin,HRD_COV362_connectivity,-1.4058708443919126,,
+published_log2FC,Olaparib,cytoplasmic translation,2.248578183934785,0.0,0.0
+published_log2FC,Olaparib,"nuclear-transcribed mRNA catabolic process, nonsense-mediated decay",2.1317976401800403,0.0,0.0
+published_log2FC,Olaparib,protein targeting to ER,2.1153730533054405,0.0,0.0
+published_log2FC,Olaparib,ribosome biogenesis,1.9060242263719225,0.0,0.0
+published_log2FC,Olaparib,HRD_COV362_up,-1.6286173292808288,0.0,0.0
+published_log2FC,Olaparib,HRD_COV362_down,1.5114257158084272,0.0,0.0100671140939597
+published_log2FC,Olaparib,PERK-mediated unfolded protein response,-1.3704101441217946,0.035919540229885,0.0356045081967213
+published_log2FC,Olaparib,HRD_TCGA_down,-0.9024230217216928,0.6711560044893379,0.905396174863388
+published_log2FC,Olaparib,HRD_TCGA_up,-0.7861847936481158,0.8718820861678005,0.8624487704918032
+published_log2FC,Olaparib,HRD_TCGA_connectivity,0.0,,
+published_log2FC,Olaparib,HRD_COV362_connectivity,-1.570021522544628,,
+published_minus_control,Olaparib,cytoplasmic translation,2.1450171162879874,0.0,0.0
+published_minus_control,Olaparib,protein targeting to ER,2.066200432103613,0.0,0.0
+published_minus_control,Olaparib,"nuclear-transcribed mRNA catabolic process, nonsense-mediated decay",2.025748026759345,0.0,0.0
+published_minus_control,Olaparib,HRD_COV362_up,-1.5616149419605418,0.0028288543140028,0.0061894937311537
+published_minus_control,Olaparib,PERK-mediated unfolded protein response,-1.5258512229253904,0.0107334525939177,0.0057133788287573
+published_minus_control,Olaparib,HRD_COV362_down,1.3707137130396383,0.0343642611683848,0.052797332345313
+published_minus_control,Olaparib,ribosome biogenesis,1.195876407845103,0.1041666666666666,0.1667284179325676
+published_minus_control,Olaparib,HRD_TCGA_up,-0.8930989016195355,0.6931659693165969,0.6762418663704174
+published_minus_control,Olaparib,HRD_TCGA_down,0.8221930944584291,0.9202898550724636,0.8907002593553168
+published_minus_control,Olaparib,HRD_TCGA_connectivity,-0.8576459980389823,,
+published_minus_control,Olaparib,HRD_COV362_connectivity,-1.4661643275000902,,
+published_log2FC,NK,cytoplasmic translation,1.948197542245372,0.0,0.0
+published_log2FC,NK,"nuclear-transcribed mRNA catabolic process, nonsense-mediated decay",1.9225072685195748,0.0,0.0
+published_log2FC,NK,ribosome biogenesis,1.8792279008819923,0.0,0.0
+published_log2FC,NK,HRD_COV362_up,-1.809205063585153,0.0,0.0
+published_log2FC,NK,protein targeting to ER,1.748127309894549,0.0,0.0
+published_log2FC,NK,HRD_COV362_down,1.7206051631322865,0.0,0.0
+published_log2FC,NK,PERK-mediated unfolded protein response,-1.2785225110443417,0.1253731343283582,0.1511442256519425
+published_log2FC,NK,HRD_TCGA_down,-1.0678431606350278,0.37409200968523,0.4811069717935072
+published_log2FC,NK,HRD_TCGA_up,-0.8297363719898478,0.7822384428223844,0.7992283129324108
+published_log2FC,NK,HRD_TCGA_connectivity,0.0,,
+published_log2FC,NK,HRD_COV362_connectivity,-1.76490511335872,,
+published_minus_control,NK,HRD_COV362_down,1.7520804010606894,0.0,0.0
+published_minus_control,NK,HRD_COV362_up,-1.7146290305142564,0.0,0.0
+published_minus_control,NK,"nuclear-transcribed mRNA catabolic process, nonsense-mediated decay",1.6220161402019628,0.0,0.0017098888572242
+published_minus_control,NK,PERK-mediated unfolded protein response,-1.563292049559166,0.0074906367041198,0.0086505190311418
+published_minus_control,NK,cytoplasmic translation,1.5384297185906488,0.0052910052910052,0.0053196542224755
+published_minus_control,NK,protein targeting to ER,1.508218185484801,0.0078947368421052,0.0068395554288971
+published_minus_control,NK,ribosome biogenesis,-1.0439578761181394,0.3515509601181684,0.6067504401141262
+published_minus_control,NK,HRD_TCGA_up,-0.936843385717898,0.5613747954173486,0.7291476962301948
+published_minus_control,NK,HRD_TCGA_down,-0.7428656572404311,0.964406779661017,0.9517392096157348
+published_minus_control,NK,HRD_TCGA_connectivity,0.0,,
+published_minus_control,NK,HRD_COV362_connectivity,-1.733354715787473,,
+published_log2FC,Control,ribosome biogenesis,2.133048579377953,0.0,0.0
+published_log2FC,Control,cytoplasmic translation,1.7572220198785056,0.0,0.0015114873035066
+published_log2FC,Control,"nuclear-transcribed mRNA catabolic process, nonsense-mediated decay",1.676751279521725,0.0,0.0010076582023377
+published_log2FC,Control,protein targeting to ER,1.6449534468548732,0.0,0.0015114873035066
+published_log2FC,Control,HRD_COV362_up,-1.6396732492476358,0.0,0.0
+published_log2FC,Control,HRD_COV362_down,1.4066506800713627,0.0114942528735632,0.0320435308343409
+published_log2FC,Control,HRD_TCGA_down,-1.067158129635722,0.3454106280193236,0.7037843724475905
+published_log2FC,Control,PERK-mediated unfolded protein response,-0.9851589322309918,0.5397301349325337,0.6820945639350214
+published_log2FC,Control,HRD_TCGA_up,-0.681807555779305,0.9901719901719902,0.97794718213994
+published_log2FC,Control,HRD_TCGA_connectivity,0.0,,
+published_log2FC,Control,HRD_COV362_connectivity,-1.5231619646594994,,
+our_z,Carboplatin,HRD_COV362_down,1.9949936124819996,0.0,0.0
+our_z,Carboplatin,ribosome biogenesis,1.4904714827403849,0.0509803921568627,0.0440051020408163
+our_z,Carboplatin,HRD_COV362_up,-1.3398521444740448,0.037117903930131,0.1333017077798861
+our_z,Carboplatin,HRD_TCGA_up,0.9953258382778252,0.4812030075187969,0.4579081632653061
+our_z,Carboplatin,HRD_TCGA_down,-0.7748249769086165,0.8185140073081608,0.8389468690702088
+our_z,Carboplatin,HRD_TCGA_connectivity,0.8850754075932208,,
+our_z,Carboplatin,HRD_COV362_connectivity,-1.667422878478022,,
+our_z_minus_control,Carboplatin,HRD_COV362_down,1.5157286057238584,0.0147058823529411,0.1227722772277227
+our_z_minus_control,Carboplatin,HRD_TCGA_down,1.241617392135479,0.167487684729064,0.2831683168316831
+our_z_minus_control,Carboplatin,HRD_COV362_up,-1.0860750676173414,0.3058637083993661,0.323489932885906
+our_z_minus_control,Carboplatin,ribosome biogenesis,0.9117321794140608,0.5565217391304348,0.8297029702970297
+our_z_minus_control,Carboplatin,HRD_TCGA_up,0.8997840106764213,0.6631299734748011,0.6465346534653466
+our_z_minus_control,Carboplatin,HRD_TCGA_connectivity,0.0,,
+our_z_minus_control,Carboplatin,HRD_COV362_connectivity,-1.3009018366706,,
+our_z,Olaparib,HRD_COV362_down,1.8371073737057488,0.0,0.0070921985815602
+our_z,Olaparib,HRD_COV362_up,-1.5530446828318452,0.0044101433296582,0.0158883004333172
+our_z,Olaparib,ribosome biogenesis,1.0282470297904012,0.3807692307692307,0.6081560283687943
+our_z,Olaparib,HRD_TCGA_up,0.7272200395254884,0.935064935064935,0.9125295508274232
+our_z,Olaparib,HRD_TCGA_down,-0.5146684669776093,0.9912060301507538,0.9939817043813192
+our_z,Olaparib,HRD_TCGA_connectivity,0.6209442532515488,,
+our_z,Olaparib,HRD_COV362_connectivity,-1.6950760282687969,,
+our_z_minus_control,Olaparib,HRD_COV362_up,-1.5452108025796445,0.0,0.0542713567839195
+our_z_minus_control,Olaparib,HRD_TCGA_down,1.2448405965799931,0.1529411764705882,0.284863523573201
+our_z_minus_control,Olaparib,HRD_COV362_down,1.1119293353317194,0.2447368421052631,0.2724565756823821
+our_z_minus_control,Olaparib,HRD_TCGA_up,-1.0460461477733405,0.3613861386138614,0.5613065326633166
+our_z_minus_control,Olaparib,ribosome biogenesis,-0.9920307044169788,0.4785714285714286,0.4589614740368509
+our_z_minus_control,Olaparib,HRD_TCGA_connectivity,-1.1454433721766668,,
+our_z_minus_control,Olaparib,HRD_COV362_connectivity,-1.328570068955682,,
+our_z,NK,HRD_COV362_down,2.493787998592723,0.0,0.0
+our_z,NK,HRD_COV362_up,-1.866627735043618,0.0,0.0
+our_z,NK,ribosome biogenesis,1.0589768499081538,0.3435582822085889,0.3436619718309859
+our_z,NK,HRD_TCGA_up,-0.8467611884415132,0.765079365079365,1.0
+our_z,NK,HRD_TCGA_down,-0.8296964116120609,0.7554824561403509,0.7868675995694295
+our_z,NK,HRD_TCGA_connectivity,0.0,,
+our_z,NK,HRD_COV362_connectivity,-2.1802078668181704,,
+our_z_minus_control,NK,HRD_COV362_up,-2.0497581183004154,0.0,0.0
+our_z_minus_control,NK,HRD_COV362_down,1.8379863175909328,0.0,0.0112233445566778
+our_z_minus_control,NK,HRD_TCGA_up,-1.345519773299304,0.0774731823599523,0.0945485519591141
+our_z_minus_control,NK,ribosome biogenesis,-1.0469591060446646,0.4214285714285714,0.4056948162569968
+our_z_minus_control,NK,HRD_TCGA_down,0.9616007463804944,0.5069767441860465,0.5196408529741863
+our_z_minus_control,NK,HRD_TCGA_connectivity,-1.153560259839899,,
+our_z_minus_control,NK,HRD_COV362_connectivity,-1.943872217945674,,
+our_z,Control,HRD_COV362_down,1.7813409704545236,0.0,0.0138461538461538
+our_z,Control,ribosome biogenesis,1.6118859533708874,0.0213675213675213,0.0161538461538461
+our_z,Control,HRD_COV362_up,-1.4335155852986572,0.0149732620320855,0.0588505747126436
+our_z,Control,HRD_TCGA_down,-1.2743957431602326,0.1379716981132075,0.1222988505747126
+our_z,Control,HRD_TCGA_up,1.0032319676999537,0.4454545454545454,0.4323076923076923
+our_z,Control,HRD_TCGA_connectivity,1.138813855430093,,
+our_z,Control,HRD_COV362_connectivity,-1.6074282778765905,,

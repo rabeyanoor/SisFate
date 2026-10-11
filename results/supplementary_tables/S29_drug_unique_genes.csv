@@ -1,0 +1,8 @@
+source,arm,n_genes,n_unique,n_unique_up,n_unique_down,top_up,top_down,n_hallmark_fdr05,hallmark_up,hallmark_down,term,found,NES,nom_p,fdr,bh_prespecified
+drug_unique_summary,Carboplatin,4966.0,8.0,7.0,1.0,LYPD1;ANXA1;ITGB4;PSMB6;EMC6;NAA38;ANXA2,PBX1,2.0,Oxidative Phosphorylation,TGF-beta Signaling,,,,,,
+drug_unique_summary,Olaparib,4966.0,4.0,1.0,3.0,MT2A,EPDR1;EPN2;GLOD4,3.0,E2F Targets;G2-M Checkpoint,Interferon Alpha Response,,,,,,
+drug_unique_summary,NK,4966.0,48.0,4.0,44.0,STX18;APP;ERBB4;GLOD4,DDAH2;SH3BGRL3;CTNNAL1;CAV1;ITGB4;IGFBP6;CD59;TGFB1;SELENOM;PPP1R14A,2.0,,p53 Pathway;Inflammatory Response,,,,,,
+drug_unique_prespecified,Carboplatin,,,,,,,,,,DNA Repair,True,0.9240326989985016,0.5878084179970973,0.8496556241237093,0.5878084179970973
+drug_unique_prespecified,Olaparib,,,,,,,,,,DNA Repair,True,1.4111270529329527,0.0422740524781341,0.2211196512561661,0.0939289805269186
+drug_unique_prespecified,NK,,,,,,,,,,Interferon Gamma Response,True,-0.9893775247929548,0.5190677966101694,0.6322328874594121,0.5878084179970973
+drug_unique_prespecified,NK,,,,,,,,,,Allograft Rejection,True,-1.3398686931877384,0.0469644902634593,0.164357290331767,0.0939289805269186

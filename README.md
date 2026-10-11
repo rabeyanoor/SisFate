@@ -86,7 +86,7 @@ uv run --with pytest pytest -q
 ```
 
 **3. Inspect the saved results (no computation).** `results/` holds every result table (CSV), the paper figures
-(`results/figures/paper/`) and Supplementary Tables S1–S31 (`results/Supplementary_Tables.xlsx`).
+(`results/figures/paper/`) and Supplementary Tables S1–S31 (`results/Supplementary_Tables.xlsx`, and one CSV per table in `results/supplementary_tables/`).
 
 **4. Rerun everything from the public data (about a day on an 8-core laptop with 14 GB RAM).** Downloads the
 data from GEO and figshare and regenerates every result, figure and supplementary table; approximate times are
@@ -122,7 +122,7 @@ Scanpy 1.12.4 and PyTorch 2.14 (CPU) on Linux.
 | `13_robustness.py` | singleton-only cells, exact family-level permutation p-values, Shen et al. benchmark protocol |
 | `14_figures.py` | publication figures `results/figures/paper/Fig1-7`, `FigS1-5` (PNG + PDF, 300 dpi) |
 | `15_typicality.py` | label-free local-density score vs labels |
-| `16_supplementary_tables.py` | `results/Supplementary_Tables.xlsx` (Tables S1–S31); run with `uv run --with openpyxl` |
+| `16_supplementary_tables.py` | `results/Supplementary_Tables.xlsx` (Tables S1–S31) and `results/supplementary_tables/*.csv`; run with `uv run --with openpyxl` |
 | `17_sensitivity.py` | main and fitness analyses on Harmony, Pearson-residual and scVI representations; `uv run --with harmonypy --with scvi-tools` |
 | `18_marker_panel.py` | pre-specified proliferation/arrest/senescence/persister marker panel (Fig. S3) |
 | `19_gnn_sweep.py` | one-at-a-time GNN hyperparameter sweep -> `results/gnn_sweep.csv` |
